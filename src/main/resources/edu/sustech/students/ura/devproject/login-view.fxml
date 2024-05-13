@@ -18,7 +18,7 @@
         <TextField fx:id="Input_name" layoutX="224.0" layoutY="154.0" promptText="昵称" />
         <PasswordField fx:id="Input_passwd" layoutX="224.0" layoutY="200.0" promptText="密码" />
         <Button fx:id="Button_register" layoutX="34.0" layoutY="349.0" mnemonicParsing="false" text="注册" />
-        <Button fx:id="Button_login" layoutX="285.0" layoutY="243.0" mnemonicParsing="false" text="登录" />
+        <Button fx:id="Button_login" layoutX="285.0" layoutY="243.0" mnemonicParsing="false" text="登录" onAction="#LoginTrigger"/>
         <Button fx:id="Button_offline" layoutX="97.0" layoutY="349.0" mnemonicParsing="false" text="离线模式" />
     </children>
 </AnchorPane>

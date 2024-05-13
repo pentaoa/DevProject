@@ -25,7 +25,7 @@ public class LoginViewController {
     private Label Text_title;
 
     @FXML
-    void LoginBtnReleased() {
+    void LoginTrigger() {
         String username = Input_name.getText();
         String passwd = Input_passwd.getText();
         if (username.equals("admin") && passwd.equals("admin")) {//判断用户名密码是否为某个值

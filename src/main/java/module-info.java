@@ -5,6 +5,7 @@ module edu.sustech.students.ura.devproject {
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
     requires com.almasb.fxgl.all;
+    requires jjwt;
 
     opens edu.sustech.students.ura.devproject to javafx.fxml;
     exports edu.sustech.students.ura.devproject;
