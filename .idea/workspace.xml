@@ -5,19 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/io/ClientHander.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/io/Database.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/io/GameServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/io/Message.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/io/Player.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/util/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/mode-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/hello.jpeg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/GameLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/GameLauncher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/LoginViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/LoginViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/io/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/io/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/login-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/login-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,18 +27,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "pentaoa"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;pentaoa&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/pentaoa/DevProject.git",
-    "accountId": "ae2b025a-6bd7-40ad-9b1a-1ea519247ad4"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/pentaoa/DevProject.git&quot;,
+    &quot;accountId&quot;: &quot;f8280d95-5c00-4765-900b-2d4ca3041103&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -70,7 +61,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Grada/Downloads/ioGame-example-main/ioGame-example-main",
+    "last_opened_file_path": "/Users/grada/IdeaProjects/DevProject/src/main/resources/edu/sustech/students/ura/devproject/images",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -86,7 +77,12 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/images" />
       <recent name="C:\Users\Grada\IdeaProjects\DevProject" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/images" />
     </key>
   </component>
   <component name="RunManager">
@@ -128,6 +124,10 @@
       <workItem from="1715504720659" duration="1369000" />
       <workItem from="1715506273900" duration="415000" />
       <workItem from="1715599375397" duration="12387000" />
+      <workItem from="1715742988887" duration="672000" />
+      <workItem from="1715744226868" duration="6000" />
+      <workItem from="1715745154611" duration="1332000" />
+      <workItem from="1715758394341" duration="2700000" />
     </task>
     <servers />
   </component>
