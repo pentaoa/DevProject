@@ -8,6 +8,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * ModeViewController
+ * 模式选择界面控制器
+ * @version 1.0
+ * 这是 2048 游戏的模式选择界面，用户在这里可以选择游戏的模式，例如简单模式、困难模式等。
+ */
 
 public class ModeViewController {
     @FXML
@@ -43,5 +49,4 @@ public class ModeViewController {
     public void updateHelloUserText(String username) {
         Text_HelloUser.setText("欢迎，" + username);
     }
-
 }

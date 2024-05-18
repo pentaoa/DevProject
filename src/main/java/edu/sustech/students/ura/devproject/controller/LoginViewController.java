@@ -1,15 +1,19 @@
 package edu.sustech.students.ura.devproject.controller;
 
-import animatefx.animation.Bounce;
 import animatefx.animation.Pulse;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
-
 import java.io.IOException;
+
+/**
+ * LoginViewController
+ * 登录界面控制器
+ * @version 1.0
+ * 这是 2048 游戏的登录界面，用户在这里可以输入用户名和密码，然后点击登录按钮来登录游戏。
+ */
 
 public class LoginViewController {
 
@@ -74,18 +78,17 @@ public class LoginViewController {
     @FXML
     protected void RegisterTrigger() {
         try {
-            // Load register-view.fxml
+            // 加载下一个 FXML 文件
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/register-view.fxml"));
             Scene registerScene = new Scene(loader.load());
 
-            // Get current stage and set scene
+            // 获取当前的舞台并设置场景
             Stage stage = (Stage) Button_register.getScene().getWindow();
             stage.setScene(registerScene);
             stage.setTitle("注册 | 2048");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle exception (e.g., show an error dialog)
         }
     }
 }

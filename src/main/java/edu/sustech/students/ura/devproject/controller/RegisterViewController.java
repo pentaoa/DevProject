@@ -4,8 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
-public class RegisterView {
+/**
+ * RegisterView
+ * 注册界面
+ * @version 1.0
+ * 注册界面包括······
+ */
+public class RegisterViewController {
 
     @FXML
     private Button Button_Back;
