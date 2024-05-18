@@ -6,6 +6,7 @@ module edu.sustech.students.ura.devproject {
     requires org.kordamp.ikonli.javafx;
     requires com.almasb.fxgl.all;
     requires jjwt;
+    requires AnimateFX;
 
     opens edu.sustech.students.ura.devproject to javafx.fxml;
     exports edu.sustech.students.ura.devproject;

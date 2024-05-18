@@ -35,8 +35,8 @@
     <bottom>
         <HBox spacing="10.0">
             <children>
-                <Button fx:id="Button_register" text="注册" />
-                <Button fx:id="Button_offline" text="离线模式" />
+                <Button fx:id="Button_register" onAction="#RegisterTrigger" text="注册" />
+                <Button fx:id="Button_offline" onAction="#OfflineTrigger" text="离线模式" />
             </children>
             <VBox.margin>
                 <Insets left="33.0" right="33.0" />

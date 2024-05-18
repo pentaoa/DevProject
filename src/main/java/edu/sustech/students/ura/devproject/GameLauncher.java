@@ -11,7 +11,10 @@ import java.io.IOException;
 public class GameLauncher extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        stage.setMinHeight(440);
+        stage.setMinWidth(620);
         showLoginView(stage);
+
     }
 
     private void showLoginView(Stage stage) throws IOException {
@@ -19,6 +22,7 @@ public class GameLauncher extends Application {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("登录 | 2048");
         stage.show();
     }
 
