@@ -17,6 +17,14 @@ public class GameViewController {
 
     @FXML
     private GridPane GridPane;
+    @FXML
+    private Button MoveUp;
+    @FXML
+    private Button MoveDown;
+    @FXML
+    private Button MoveLeft;
+    @FXML
+    private Button MoveRight;
 
     @FXML
     private Button LoadButton;
@@ -47,6 +55,9 @@ public class GameViewController {
     private void QuitGame() {
         // 退出游戏
         System.out.println("Game quit");
+    }
+    private void Moveright(){
+
     }
 
 }

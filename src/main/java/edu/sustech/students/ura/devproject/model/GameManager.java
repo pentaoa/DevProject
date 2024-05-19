@@ -10,6 +10,7 @@ package edu.sustech.students.ura.devproject.model;
  */
 
 public class GameManager {
+    private Gridnumber model;
     public GameManager() {
         // 新建游戏
         System.out.println("成功新建游戏！");
