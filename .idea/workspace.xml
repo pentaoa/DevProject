@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="">
+    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="把基本的移动方法加进来了，这个Girdnumber是负责记录游戏的网格上的数字，以及这些数字移动的规律，产生新数字的规则，还有记录了已走步数">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/Gridnumber.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/Gridnumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/Gridnumber.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,6 +136,15 @@
       <workItem from="1715966745917" duration="11000" />
       <workItem from="1716033542969" duration="4109000" />
     </task>
+    <task id="LOCAL-00001" summary="把基本的移动方法加进来了，这个Girdnumber是负责记录游戏的网格上的数字，以及这些数字移动的规律，产生新数字的规则，还有记录了已走步数">
+      <option name="closed" value="true" />
+      <created>1716106114514</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716106114514</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -153,6 +160,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="把基本的移动方法加进来了，这个Girdnumber是负责记录游戏的网格上的数字，以及这些数字移动的规律，产生新数字的规则，还有记录了已走步数" />
+    <option name="LAST_COMMIT_MESSAGE" value="把基本的移动方法加进来了，这个Girdnumber是负责记录游戏的网格上的数字，以及这些数字移动的规律，产生新数字的规则，还有记录了已走步数" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

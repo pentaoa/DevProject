@@ -325,6 +325,26 @@ public class Gridnumber {
     }
     public int getX_COUNT(){return X_COUNT;}
     public int getY_COUNT(){return Y_COUNT;}
+    public Boolean loseJudgement(){//这个方法是先拷贝一份当前的游戏数据，尝试上下左右移动，看看步数是否增加来判断是否可以继续走，从而判断胜负
+        Gridnumber modelTest = new Gridnumber(X_COUNT,Y_COUNT);
+        for(int row = 0;row<X_COUNT;row++)
+        {
+            for(int column = 0; column<Y_COUNT;column++)
+            {
+                setNumbers(row,column,numbers[row][column]);
+            }
+        }
+        int stepTest = modelTest.steps;
+        modelTest.moveDown();
+        modelTest.moveLeft();
+        modelTest.moveUp();
+        modelTest.moveRight();
+        if(stepTest==modelTest.steps)
+        {
+            return true;  //true表示输了
+        }
+        return false;
+    }
 
     public void printNumber() {
         for (int[] line : numbers) {
