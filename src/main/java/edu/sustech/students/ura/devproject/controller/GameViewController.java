@@ -15,8 +15,8 @@ import javafx.scene.layout.GridPane;
  */
 public class GameViewController {
 
-    @FXML
-    private GridPane GridPane;
+//    @FXML
+//    private GridPane GridPane;
     @FXML
     private Button MoveUp;
     @FXML
@@ -41,10 +41,19 @@ public class GameViewController {
     @FXML
     private Button SaveButton;
 
+    private GameBoard gameBoard;
+
+    // 初始化游戏
     private void InitialGame() {
-        // 初始化游戏
         GameManager gameManager = new GameManager();
         System.out.println("尝试启动游戏······");
+
+        //创建新的GameBoard
+        gameBoard = new GameBoard();
+
+        //移除原来的GameBoard存在，则移除
+
+        // 将新的GameBoard添加到GridPane中
     }
 
     private void PauseGame() {
@@ -55,9 +64,6 @@ public class GameViewController {
     private void QuitGame() {
         // 退出游戏
         System.out.println("Game quit");
-    }
-    private void Moveright(){
-
     }
 
 }

@@ -1,5 +1,7 @@
 package edu.sustech.students.ura.devproject.model;
 
+import edu.sustech.students.ura.devproject.controller.*;
+
 /**
  * GameManager
  * 游戏管理器
@@ -10,14 +12,15 @@ package edu.sustech.students.ura.devproject.model;
  */
 
 public class GameManager {
-    private Gridnumber model;
+    private GridNumber model;
     public GameManager() {
         // 新建游戏
         System.out.println("成功新建游戏！");
+        initialGame();
     }
 
+    // 初始化游戏
     private void initialGame() {
-        // 初始化游戏
         System.out.println("初始化游戏······");
     }
     private void pauseGame() {
