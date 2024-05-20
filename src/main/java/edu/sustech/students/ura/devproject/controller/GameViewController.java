@@ -45,10 +45,8 @@ public class GameViewController {
 
     // 初始化游戏
     private void InitialGame() {
-        GameManager gameManager = new GameManager();
         System.out.println("尝试启动游戏······");
-
-        //创建新的GameBoard
+        GameManager gameManager = new GameManager();
         gameBoard = new GameBoard();
 
         //移除原来的GameBoard存在，则移除
