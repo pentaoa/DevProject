@@ -25,9 +25,9 @@ public class ModeViewController {
     }
     @FXML
     protected void EasyModeTrigger() {
-        // 将显示游戏主界面
+        System.out.println("用户进入简单模式。");
         try {
-            // 加载 FXML 文件
+            // 加载游戏界面 FXML 文件
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/game-view.fxml"));
             // 创建新的场景
             Scene scene = new Scene(loader.load());
@@ -40,7 +40,6 @@ public class ModeViewController {
             e.printStackTrace();
             // 处理异常（例如，显示错误对话框）
         }
-        System.out.println("用户进入简单模式。");
     }
     @FXML
     protected void HardModeTrigger() {

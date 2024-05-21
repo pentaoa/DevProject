@@ -42,4 +42,7 @@ public class GameManager {
         System.out.println("执行移动······");
     }
 
+    public GridNumber getGrid() {
+        return grid;
+    }
 }

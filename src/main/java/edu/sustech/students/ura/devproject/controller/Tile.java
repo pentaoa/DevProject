@@ -20,7 +20,7 @@ public class Tile extends StackPane {
 
     public Tile(int initialValue) {
         value = new SimpleIntegerProperty(initialValue);
-        tile = new Rectangle(100, 100);
+        tile = new Rectangle(75, 75);
         tile.setFill(getColorByValue(initialValue));
         text = new Text(String.valueOf(initialValue));
         text.setFont(Font.font(24));

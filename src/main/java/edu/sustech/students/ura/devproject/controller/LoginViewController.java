@@ -67,13 +67,20 @@ public class LoginViewController {
     }
     @FXML
     protected void OfflineTrigger() {
-        new Pulse(Text_title).play();
-        //弹出一个对话框
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("提示");
-        alert.setHeaderText("离线模式");
-        alert.setContentText("离线模式");
-        alert.showAndWait();
+        System.out.println("用户进入离线模式。");
+        try {
+            // 直接加载游戏界面 FXML 文件
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/game-view.fxml"));
+            Scene offLineScene = new Scene(loader.load());
+
+            // 获取当前的舞台并设置场景
+            Stage stage = (Stage) Button_offline.getScene().getWindow();
+            stage.setScene(offLineScene);
+            stage.setTitle("离线模式 | 2048");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     protected void RegisterTrigger() {
