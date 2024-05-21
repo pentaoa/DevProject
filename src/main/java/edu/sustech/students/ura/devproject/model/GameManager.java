@@ -36,12 +36,6 @@ public class GameManager {
         // 读取游戏
         System.out.println("读取游戏······");
     }
-
-    private void doMove() {
-        // 执行移动
-        System.out.println("执行移动······");
-    }
-
     public GridNumber getGrid() {
         return grid;
     }

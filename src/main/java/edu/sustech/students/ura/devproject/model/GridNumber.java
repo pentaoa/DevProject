@@ -81,101 +81,82 @@ public class GridNumber {
     public void moveRight() {
         boolean moveSuccessfully = false;
         for (int row = 0; row < X_COUNT; row++) {
+            // Step 1: Move all non-zero elements to the right
+            int targetColumn = Y_COUNT - 1; // The target column for the next non-zero element
             for (int column = Y_COUNT - 1; column >= 0; column--) {
-                boolean whetherAllZero2 = true;//判断自己以及左方是否全为0
-                for (int j = column; j >= 0; j--) {
-                    if (numbers[row][j].get() != 0) {
-                        whetherAllZero2 = false;
-                    }
-                }
-                if (whetherAllZero2 == false) {
-                    while (numbers[row][column].get() == 0 && column != 0) {
-                        for (int columntransit = column; columntransit >= 0; columntransit--) {
-                            if (columntransit != 0) {
-                                numbers[row][columntransit] = numbers[row][columntransit - 1];
-                            } else {
-                                numbers[row][columntransit].setValue(0);
-                            }
-                        }
+                if (numbers[row][column].get() != 0) {
+                    if (column != targetColumn) { // Only move if it's not already in the correct position
+                        numbers[row][targetColumn].setValue(numbers[row][column].get());
+                        numbers[row][column].setValue(0);
                         moveSuccessfully = true;
                     }
+                    targetColumn--;
                 }
             }
-            for (int column = Y_COUNT - 1; column >= 0; column--) {
-                boolean whetherAllZero2 = true;//判断自己以及左方是否全为0
-                for (int j = column; j >= 0; j--) {
-                    if (numbers[row][j].get() != 0) {
-                        whetherAllZero2 = false;
-                    }
-                }
-                if (whetherAllZero2 == false && column != 0 && numbers[row][column] == numbers[row][column - 1]) {
+            // Step 2: Merge adjacent elements if they are equal
+            for (int column = Y_COUNT - 1; column > 0; column--) {
+                if (numbers[row][column].get() != 0 && numbers[row][column].get() == numbers[row][column - 1].get()) {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
-                    for (int j = column - 1; j >= 0; j--) {
-                        if (j != 0) {
-                            numbers[row][j] = numbers[row][j - 1];
-                        } else {
-                            numbers[row][j].setValue(0);
-                        }
-                    }
+                    numbers[row][column - 1].setValue(0);
                     moveSuccessfully = true;
+                    column--; // Skip the next column since it's already merged
                 }
             }
-
+            // Step 3: Move again to fill the gaps created by merging
+            targetColumn = Y_COUNT - 1;
+            for (int column = Y_COUNT - 1; column >= 0; column--) {
+                if (numbers[row][column].get() != 0) {
+                    if (column != targetColumn) {
+                        numbers[row][targetColumn].setValue(numbers[row][column].get());
+                        numbers[row][column].setValue(0);
+                    }
+                    targetColumn--;
+                }
+            }
         }
-        if (moveSuccessfully == true) {
+        if (moveSuccessfully) {
             generateNewNumbers(this);
             steps++;
         }
-        /*for (int i = 0; i < numbers.length; i++) {
-            numbers[i][1] += numbers[i][0];
-            numbers[i][0] = 0;
-        }*/
     }
 
     public void moveLeft() {
         boolean moveSuccessfully = false;
         for (int row = 0; row < X_COUNT; row++) {
+            // Step 1: Move all non-zero elements to the left
+            int targetColumn = 0; // The target column for the next non-zero element
             for (int column = 0; column < Y_COUNT; column++) {
-                boolean whetherAllZero2 = true;//判断右方是否全为0
-                for (int j = column; j < Y_COUNT; j++) {
-                    if (numbers[row][j].get() != 0) {
-                        whetherAllZero2 = false;
-                    }
-                }
-                if (whetherAllZero2 == false) {
-                    while (numbers[row][column].get() == 0 && column != Y_COUNT - 1) {
+                if (numbers[row][column].get() != 0) {
+                    if (column != targetColumn) { // Only move if it's not already in the correct position
+                        numbers[row][targetColumn].setValue(numbers[row][column].get());
+                        numbers[row][column].setValue(0);
                         moveSuccessfully = true;
-                        for (int columntransit = column; columntransit < Y_COUNT; columntransit++) {
-                            if (columntransit != Y_COUNT - 1) {
-                                numbers[row][columntransit] = numbers[row][columntransit + 1];
-                            } else {
-                                numbers[row][columntransit].setValue(0);
-                            }
-                        }
                     }
+                    targetColumn++;
                 }
             }
-            for (int column = 0; column < Y_COUNT; column++) {
-                boolean whetherAllZero2 = true;//判断右方是否全为0
-                for (int j = column; j < Y_COUNT; j++) {
-                    if (numbers[row][j].get() != 0) {
-                        whetherAllZero2 = false;
-                    }
-                }
-                if (whetherAllZero2 == false && column != Y_COUNT - 1 && numbers[row][column] == numbers[row][column + 1]) {
-                    moveSuccessfully = true;
+            // Step 2: Merge adjacent elements if they are equal
+            for (int column = 0; column < Y_COUNT - 1; column++) {
+                if (numbers[row][column].get() != 0 && numbers[row][column].get() == numbers[row][column + 1].get()) {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
-                    for (int j = column + 1; j < Y_COUNT; j++) {
-                        if (j != Y_COUNT - 1) {
-                            numbers[row][j] = numbers[row][j + 1];
-                        } else {
-                            numbers[row][j].setValue(0);
-                        }
+                    numbers[row][column + 1].setValue(0);
+                    moveSuccessfully = true;
+                    column++; // Skip the next column since it's already merged
+                }
+            }
+            // Step 3: Move again to fill the gaps created by merging
+            targetColumn = 0;
+            for (int column = 0; column < Y_COUNT; column++) {
+                if (numbers[row][column].get() != 0) {
+                    if (column != targetColumn) {
+                        numbers[row][targetColumn].setValue(numbers[row][column].get());
+                        numbers[row][column].setValue(0);
                     }
+                    targetColumn++;
                 }
             }
         }
-        if (moveSuccessfully == true) {
+        if (moveSuccessfully) {
             generateNewNumbers(this);
             steps++;
         }
@@ -184,48 +165,40 @@ public class GridNumber {
     public void moveUp() {
         boolean moveSuccessfully = false;
         for (int column = 0; column < Y_COUNT; column++) {
+            // Step 1: Move all non-zero elements upwards
+            int targetRow = 0; // The target row for the next non-zero element
             for (int row = 0; row < X_COUNT; row++) {
-                boolean whetherAllZero = true;
-                for (int rowtransmit = row; rowtransmit < X_COUNT; rowtransmit++) {
-                    if (numbers[rowtransmit][column].get() != 0) {
-                        whetherAllZero = false;
-                    }
-                }
-                if (whetherAllZero == false) {
-                    while (row != X_COUNT - 1 && numbers[row][column].get() == 0) {
+                if (numbers[row][column].get() != 0) {
+                    if (row != targetRow) { // Only move if it's not already in the correct position
+                        numbers[targetRow][column].setValue(numbers[row][column].get());
+                        numbers[row][column].setValue(0);
                         moveSuccessfully = true;
-                        for (int rowtransmit = row; rowtransmit < X_COUNT; rowtransmit++) {
-                            if (rowtransmit != X_COUNT - 1) {
-                                numbers[rowtransmit][column] = numbers[rowtransmit + 1][column];
-                            } else {
-                                numbers[rowtransmit][column].setValue(0);
-                            }
-                        }
                     }
-
+                    targetRow++;
                 }
             }
-            for (int row = 0; row < X_COUNT; row++) {
-                boolean whetherAllZero = true;
-                for (int rowtransmit = row; rowtransmit < X_COUNT; rowtransmit++) {
-                    if (numbers[rowtransmit][column].get() != 0) {
-                        whetherAllZero = false;
-                    }
-                }
-                if (whetherAllZero == false && row != X_COUNT - 1 && numbers[row][column] == numbers[row + 1][column]) {
-                    moveSuccessfully = true;
+            // Step 2: Merge adjacent elements if they are equal
+            for (int row = 0; row < X_COUNT - 1; row++) {
+                if (numbers[row][column].get() != 0 && numbers[row][column].get() == numbers[row + 1][column].get()) {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
-                    for (int rowtransmit = row + 1; rowtransmit < X_COUNT; rowtransmit++) {
-                        if (rowtransmit != X_COUNT - 1) {
-                            numbers[rowtransmit][column] = numbers[rowtransmit + 1][column];
-                        } else {
-                            numbers[rowtransmit][column].setValue(0);
-                        }
+                    numbers[row + 1][column].setValue(0);
+                    moveSuccessfully = true;
+                    row++; // Skip the next row since it's already merged
+                }
+            }
+            // Step 3: Move again to fill the gaps created by merging
+            targetRow = 0;
+            for (int row = 0; row < X_COUNT; row++) {
+                if (numbers[row][column].get() != 0) {
+                    if (row != targetRow) {
+                        numbers[targetRow][column].setValue(numbers[row][column].get());
+                        numbers[row][column].setValue(0);
                     }
+                    targetRow++;
                 }
             }
         }
-        if (moveSuccessfully == true) {
+        if (moveSuccessfully) {
             generateNewNumbers(this);
             steps++;
         }
@@ -234,48 +207,40 @@ public class GridNumber {
     public void moveDown() {
         boolean moveSuccessfully = false;
         for (int column = 0; column < Y_COUNT; column++) {
+            // Step 1: Move all non-zero elements downwards
+            int targetRow = X_COUNT - 1; // The target row for the next non-zero element
             for (int row = X_COUNT - 1; row >= 0; row--) {
-                boolean whetherAllZero = true;//检测上方是否全为零
-                for (int rowtransmit = row; rowtransmit >= 0; rowtransmit--) {
-                    if (numbers[rowtransmit][column].get() != 0) {
-                        whetherAllZero = false;
-                    }
-                }
-                if (whetherAllZero == false) {
-                    while (row != 0 && numbers[row][column].get() == 0) {
+                if (numbers[row][column].get() != 0) {
+                    if (row != targetRow) { // Only move if it's not already in the correct position
+                        numbers[targetRow][column].setValue(numbers[row][column].get());
+                        numbers[row][column].setValue(0);
                         moveSuccessfully = true;
-                        for (int rowtransmit = row; rowtransmit >= 0; rowtransmit--) {
-                            if (rowtransmit != 0) {
-                                numbers[rowtransmit][column] = numbers[rowtransmit - 1][column];
-                            } else {
-                                numbers[rowtransmit][column].setValue(0);
-                            }
-                        }
                     }
-
+                    targetRow--;
                 }
             }
-            for (int row = X_COUNT - 1; row >= 0; row--) {
-                boolean whetherAllZero = true;//检测上方是否全为零
-                for (int rowtransmit = row; rowtransmit >= 0; rowtransmit--) {
-                    if (numbers[rowtransmit][column].get() != 0) {
-                        whetherAllZero = false;
-                    }
-                }
-                if (whetherAllZero == false && row != 0 && numbers[row][column] == numbers[row - 1][column]) {
-                    moveSuccessfully = true;
+            // Step 2: Merge adjacent elements if they are equal
+            for (int row = X_COUNT - 1; row > 0; row--) {
+                if (numbers[row][column].get() != 0 && numbers[row][column].get() == numbers[row - 1][column].get()) {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
-                    for (int rowtransmit = row - 1; rowtransmit >= 0; rowtransmit--) {
-                        if (rowtransmit != 0) {
-                            numbers[rowtransmit][column] = numbers[rowtransmit - 1][column];
-                        } else {
-                            numbers[rowtransmit][column].setValue(0);
-                        }
+                    numbers[row - 1][column].setValue(0);
+                    moveSuccessfully = true;
+                    row--; // Skip the next row since it's already merged
+                }
+            }
+            // Step 3: Move again to fill the gaps created by merging
+            targetRow = X_COUNT - 1;
+            for (int row = X_COUNT - 1; row >= 0; row--) {
+                if (numbers[row][column].get() != 0) {
+                    if (row != targetRow) {
+                        numbers[targetRow][column].setValue(numbers[row][column].get());
+                        numbers[row][column].setValue(0);
                     }
+                    targetRow--;
                 }
             }
         }
-        if (moveSuccessfully == true) {
+        if (moveSuccessfully) {
             generateNewNumbers(this);
             steps++;
         }

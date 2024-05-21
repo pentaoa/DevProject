@@ -1,6 +1,7 @@
 package edu.sustech.students.ura.devproject.controller;
 
 import edu.sustech.students.ura.devproject.model.GameManager;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,7 +19,8 @@ import javafx.scene.layout.GridPane;
  * @version 1.0
  */
 public class GameViewController {
-
+    private GameManager gameManager;
+    private GameBoard gameBoard;
 
     @FXML
     private AnchorPane gameViewCenter;
@@ -54,15 +56,19 @@ public class GameViewController {
             gameViewCenter.getScene().setOnKeyPressed(event -> {
                 switch (event.getCode()) {
                     case W:
+                        gameManager.getGrid().moveUp();
                         System.out.println("UP");
                         break;
                     case S:
+                        gameManager.getGrid().moveDown();
                         System.out.println("DOWN");
                         break;
                     case A:
+                        gameManager.getGrid().moveLeft();
                         System.out.println("LEFT");
                         break;
                     case D:
+                        gameManager.getGrid().moveRight();
                         System.out.println("RIGHT");
                         break;
                 }
@@ -70,18 +76,16 @@ public class GameViewController {
         });
     }
 
-    private GameBoard gameBoard;
-
     // 初始化游戏
     private void InitialGame() {
         System.out.println("尝试启动游戏······");
-        GameManager gameManager = new GameManager();
+        gameManager = new GameManager();
         gameBoard = new GameBoard(gameManager);
 
         //移除原来的GameBoard存在，则移除
-
-        // 将新的GameBoard显示在视图中心
+        //将新的GameBoard显示在视图中心
         gameViewCenter.getChildren().add(gameBoard);
+
     }
 
     private void PauseGame() {
@@ -98,18 +102,22 @@ public class GameViewController {
         button.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             switch (event.getCode()) {
                 case UP:
+                    gameManager.getGrid().moveUp();
                     System.out.println("UP");
                     event.consume();
                     break;
                 case DOWN:
+                    gameManager.getGrid().moveDown();
                     System.out.println("DOWN");
                     event.consume();
                     break;
                 case LEFT:
+                    gameManager.getGrid().moveLeft();
                     System.out.println("LEFT");
                     event.consume();
                     break;
                 case RIGHT:
+                    gameManager.getGrid().moveRight();
                     System.out.println("RIGHT");
                     event.consume();
                     break;

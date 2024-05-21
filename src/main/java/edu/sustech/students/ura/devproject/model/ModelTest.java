@@ -6,6 +6,9 @@ public class ModelTest {
         GridNumber grid = gameManager.grid;
         grid.printNumber();
         System.out.println();
+        grid.moveUp();
+        grid.printNumber();
+        System.out.println();
         grid.moveDown();
         grid.printNumber();
     }

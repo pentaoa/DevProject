@@ -7,6 +7,7 @@ module edu.sustech.students.ura.devproject {
     requires com.almasb.fxgl.all;
     requires jjwt;
     requires AnimateFX;
+    requires javafx.media;
 
     opens edu.sustech.students.ura.devproject to javafx.fxml;
     exports edu.sustech.students.ura.devproject;

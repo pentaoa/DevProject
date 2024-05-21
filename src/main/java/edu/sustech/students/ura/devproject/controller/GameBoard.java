@@ -29,6 +29,7 @@ public class GameBoard extends GridPane {
                 add(cell, col, row);
 
                 Tile tile = new Tile(gameManager.getGrid().getNumber(row, col).get());
+
                 tiles[row][col] = tile;
                 gameManager.getGrid().getNumber(row,col).addListener((obs, oldVal, newVal) -> {
                     tile.setValue(newVal.intValue());
