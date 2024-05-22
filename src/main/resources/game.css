@@ -1,7 +1,59 @@
+/* 字体 */
+@font-face {
+    font-family: 'HYWenHei-85W';
+    src: url('fonts/HYWenHei-85W.ttf');
+}
 
-.game-tile-2    {
+/* 基础样式 */
+.game-root {
+    -fx-background-color: #faf8ef;
+}
+.game-background {
+    -fx-background-color: #faf8ef;
+}
+.game-board {
+    -fx-background-color: rgba(189, 179, 169, 0.7);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10 ;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.24), 10, 0.5, 0, 2);
+}
+.game-cell {
+    -fx-background-color: rgba(209, 188, 165, 0.36);
+    -fx-background-radius: 3;
+    -fx-border-radius: 3;
+}
+.game-title {
+    -fx-font-family: "HYWenHei-85W";
     -fx-font-size: 25px;
     -fx-text-fill: #776e65;
+}
+
+/* 按钮样式 */
+.game-button {
+    -fx-font-family: "HYWenHei-85W";
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-background-color: #c88a61;
+    -fx-background-radius: 5;
+}
+.game-button:pressed {
+    -fx-background-color: #c58c67;
+}
+.game-button:focused, .game-button:hover {
+    -fx-background-color: #c68e68;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.28), 10, 0.2, 0, 0 );
+}
+/* 砖块样式 */
+.game-tile-0    {
+    -fx-font-size: 25px;
+    -fx-text-fill: #776e65;
+    -fx-background-color: rgba(255, 250, 245, 0.52);
+    -fx-background-radius: 3;
+    -fx-border-radius: 3;
+}
+.game-tile-2    {
+    -fx-font-size: 25px;
+    -fx-text-fill: rgba(119, 110, 101, 0);
     -fx-background-color: #eee4da;
     -fx-background-radius: 3;
     -fx-border-radius: 3;

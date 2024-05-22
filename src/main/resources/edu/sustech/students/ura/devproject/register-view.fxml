@@ -10,18 +10,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url('/images/hello.jpeg');" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sustech.students.ura.devproject.controller.RegisterViewController">
+<BorderPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="game-root" stylesheets="@../../../../../game.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sustech.students.ura.devproject.controller.RegisterViewController">
     <center>
-        <VBox focusTraversable="true" spacing="20.0">
+        <VBox alignment="CENTER" focusTraversable="true" spacing="20.0">
             <children>
-                <Label fx:id="Text_Register" text="注册">
-                    <font>
-                        <Font name="System Bold" size="23.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </VBox.margin>
-                </Label>
+            <Label fx:id="text_signup" styleClass="game-title" text="欢迎!" />
+            <VBox alignment="CENTER" spacing="10.0">
+               <children>
+                  <TextField fx:id="Input_name" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="昵称" />
+                  <PasswordField fx:id="Input_passwd" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="密码" />
+                  <Button fx:id="Button_signup" alignment="CENTER" contentDisplay="CENTER" onAction="#SignupTrigger" styleClass="game-button" stylesheets="@../../../../../game.css" text="注册" />
+               </children>
+            </VBox>
             </children>
             <BorderPane.margin>
                 <Insets />
@@ -31,7 +31,7 @@
     <bottom>
         <HBox spacing="10.0">
             <children>
-                <Button fx:id="Button_Back" onAction="#BackTrigger" text="返回" />
+                <Button fx:id="Button_Back" onAction="#BackTrigger" styleClass="game-button" text="返回" />
             </children>
             <VBox.margin>
                 <Insets left="33.0" right="33.0" />
@@ -41,4 +41,21 @@
             </BorderPane.margin>
         </HBox>
     </bottom>
+   <top>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+                <Label fx:id="Text_Register" styleClass="game-title" text="注册">
+                    <font>
+                        <Font name="System Bold" size="23.0" />
+                    </font>
+               <HBox.margin>
+                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+               </HBox.margin>
+                </Label>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+   </top>
 </BorderPane>

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url('/images/hello.jpeg');" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sustech.students.ura.devproject.controller.LoginViewController">
+<BorderPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="game-root" stylesheets="@../../../../../game.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sustech.students.ura.devproject.controller.LoginViewController">
     <center>
         <VBox alignment="CENTER" focusTraversable="true" spacing="20.0">
             <children>
@@ -23,7 +23,7 @@
                     <children>
                         <TextField fx:id="Input_name" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="昵称" />
                         <PasswordField fx:id="Input_passwd" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="密码" />
-                        <Button fx:id="Button_login" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" onAction="#LoginTrigger" text="登录" />
+                        <Button fx:id="Button_login" alignment="CENTER" contentDisplay="CENTER" onAction="#LoginTrigger" styleClass="game-button" stylesheets="@../../../../../game.css" text="登录" />
                     </children>
                 </VBox>
             </children>
@@ -35,8 +35,8 @@
     <bottom>
         <HBox spacing="10.0">
             <children>
-                <Button fx:id="Button_register" onAction="#RegisterTrigger" text="注册" />
-                <Button fx:id="Button_offline" onAction="#OfflineTrigger" text="离线模式" />
+                <Button fx:id="Button_register" onAction="#RegisterTrigger" styleClass="game-button" text="注册" />
+                <Button fx:id="Button_offline" onAction="#OfflineTrigger" styleClass="game-button" text="离线模式" />
             </children>
             <VBox.margin>
                 <Insets left="33.0" right="33.0" />

@@ -19,15 +19,18 @@ public class GameBoard extends GridPane {
     }
 
     private void initializeBoard(GameManager gameManager) {
+        String cellColor = "BDB3A9B2";
+
+
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
                 StackPane cell = new StackPane();
                 Rectangle background = new Rectangle(75,75);
-                background.setFill(Color.BEIGE);
+                background.setFill(Color.web(cellColor));// 设置 cell 颜色
+                background.setStyle("-fx-arc-width: 15; -fx-arc-height: 15;");// 设置圆角
                 cell.getChildren().add(background);
                 cells[row][col] = cell;
                 add(cell, col, row);
-
                 Tile tile = new Tile(gameManager.getGrid().getNumber(row, col).get());
 
                 tiles[row][col] = tile;

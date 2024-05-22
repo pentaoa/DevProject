@@ -73,8 +73,6 @@ public class LoginViewController {
             // 直接加载游戏界面 FXML 文件
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/game-view.fxml"));
             Scene offLineScene = new Scene(loader.load());
-            offLineScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/game.css")).toExternalForm());
-
             // 获取当前的舞台并设置场景
             Stage stage = (Stage) Button_offline.getScene().getWindow();
             stage.setScene(offLineScene);
