@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -19,6 +20,8 @@ import javafx.scene.layout.GridPane;
  * @version 1.0
  */
 public class GameViewController {
+    @FXML
+    private Label stepLabel;
     private GameManager gameManager;
     private GameBoard gameBoard;
 
@@ -57,18 +60,22 @@ public class GameViewController {
                 switch (event.getCode()) {
                     case W:
                         gameManager.getGrid().moveUp();
+                        updateStepCount(gameManager.getGrid().getSteps());
                         System.out.println("UP");
                         break;
                     case S:
                         gameManager.getGrid().moveDown();
+                        updateStepCount(gameManager.getGrid().getSteps());
                         System.out.println("DOWN");
                         break;
                     case A:
                         gameManager.getGrid().moveLeft();
+                        updateStepCount(gameManager.getGrid().getSteps());
                         System.out.println("LEFT");
                         break;
                     case D:
                         gameManager.getGrid().moveRight();
+                        updateStepCount(gameManager.getGrid().getSteps());
                         System.out.println("RIGHT");
                         break;
                 }
@@ -78,6 +85,7 @@ public class GameViewController {
 
     // 初始化游戏
     private void InitialGame() {
+        initializeStep();
         System.out.println("尝试启动游戏······");
         gameManager = new GameManager();
         gameBoard = new GameBoard(gameManager);
@@ -103,21 +111,25 @@ public class GameViewController {
             switch (event.getCode()) {
                 case UP:
                     gameManager.getGrid().moveUp();
+                    updateStepCount(gameManager.getGrid().getSteps());
                     System.out.println("UP");
                     event.consume();
                     break;
                 case DOWN:
                     gameManager.getGrid().moveDown();
+                    updateStepCount(gameManager.getGrid().getSteps());
                     System.out.println("DOWN");
                     event.consume();
                     break;
                 case LEFT:
                     gameManager.getGrid().moveLeft();
+                    updateStepCount(gameManager.getGrid().getSteps());
                     System.out.println("LEFT");
                     event.consume();
                     break;
                 case RIGHT:
                     gameManager.getGrid().moveRight();
+                    updateStepCount(gameManager.getGrid().getSteps());
                     System.out.println("RIGHT");
                     event.consume();
                     break;
@@ -125,5 +137,11 @@ public class GameViewController {
                     break;
             }
         });
+    }
+    public void initializeStep() {
+        updateStepCount(0);
+    }
+    public void updateStepCount(int steps) {
+        stepLabel.setText("步数: " + steps);
     }
 }

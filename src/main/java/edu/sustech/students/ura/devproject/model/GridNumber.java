@@ -2,6 +2,7 @@ package edu.sustech.students.ura.devproject.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.control.Label;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -243,6 +244,7 @@ public class GridNumber {
         if (moveSuccessfully) {
             generateNewNumbers(this);
             steps++;
+
         }
     }
 
@@ -288,4 +290,5 @@ public class GridNumber {
             System.out.println();
         }
     }
+    public int getSteps(){return steps;}
 }
