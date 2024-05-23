@@ -90,7 +90,8 @@ public class GameViewController {
         gameManager = new GameManager();
         gameBoard = new GameBoard(gameManager);
 
-        //移除原来的GameBoard存在，则移除
+        //移除原来的GameBoard，若存在，则移除
+        gameViewCenter.getChildren().removeIf(node -> node instanceof GameBoard);
         //将新的GameBoard显示在视图中心
         gameViewCenter.getChildren().add(gameBoard);
 

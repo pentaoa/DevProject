@@ -17,3 +17,6 @@
   - `GameLauncher.java`：程序入口
 
 ## 人员分工
+
+- Grada：框架搭建
+- FragileHao: 游戏逻辑
