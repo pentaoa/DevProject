@@ -2,9 +2,7 @@ package edu.sustech.students.ura.devproject.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.control.Label;
 
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -55,6 +53,7 @@ public class GridNumber {
             }
 
         }
+        this.steps=0;
            /* for (int i = 0; i < numbers.length; i++) {
                 for (int j = 0; j < numbers[i].length; j++) {
                     //todo: update generate numbers method
@@ -247,6 +246,9 @@ public class GridNumber {
 
         }
     }
+    public IntegerProperty[][] getNumbers(){
+        return numbers;
+    }
 
     public IntegerProperty getNumber(int i, int j) {
         return numbers[i][j];
@@ -263,25 +265,65 @@ public class GridNumber {
     public int getY_COUNT() {
         return Y_COUNT;
     }
+    public boolean isGameOver() {
+        return !hasEmptyCells() && !canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight();//当全是空格且不能上下左右移动时，判定失败(返回true)，加一个空格判断是为了提高判断效率
+    }
 
-    public Boolean loseJudgement() {//这个方法是先拷贝一份当前的游戏数据，尝试上下左右移动，看看步数是否增加来判断是否可以继续走，从而判断胜负
-        GridNumber modelTest = new GridNumber(X_COUNT, Y_COUNT);
+    private boolean hasEmptyCells() {//检测有没有空格子
         for (int row = 0; row < X_COUNT; row++) {
-            for (int column = 0; column < Y_COUNT; column++) {
-                setNumbers(row, column, numbers[row][column].get());
+            for (int col = 0; col < Y_COUNT; col++) {
+                if (numbers[row][col].getValue() == 0) {
+                    return true;
+                }
             }
-        }
-        int stepTest = modelTest.steps;
-        modelTest.moveDown();
-        modelTest.moveLeft();
-        modelTest.moveUp();
-        modelTest.moveRight();
-        if (stepTest == modelTest.steps) {
-            return true;  //true表示输了
         }
         return false;
     }
-
+    private boolean canMoveUp() {//之所以要再单独写一个判断能不能移动的方法，是为了减少耦合，
+        /*检测这列是否可以移动，即，当上方存在空格且目前这个不是空格时，或者上方这个格子与目前这个
+        格子相等时，表示可以向上移动，检测第0行没有意义，因为如果第0行为0，那这个判定条件以及包含在
+        第一行的检测中，如果第0行不为0，那就会跳到下行的检测中（能否向上移动，要看下面的格子能不能
+        和它合并），所以不如一开始就检测第二行，剩下几个判定方法的原理类似
+        */
+        for (int col = 0; col < Y_COUNT; col++) {
+            for (int row = 1; row < X_COUNT; row++) {
+                if (numbers[row][col].getValue() != 0 && (numbers[row - 1][col].getValue() == 0 || numbers[row - 1][col].getValue() == numbers[row][col].getValue())) {
+                    return true; // 当前列存在可上移或合并的情况
+                }
+            }
+        }
+        return false;
+    }
+    private boolean canMoveDown() {
+        for (int col = 0; col < Y_COUNT; col++) {
+            for (int row = X_COUNT - 2; row >= 0; row--) {
+                if (numbers[row][col].getValue() != 0 && (numbers[row + 1][col].getValue() == 0 || numbers[row + 1][col].getValue() == numbers[row][col].getValue())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean canMoveLeft() {
+        for (int row = 0; row < X_COUNT; row++) {
+            for (int col = 1; col < Y_COUNT; col++) {
+                if (numbers[row][col].getValue() != 0 && (numbers[row][col - 1].getValue() == 0 || numbers[row][col - 1].getValue() == numbers[row][col].getValue())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean canMoveRight() {
+        for (int row = 0; row < X_COUNT; row++) {
+            for (int col = Y_COUNT - 2; col >= 0; col--) {
+                if (numbers[row][col].getValue() != 0 && (numbers[row][col + 1].getValue() == 0 || numbers[row][col + 1].getValue() == numbers[row][col].getValue())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public void printNumber() {
         for (IntegerProperty[] number : numbers) {
             for (IntegerProperty integerProperty : number) {
@@ -291,4 +333,38 @@ public class GridNumber {
         }
     }
     public int getSteps(){return steps;}
+    public int checkWin(){//检查游戏目前最高分的格子是多少分
+        int Max = 0;
+        for(int row =0;row<this.numbers.length;row++){
+            for(int column = 0;column<this.numbers[row].length;column++){
+                if(this.numbers[row][column].getValue()>Max){
+                    Max = this.numbers[row][column].getValue();
+                }
+            }
+        }
+        return Max;
+    }
+    public void resetGrid() {
+        for (int row = 0; row < numbers.length; row++) {
+            for (int column = 0; column < numbers[row].length; column++) {
+                numbers[row][column].setValue(0);
+            }
+        }
+        int initialNumber = 0;
+        int whether4exist = 0;
+        while (initialNumber < 2) {
+            int row = random.nextInt(X_COUNT);
+            int column = random.nextInt(Y_COUNT);
+            if (numbers[row][column].get() == 0 && whether4exist == 0) {
+                numbers[row][column].setValue(4);
+                whether4exist++;
+                initialNumber++;
+            } else if (numbers[row][column].get() == 0 && whether4exist != 0) {
+                numbers[row][column].setValue(2);
+                initialNumber++;
+            }
+
+        }
+        this.steps = 0;
+    }
 }

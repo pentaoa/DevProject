@@ -39,4 +39,7 @@ public class GameManager {
     public GridNumber getGrid() {
         return grid;
     }
+    public void remake(){
+        grid.resetGrid();
+    }
 }

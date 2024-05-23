@@ -33,6 +33,10 @@
             <Button fx:id="PauseButton" mnemonicParsing="false" styleClass="game-button" text="暂停" />
             <Button fx:id="RestartButton" mnemonicParsing="false" styleClass="game-button" text="重新开始" />
             <Button fx:id="QuitButton" mnemonicParsing="false" styleClass="game-button" text="退出游戏" />
+            <Button fx:id="MoveUp" mnemonicParsing="false" styleClass="game-button" text="向上" />
+            <Button fx:id="MoveDown" mnemonicParsing="false" styleClass="game-button" text="向下" />
+            <Button fx:id="MoveRight" mnemonicParsing="false" styleClass="game-button" text="向右" />
+            <Button fx:id="MoveLeft" mnemonicParsing="false" styleClass="game-button" text="向左" />
          </children>
       </HBox>
    </bottom>

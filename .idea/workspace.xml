@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="">
+    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="增加了步数显示">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GridNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GridNumber.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/game-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/game-view.fxml" afterDir="false" />
     </list>
@@ -38,6 +39,9 @@
     &quot;accountId&quot;: &quot;ae2b025a-6bd7-40ad-9b1a-1ea519247ad4&quot;
   }
 }</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -50,6 +54,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.GameLauncher.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
@@ -110,14 +115,6 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
@@ -137,6 +134,15 @@
       <workItem from="1716033542969" duration="4109000" />
       <workItem from="1716218265389" duration="7261000" />
     </task>
+    <task id="LOCAL-00001" summary="增加了步数显示">
+      <option name="closed" value="true" />
+      <created>1716374243358</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716374243358</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,6 +158,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="增加了步数显示" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加了步数显示" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
