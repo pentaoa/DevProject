@@ -1,18 +1,19 @@
-package edu.sustech.students.ura.devproject.io;
+package edu.sustech.students.ura.devproject.client;
+
+import edu.sustech.students.ura.devproject.model.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Player implements Serializable {
+public class User implements Serializable {
     @Serial
-    private  static final long serialVersionUID = 1L;
+    private  static final long serialVersionUID = 1L; // 在序列化和反序列化过程中保持版本的兼容性，避免因类的修改导致的反序列化失败
 
     private String username;
     private String password;
-    private int[][] gameBoard = new int[3][3];
-    private int[][] location = new int[3][3];
+    private GameManager gameManager;
 
-    public Player(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }

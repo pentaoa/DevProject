@@ -1,5 +1,6 @@
 package edu.sustech.students.ura.devproject.controller;
 
+import javafx.animation.TranslateTransition;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Label;
@@ -9,6 +10,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.layout.StackPane;
 import javafx.scene.Scene;
+import javafx.util.Duration;
 
 import java.util.Objects;
 
@@ -43,6 +45,15 @@ public class Tile extends StackPane {
 
     public void setValue(int value) {
         this.value.set(value);
+    }
+
+    public void animateMove(int toX, int toY) {
+        TranslateTransition animation = new TranslateTransition(Duration.seconds(0.2),this);
+        animation.setFromX(0);
+        animation.setFromY(0);
+        animation.setToX(toX * 75);
+        animation.setToY(toY * 75);
+        animation.play();
     }
 
     private void updateStyle(int value) {
