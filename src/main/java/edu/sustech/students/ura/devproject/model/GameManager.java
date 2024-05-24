@@ -41,5 +41,6 @@ public class GameManager {
     }
     public void remake(){
         grid.resetGrid();
+
     }
 }

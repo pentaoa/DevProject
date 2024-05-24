@@ -68,6 +68,7 @@ public class GameViewController {
         RestartButton.setOnAction(event -> {
             ReStart();
             updateStepCount(0);
+
         });
 
         MoveUp.setOnAction(event -> { // 每次移动之后，检查胜利和失败
