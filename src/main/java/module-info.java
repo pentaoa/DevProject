@@ -8,6 +8,7 @@ module edu.sustech.students.ura.devproject {
     requires jjwt;
     requires AnimateFX;
     requires javafx.media;
+    requires java.desktop;
 
     opens edu.sustech.students.ura.devproject to javafx.fxml;
     exports edu.sustech.students.ura.devproject;

@@ -13,7 +13,7 @@ import edu.sustech.students.ura.devproject.controller.*;
 
 public class GameManager {
     public GridNumber grid;
-    public GameManager() {
+    public GameManager(int mode) {
         // 新建游戏
         System.out.println("成功新建游戏！");
         initialGame();
@@ -21,7 +21,6 @@ public class GameManager {
 
     // 初始化游戏
     private void initialGame() {
-        System.out.println("初始化游戏······");
         grid = new GridNumber(4,4);
     }
     private void pauseGame() {

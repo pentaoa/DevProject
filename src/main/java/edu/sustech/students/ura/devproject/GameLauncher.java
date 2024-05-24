@@ -1,5 +1,7 @@
 package edu.sustech.students.ura.devproject;
 
+import edu.sustech.students.ura.devproject.client.*;
+import edu.sustech.students.ura.devproject.controller.LoginViewController;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +17,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class GameLauncher extends Application {
+    ClientManager clientManager;
+
     @Override
     public void start(Stage stage) throws IOException {
+        // 加载视频
         File videoFile = new File("src/main/resources/video/open.mp4");
         Media media = new Media(videoFile.toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -25,11 +30,11 @@ public class GameLauncher extends Application {
         stage.setWidth(620);
         stage.setMinHeight(440);
         stage.setMinWidth(620);
+        // 设置视频播放器的大小
         mediaView.setFitWidth(620);
         mediaView.setFitHeight(410);
         mediaPlayer.setAutoPlay(true); // 设置视频自动播放
-
-        // 添加鼠标点击事件
+        // 添加鼠标点击事件, 点击鼠标时停止播放动画
         mediaView.setOnMouseClicked(event -> {
             mediaPlayer.stop(); // 停止播放动画
             try {
@@ -38,7 +43,7 @@ public class GameLauncher extends Application {
                 throw new RuntimeException(e);
             }
         });
-
+        // 设置视频播放结束后的事件
         mediaPlayer.setOnEndOfMedia(() -> {
             try {
                 showLoginView(stage);
@@ -51,9 +56,12 @@ public class GameLauncher extends Application {
         stage.setScene(scene);
         stage.setTitle("2048");
         stage.show();
-//        stage.setMinHeight(440);
-//        stage.setMinWidth(620);
-//        showLoginView(stage);
+        Client client = ClientManager.getClient();
+    }
+
+    @Override
+    public void stop() {
+        System.exit(0);
     }
 
     private void showLoginView(Stage stage) throws IOException {
@@ -64,6 +72,7 @@ public class GameLauncher extends Application {
         stage.setTitle("登录 | 2048");
         stage.show();
     }
+
 
     public static void main(String[] args) {
         launch(args);
