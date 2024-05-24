@@ -1,15 +1,12 @@
 package edu.sustech.students.ura.devproject.controller;
 
 import edu.sustech.students.ura.devproject.model.GameManager;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -75,28 +72,28 @@ public class GameViewController {
             updateStepCount(gameManager.getGrid().getSteps());
             System.out.println("UP");
             handleMoveCompletion();
-            handleLoseConditon();
+            handleLoseCondition();
         });
         MoveDown.setOnAction(event -> {
             gameManager.getGrid().moveDown();
             updateStepCount(gameManager.getGrid().getSteps());
             System.out.println("DOWN");
             handleMoveCompletion();
-            handleLoseConditon();
+            handleLoseCondition();
         });
         MoveLeft.setOnAction(event -> {
             gameManager.getGrid().moveLeft();
             updateStepCount(gameManager.getGrid().getSteps());
             System.out.println("LEFT");
             handleMoveCompletion();
-            handleLoseConditon();
+            handleLoseCondition();
         });
         MoveRight.setOnAction(event -> {
             gameManager.getGrid().moveRight();
             updateStepCount(gameManager.getGrid().getSteps());
             System.out.println("RIGHT");
             handleMoveCompletion();
-            handleLoseConditon();
+            handleLoseCondition();
         });
 
         // 为按钮添加事件监听器
@@ -108,28 +105,28 @@ public class GameViewController {
                         updateStepCount(gameManager.getGrid().getSteps());
                         System.out.println("UP");
                         handleMoveCompletion();
-                        handleLoseConditon();
+                        handleLoseCondition();
                         break;
                     case S:
                         gameManager.getGrid().moveDown();
                         updateStepCount(gameManager.getGrid().getSteps());
                         System.out.println("DOWN");
                         handleMoveCompletion();
-                        handleLoseConditon();
+                        handleLoseCondition();
                         break;
                     case A:
                         gameManager.getGrid().moveLeft();
                         updateStepCount(gameManager.getGrid().getSteps());
                         System.out.println("LEFT");
                         handleMoveCompletion();
-                        handleLoseConditon();
+                        handleLoseCondition();
                         break;
                     case D:
                         gameManager.getGrid().moveRight();
                         updateStepCount(gameManager.getGrid().getSteps());
                         System.out.println("RIGHT");
                         handleMoveCompletion();
-                        handleLoseConditon();
+                        handleLoseCondition();
                         break;
                 }
             });
@@ -140,7 +137,7 @@ public class GameViewController {
     private void InitialGame() {
         initializeStep();
         System.out.println("尝试启动游戏······");
-        gameManager = new GameManager();
+        gameManager = new GameManager(1);
         gameBoard = new GameBoard(gameManager);
         GameHasWon = false;
         //移除原来的GameBoard存在，则移除
@@ -158,6 +155,7 @@ public class GameViewController {
         // 退出游戏
         System.out.println("Game quit");
     }
+
     public void handleMoveCompletion() { //检测游戏是否胜利
         if(GameHasWon==false) {//这个if保证了只弹出一次胜利界面
             if (gameManager.getGrid().checkWin() >= 8) {
@@ -166,11 +164,12 @@ public class GameViewController {
             }
         }
     }
-    public void handleLoseConditon(){
+    public void handleLoseCondition(){
         if(gameManager.getGrid().isGameOver()==true){
             showAlert("你输了", "你真是数学天才，你已经不能移动了");
         }
     }
+
     private void showAlert(String title, String content) { //用来弹出胜利界面
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);
@@ -187,7 +186,7 @@ public class GameViewController {
                     updateStepCount(gameManager.getGrid().getSteps());
                     System.out.println("UP");
                     handleMoveCompletion();
-                    handleLoseConditon();
+                    handleLoseCondition();
                     event.consume();
                     break;
                 case DOWN:
@@ -195,7 +194,7 @@ public class GameViewController {
                     updateStepCount(gameManager.getGrid().getSteps());
                     System.out.println("DOWN");
                     handleMoveCompletion();
-                    handleLoseConditon();
+                    handleLoseCondition();
                     event.consume();
                     break;
                 case LEFT:
@@ -203,7 +202,7 @@ public class GameViewController {
                     updateStepCount(gameManager.getGrid().getSteps());
                     System.out.println("LEFT");
                     handleMoveCompletion();
-                    handleLoseConditon();
+                    handleLoseCondition();
                     event.consume();
                     break;
                 case RIGHT:
@@ -211,7 +210,7 @@ public class GameViewController {
                     updateStepCount(gameManager.getGrid().getSteps());
                     System.out.println("RIGHT");
                     handleMoveCompletion();
-                    handleLoseConditon();
+                    handleLoseCondition();
                     event.consume();
                     break;
                 default:

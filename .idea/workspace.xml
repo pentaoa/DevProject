@@ -4,12 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="增加了步数显示">
+    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="处理监听相关">
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/ClientListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/ClientManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/UserManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/users.okgo" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/util/AudioPlayer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/GameLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/GameLauncher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/User.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/LoginViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/LoginViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/RegisterViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/RegisterViewController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GridNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GridNumber.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/game-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/game-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/PlayableTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/PlayableTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/SaveData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/login-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/login-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/mode-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/mode-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/game.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,7 +37,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="FxmlFile" />
+        <option value="CSS File" />
         <option value="Class" />
+        <option value="Interface" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -39,8 +59,12 @@
     &quot;accountId&quot;: &quot;ae2b025a-6bd7-40ad-9b1a-1ea519247ad4&quot;
   }
 }</component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -53,36 +77,59 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.GameLauncher.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "Application.Client.executor": "Run",
+    "Application.Server.executor": "Run",
+    "Maven.DevProject [clean].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Grada/Downloads/FXGLGames-master",
+    "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "项目",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "com.github.copilot.settings.ApplicationConfigurable",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true",
+    "应用程序.Client.executor": "Run",
     "应用程序.GameLauncher.executor": "Run",
     "应用程序.HelloApplication.executor": "Run",
     "应用程序.ModelTest.executor": "Run",
-    "应用程序.UserManagementServer.executor": "Run"
+    "应用程序.Server.executor": "Run",
+    "应用程序.UserManagementServer.executor": "Run",
+    "应用程序.WebSocketServer.executor": "Run"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Grada\IdeaProjects\DevProject" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Grada\IdeaProjects\DevProject\src\main\resources\video" />
+      <recent name="C:\Users\Grada\IdeaProjects\DevProject\src\main\resources\fonts" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.GameLauncher">
+  <component name="RunManager" selected="应用程序.GameLauncher">
+    <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.sustech.students.ura.devproject.client.Client" />
+      <module name="DevProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.sustech.students.ura.devproject.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="GameLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="edu.sustech.students.ura.devproject.GameLauncher" />
       <module name="DevProject" />
@@ -96,12 +143,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserManagementServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="edu.sustech.students.ura.devproject.io.UserManagementServer" />
+    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.sustech.students.ura.devproject.server.Server" />
       <module name="DevProject" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="edu.sustech.students.ura.devproject.io.*" />
+          <option name="PATTERN" value="edu.sustech.students.ura.devproject.server.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -111,9 +158,19 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.GameLauncher" />
+        <item itemvalue="应用程序.GameLauncher" />
+        <item itemvalue="应用程序.Server" />
+        <item itemvalue="应用程序.Client" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -133,14 +190,22 @@
       <workItem from="1715966745917" duration="11000" />
       <workItem from="1716033542969" duration="4109000" />
       <workItem from="1716218265389" duration="7261000" />
+      <workItem from="1716248967341" duration="61000" />
+      <workItem from="1716270456647" duration="1198000" />
+      <workItem from="1716290905123" duration="47000" />
+      <workItem from="1716301870745" duration="7695000" />
+      <workItem from="1716310237940" duration="2745000" />
+      <workItem from="1716313866015" duration="307000" />
+      <workItem from="1716468589926" duration="2739000" />
+      <workItem from="1716471355152" duration="1047000" />
     </task>
-    <task id="LOCAL-00001" summary="增加了步数显示">
+    <task id="LOCAL-00001" summary="处理监听相关">
       <option name="closed" value="true" />
-      <created>1716374243358</created>
+      <created>1716249001265</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1716374243358</updated>
+      <updated>1716249001265</updated>
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
@@ -160,8 +225,8 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="增加了步数显示" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加了步数显示" />
+    <MESSAGE value="处理监听相关" />
+    <option name="LAST_COMMIT_MESSAGE" value="处理监听相关" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

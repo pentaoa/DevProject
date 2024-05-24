@@ -6,7 +6,7 @@
 
 /* 基础样式 */
 .game-root {
-    -fx-background-color: #faf8ef;
+    -fx-background-color: rgba(250, 248, 239, 0.03);
 }
 .game-background {
     -fx-background-color: #faf8ef;
