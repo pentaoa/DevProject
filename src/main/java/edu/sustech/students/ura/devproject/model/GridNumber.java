@@ -17,6 +17,7 @@ public class GridNumber {
     private int steps;
     private final int X_COUNT;
     private final int Y_COUNT;
+    private int obstaclenumber;
 
     private IntegerProperty[][] numbers;
 
@@ -29,6 +30,16 @@ public class GridNumber {
         this.Y_COUNT = yCount;
         numbers = new IntegerProperty[X_COUNT][Y_COUNT];
         this.initialNumbers();
+        while(obstaclenumber==0)
+        {
+            int row = random.nextInt(4);
+            int column = random.nextInt(4);
+            if(numbers[row][column].get()==0)
+            {
+                numbers[row][column].setValue(-1);
+                obstaclenumber++;
+            }
+        }
     }
 
     public void initialNumbers() {
@@ -85,10 +96,14 @@ public class GridNumber {
             int targetColumn = Y_COUNT - 1; // The target column for the next non-zero element
             for (int column = Y_COUNT - 1; column >= 0; column--) {
                 if (numbers[row][column].get() != 0) {
-                    if (column != targetColumn) { // Only move if it's not already in the correct position
-                        numbers[row][targetColumn].setValue(numbers[row][column].get());
-                        numbers[row][column].setValue(0);
-                        moveSuccessfully = true;
+                    if (column != targetColumn) {
+                        if(numbers[row][column].get()==-1) {// Only move if it's not already in the correct position
+                            targetColumn=column;
+                        }else if (numbers[row][targetColumn].get()==0){
+                            numbers[row][targetColumn].setValue(numbers[row][column].get());
+                            numbers[row][column].setValue(0);
+                            moveSuccessfully = true;
+                        }
                     }
                     targetColumn--;
                 }
@@ -107,8 +122,13 @@ public class GridNumber {
             for (int column = Y_COUNT - 1; column >= 0; column--) {
                 if (numbers[row][column].get() != 0) {
                     if (column != targetColumn) {
-                        numbers[row][targetColumn].setValue(numbers[row][column].get());
-                        numbers[row][column].setValue(0);
+                        if(numbers[row][column].get()==-1) {// Only move if it's not already in the correct position
+                            targetColumn=column;
+                        }else if (numbers[row][targetColumn].get()==0){
+                            numbers[row][targetColumn].setValue(numbers[row][column].get());
+                            numbers[row][column].setValue(0);
+                            moveSuccessfully = true;
+                        }
                     }
                     targetColumn--;
                 }
@@ -126,11 +146,17 @@ public class GridNumber {
             // Step 1: Move all non-zero elements to the left
             int targetColumn = 0; // The target column for the next non-zero element
             for (int column = 0; column < Y_COUNT; column++) {
+
                 if (numbers[row][column].get() != 0) {
-                    if (column != targetColumn) { // Only move if it's not already in the correct position
-                        numbers[row][targetColumn].setValue(numbers[row][column].get());
-                        numbers[row][column].setValue(0);
-                        moveSuccessfully = true;
+                    if (column != targetColumn) {
+                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
+                            targetColumn = column;
+                        }
+                        else if(numbers[row][targetColumn].get()==0){
+                            numbers[row][targetColumn].setValue(numbers[row][column].get());
+                            numbers[row][column].setValue(0);
+                            moveSuccessfully = true;
+                        }
                     }
                     targetColumn++;
                 }
@@ -147,10 +173,17 @@ public class GridNumber {
             // Step 3: Move again to fill the gaps created by merging
             targetColumn = 0;
             for (int column = 0; column < Y_COUNT; column++) {
+
                 if (numbers[row][column].get() != 0) {
                     if (column != targetColumn) {
-                        numbers[row][targetColumn].setValue(numbers[row][column].get());
-                        numbers[row][column].setValue(0);
+                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
+                            targetColumn = column;
+                        }
+                        else if(numbers[row][targetColumn].get()==0){
+                            numbers[row][targetColumn].setValue(numbers[row][column].get());
+                            numbers[row][column].setValue(0);
+                            moveSuccessfully = true;
+                        }
                     }
                     targetColumn++;
                 }
@@ -169,10 +202,15 @@ public class GridNumber {
             int targetRow = 0; // The target row for the next non-zero element
             for (int row = 0; row < X_COUNT; row++) {
                 if (numbers[row][column].get() != 0) {
-                    if (row != targetRow) { // Only move if it's not already in the correct position
-                        numbers[targetRow][column].setValue(numbers[row][column].get());
-                        numbers[row][column].setValue(0);
-                        moveSuccessfully = true;
+                    if (row != targetRow) {
+                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
+                            targetRow = row;
+                        }
+                        else if (numbers[targetRow][column].get()==0){
+                            numbers[targetRow][column].setValue(numbers[row][column].get());
+                            numbers[row][column].setValue(0);
+                            moveSuccessfully = true;
+                        }
                     }
                     targetRow++;
                 }
@@ -191,8 +229,14 @@ public class GridNumber {
             for (int row = 0; row < X_COUNT; row++) {
                 if (numbers[row][column].get() != 0) {
                     if (row != targetRow) {
-                        numbers[targetRow][column].setValue(numbers[row][column].get());
-                        numbers[row][column].setValue(0);
+                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
+                            targetRow = row;
+                        }
+                        else if (numbers[targetRow][column].get()==0){
+                            numbers[targetRow][column].setValue(numbers[row][column].get());
+                            numbers[row][column].setValue(0);
+                            moveSuccessfully = true;
+                        }
                     }
                     targetRow++;
                 }
@@ -211,10 +255,15 @@ public class GridNumber {
             int targetRow = X_COUNT - 1; // The target row for the next non-zero element
             for (int row = X_COUNT - 1; row >= 0; row--) {
                 if (numbers[row][column].get() != 0) {
-                    if (row != targetRow) { // Only move if it's not already in the correct position
-                        numbers[targetRow][column].setValue(numbers[row][column].get());
-                        numbers[row][column].setValue(0);
-                        moveSuccessfully = true;
+                    if (row != targetRow) {
+                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
+                        targetRow = row;
+                        }
+                        else if (numbers[targetRow][column].get()==0){
+                            numbers[targetRow][column].setValue(numbers[row][column].get());
+                            numbers[row][column].setValue(0);
+                            moveSuccessfully = true;
+                        }
                     }
                     targetRow--;
                 }
@@ -233,8 +282,14 @@ public class GridNumber {
             for (int row = X_COUNT - 1; row >= 0; row--) {
                 if (numbers[row][column].get() != 0) {
                     if (row != targetRow) {
-                        numbers[targetRow][column].setValue(numbers[row][column].get());
-                        numbers[row][column].setValue(0);
+                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
+                            targetRow = row;
+                        }
+                        else if (numbers[targetRow][column].get()==0){
+                            numbers[targetRow][column].setValue(numbers[row][column].get());
+                            numbers[row][column].setValue(0);
+                            moveSuccessfully = true;
+                        }
                     }
                     targetRow--;
                 }
@@ -364,6 +419,17 @@ public class GridNumber {
                 initialNumber++;
             }
 
+        }
+        obstaclenumber = 0;
+        while(obstaclenumber==0)
+        {
+            int row = random.nextInt(4);
+            int column = random.nextInt(4);
+            if(numbers[row][column].get()==0)
+            {
+                numbers[row][column].setValue(-1);
+                obstaclenumber++;
+            }
         }
         this.steps = 0;
     }

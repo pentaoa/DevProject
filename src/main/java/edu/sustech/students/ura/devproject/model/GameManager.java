@@ -40,5 +40,17 @@ public class GameManager {
     }
     public void remake(){
         grid.resetGrid();
+
+    }
+    public void EasyMode(){
+        for(int row = 0 ;row<grid.getNumbers().length;row++)
+        {
+            for(int column = 0 ; column<grid.getNumbers()[row].length;column++){
+                if(grid.getNumbers()[row][column].get()==-1)
+                {
+                    grid.getNumbers()[row][column].setValue(0);
+                }
+            }
+        }
     }
 }

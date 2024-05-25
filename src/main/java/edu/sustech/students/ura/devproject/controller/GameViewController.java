@@ -19,6 +19,7 @@ import javafx.scene.control.Alert.AlertType;
  * @version 1.0
  */
 public class GameViewController {
+    private boolean EasyMode = false;
     @FXML
     private Label stepLabel;
     private GameManager gameManager;
@@ -63,8 +64,14 @@ public class GameViewController {
         addEventFilterToButton(SaveButton);
 
         RestartButton.setOnAction(event -> {
-            ReStart();
+            if(EasyMode==false)
+            {ReStart();}
+            else {
+                ReStart();
+                EasyMode();
+            }
             updateStepCount(0);
+
         });
 
         MoveUp.setOnAction(event -> { // 每次移动之后，检查胜利和失败
@@ -140,6 +147,7 @@ public class GameViewController {
         gameManager = new GameManager(1);
         gameBoard = new GameBoard(gameManager);
         GameHasWon = false;
+        EasyMode = false;
         //移除原来的GameBoard存在，则移除
         //将新的GameBoard显示在视图中心
         gameViewCenter.getChildren().add(gameBoard);
@@ -226,5 +234,9 @@ public class GameViewController {
     }
     public void updateStepCount(int steps) {
         stepLabel.setText("步数: " + steps);
+    }
+    public void EasyMode(){
+        gameManager.EasyMode();
+        EasyMode=true;
     }
 }
