@@ -23,7 +23,7 @@
                <children>
                   <Button fx:id="Button_classical" mnemonicParsing="false" onAction="#EasyModeTrigger" text="经典模式" />
                   <Button fx:id="Button_obstacle" mnemonicParsing="false" onAction="#ObstacleModeTrigger" text="障碍模式" />
-                  <Button fx:id="Button_hard" mnemonicParsing="false" onAction="#HardModeTrigger" text="困难模式" />
+                  <Button fx:id="Button_time" mnemonicParsing="false" onAction="#TimeModeTrigger" text="困难模式" />
                </children>
             </VBox>
             </children>

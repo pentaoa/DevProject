@@ -62,6 +62,11 @@ public class Tile extends StackPane {
         int fontSize;
 
         switch (value) {
+            case -1:
+                backgroundColor = "D4DEE7D5";
+                textColor = "776E6500";
+                fontSize = 40;
+                break;
             case 0:
                 backgroundColor = "FFFAF584";
                 textColor = "776E6500";

@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -15,12 +16,15 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class GameLauncher extends Application {
     ClientManager clientManager;
 
     @Override
     public void start(Stage stage) throws IOException {
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo.png")));
+        stage.getIcons().add(icon);
         // 加载视频
         File videoFile = new File("src/main/resources/video/open.mp4");
         Media media = new Media(videoFile.toURI().toString());

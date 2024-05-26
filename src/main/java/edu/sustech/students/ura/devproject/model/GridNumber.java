@@ -14,30 +14,32 @@ import java.util.Random;
  */
 
 public class GridNumber {
+    private int score;
     private int steps;
     private final int X_COUNT;
     private final int Y_COUNT;
-    private int obstaclenumber;
+    private int obstacleNumber;
 
     private IntegerProperty[][] numbers;
 
     static Random random = new Random();
 
     public GridNumber(int xCount, int yCount) {
+        this.score = 0;
         //初始化游戏网格
         this.steps = 0;
         this.X_COUNT = xCount;
         this.Y_COUNT = yCount;
         numbers = new IntegerProperty[X_COUNT][Y_COUNT];
         this.initialNumbers();
-        while(obstaclenumber==0)
+        while(obstacleNumber ==0)
         {
             int row = random.nextInt(4);
             int column = random.nextInt(4);
             if(numbers[row][column].get()==0)
             {
                 numbers[row][column].setValue(-1);
-                obstaclenumber++;
+                obstacleNumber++;
             }
         }
     }
@@ -113,6 +115,7 @@ public class GridNumber {
                 if (numbers[row][column].get() != 0 && numbers[row][column].get() == numbers[row][column - 1].get()) {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
                     numbers[row][column - 1].setValue(0);
+                    score +=numbers[row][column].get();
                     moveSuccessfully = true;
                     column--; // Skip the next column since it's already merged
                 }
@@ -167,6 +170,7 @@ public class GridNumber {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
                     numbers[row][column + 1].setValue(0);
                     moveSuccessfully = true;
+                    score +=numbers[row][column].get();
                     column++; // Skip the next column since it's already merged
                 }
             }
@@ -221,6 +225,7 @@ public class GridNumber {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
                     numbers[row + 1][column].setValue(0);
                     moveSuccessfully = true;
+                    score +=numbers[row][column].get();
                     row++; // Skip the next row since it's already merged
                 }
             }
@@ -257,7 +262,7 @@ public class GridNumber {
                 if (numbers[row][column].get() != 0) {
                     if (row != targetRow) {
                         if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
-                        targetRow = row;
+                            targetRow = row;
                         }
                         else if (numbers[targetRow][column].get()==0){
                             numbers[targetRow][column].setValue(numbers[row][column].get());
@@ -274,6 +279,7 @@ public class GridNumber {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
                     numbers[row - 1][column].setValue(0);
                     moveSuccessfully = true;
+                    score +=numbers[row][column].get();
                     row--; // Skip the next row since it's already merged
                 }
             }
@@ -388,7 +394,7 @@ public class GridNumber {
         }
     }
     public int getSteps(){return steps;}
-    public int checkWin(){//检查游戏目前最高分的格子是多少分
+    public int getMaxNumber(){//检查游戏目前最高分的格子是多少分
         int Max = 0;
         for(int row =0;row<this.numbers.length;row++){
             for(int column = 0;column<this.numbers[row].length;column++){
@@ -420,17 +426,35 @@ public class GridNumber {
             }
 
         }
-        obstaclenumber = 0;
-        while(obstaclenumber==0)
+        obstacleNumber = 0;
+        while(obstacleNumber ==0)
         {
             int row = random.nextInt(4);
             int column = random.nextInt(4);
             if(numbers[row][column].get()==0)
             {
                 numbers[row][column].setValue(-1);
-                obstaclenumber++;
+                obstacleNumber++;
             }
         }
         this.steps = 0;
+    }
+    public void setScore(int score){
+        this.score = score;
+    }
+    public int getScore(){
+        return score;
+    }
+    public void Revise(){
+        //这是复活功能，随机删去一个数字网格的数。
+        int whetherRevise = 0;
+        while(whetherRevise==0){//确保不要把障碍删除了
+            int row = random.nextInt(4);
+            int column = random.nextInt(4);
+            if(numbers[row][column].get()!=-1) {
+                numbers[row][column].setValue(0);
+                whetherRevise++;
+            }
+        }
     }
 }

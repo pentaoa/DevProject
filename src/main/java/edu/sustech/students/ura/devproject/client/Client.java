@@ -1,6 +1,8 @@
 package edu.sustech.students.ura.devproject.client;
 
 import edu.sustech.students.ura.devproject.controller.LoginViewController;
+import edu.sustech.students.ura.devproject.model.GameManager;
+import edu.sustech.students.ura.devproject.model.GameStatus;
 import javafx.scene.control.Alert;
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
@@ -12,6 +14,7 @@ public class Client {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private ClientListener listener;
+    private GameStatus status = GameStatus.getInstance();
 
     public Client(String host, int port) {
         try {
@@ -21,6 +24,7 @@ public class Client {
 
             // Start listening for messages from the server
             new Thread(this::listenForServerMessages).start();
+            status.setOnlineGame(true);
             System.out.println("连接到服务器！");
 
             // Start sending heartbeat messages
@@ -30,6 +34,7 @@ public class Client {
             handleConsoleInput();
         } catch (Exception e) {
             System.out.println("无法连接服务器，尝试使用离线模式！");
+            status.setOnlineGame(false);
 //            e.printStackTrace();
         }
     }
@@ -90,27 +95,7 @@ public class Client {
 
     private void processCommand(String command) {
         try {
-            if (command.startsWith("register")) {
-                String[] parts = command.split(" ");
-                if (parts.length == 3) {
-                    String username = parts[1];
-                    String password = parts[2];
-                    sendMessage("REGISTER:" + username + ":" + password);
-                } else {
-                    System.out.println("Usage: register <username> <password>");
-                }
-            } else if (command.startsWith("login")) {
-                String[] parts = command.split(" ");
-                if (parts.length == 3) {
-                    String username = parts[1];
-                    String password = parts[2];
-                    sendMessage("LOGIN:" + username + ":" + password);
-                } else {
-                    System.out.println("Usage: login <username> <password>");
-                }
-            } else {
-                sendMessage("MESSAGE:" + command);
-            }
+            sendMessage("MESSAGE:" + command);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,7 +120,7 @@ public class Client {
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("提示");
-                alert.setHeaderText("登录失败");
+                alert.setHeaderText("连接失败");
                 alert.setContentText("无法连接到服务器，请使用离线模式");
                 alert.showAndWait();
             }
@@ -143,6 +128,17 @@ public class Client {
             e.printStackTrace();
         }
     }
+
+    public void sendGameManager(GameManager gameManager) {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(gameManager);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         Client client = new Client("localhost", 8192);
         // Example: Send a message to the server

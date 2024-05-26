@@ -13,8 +13,6 @@ public class ClientManager {
         // private constructor to prevent instantiation
     }
 
-
-
     public static Client getClient() {
         if (client == null) {
             client = new Client("localhost", 8192);

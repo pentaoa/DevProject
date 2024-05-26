@@ -4,13 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="增加了障碍物">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/video/background.mp4" afterDir="false" />
+    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="增加视频">
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/OfflineModeViewController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/offline-mode-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/GameLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/GameLauncher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/ClientManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/ClientManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/LoginViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/LoginViewController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/Tile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GridNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GridNumber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/PlayableTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/PlayableTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/UserManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/game-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/game-view.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/mode-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/mode-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/game.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +42,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -52,42 +73,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.GameLauncher.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Grada/Downloads/FXGLGames-master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.github.copilot.settings.ApplicationConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
-    &quot;应用程序.GameLauncher.executor&quot;: &quot;Run&quot;,
-    &quot;应用程序.HelloApplication.executor&quot;: &quot;Run&quot;,
-    &quot;应用程序.ModelTest.executor&quot;: &quot;Run&quot;,
-    &quot;应用程序.UserManagementServer.executor&quot;: &quot;Run&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.GameLauncher.executor": "Run",
+    "Application.Server.executor": "Run",
+    "Maven.DevProject [clean].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "modefix",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Grada/AppData/Local/SceneBuilder/SceneBuilder.exe",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.JavaFX",
+    "vue.rearranger.settings.migration": "true",
+    "应用程序.GameLauncher.executor": "Run",
+    "应用程序.HelloApplication.executor": "Run",
+    "应用程序.ModelTest.executor": "Run",
+    "应用程序.Server.executor": "Run",
+    "应用程序.UserManagementServer.executor": "Run"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Grada\IdeaProjects\DevProject" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Grada\IdeaProjects\DevProject\src\main\resources\images" />
       <recent name="C:\Users\41059\Documents\GitHub\DevProject\src\main\resources\video" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="edu.sustech.students.ura.devproject.controller" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.GameLauncher">
+  <component name="RunManager">
     <configuration name="GameLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="edu.sustech.students.ura.devproject.GameLauncher" />
       <module name="DevProject" />
@@ -101,24 +128,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserManagementServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="edu.sustech.students.ura.devproject.io.UserManagementServer" />
-      <module name="DevProject" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="edu.sustech.students.ura.devproject.io.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.GameLauncher" />
+        <item itemvalue="应用程序.GameLauncher" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -138,6 +160,10 @@
       <workItem from="1715966745917" duration="11000" />
       <workItem from="1716033542969" duration="4109000" />
       <workItem from="1716218265389" duration="7261000" />
+      <workItem from="1716645852884" duration="3836000" />
+      <workItem from="1716649750392" duration="5834000" />
+      <workItem from="1716655985230" duration="70000" />
+      <workItem from="1716691423722" duration="18280000" />
     </task>
     <task id="LOCAL-00001" summary="增加了步数显示">
       <option name="closed" value="true" />

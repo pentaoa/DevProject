@@ -1,6 +1,11 @@
 package edu.sustech.students.ura.devproject.controller;
 
+import edu.sustech.students.ura.devproject.client.Client;
+import edu.sustech.students.ura.devproject.client.ClientManager;
 import edu.sustech.students.ura.devproject.model.GameManager;
+import edu.sustech.students.ura.devproject.model.GameStatus;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +14,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.util.Duration;
+
+import java.util.Objects;
 
 /**
  * GameController
@@ -19,26 +27,28 @@ import javafx.scene.control.Alert.AlertType;
  * @version 1.0
  */
 public class GameViewController {
-    private boolean EasyMode = false;
-    @FXML
-    private Label stepLabel;
+    private int mode;
+    private GameStatus status = GameStatus.getInstance();
     private GameManager gameManager;
     private GameBoard gameBoard;
     private boolean GameHasWon = false;
-
-    @FXML
-    private AnchorPane gameViewCenter;
+    private Client client = ClientManager.getClient();
+//    private Timeline timeline;
 
     @FXML
     private Button LoadButton;
-    @FXML
-    private Button MoveUp;
+
     @FXML
     private Button MoveDown;
-    @FXML
-    private Button MoveRight;
+
     @FXML
     private Button MoveLeft;
+
+    @FXML
+    private Button MoveRight;
+
+    @FXML
+    private Button MoveUp;
 
     @FXML
     private Button PauseButton;
@@ -53,8 +63,27 @@ public class GameViewController {
     private Button SaveButton;
 
     @FXML
+    private AnchorPane gameViewCenter;
+
+    @FXML
+    private Label text_ScoreNumber;
+
+    @FXML
+    private Label text_TimeNumber;
+
+    @FXML
+    private Label text_score;
+
+    @FXML
+    private Label text_step;
+
+    @FXML
+    private Label text_time;
+
+    @FXML
     private void initialize() {
-        InitialGame();
+
+        initialGame();
 
         // 为按钮添加事件过滤器
         addEventFilterToButton(LoadButton);
@@ -62,43 +91,54 @@ public class GameViewController {
         addEventFilterToButton(QuitButton);
         addEventFilterToButton(RestartButton);
         addEventFilterToButton(SaveButton);
+        addEventFilterToButton(MoveUp);
+        addEventFilterToButton(MoveDown);
+        addEventFilterToButton(MoveLeft);
+        addEventFilterToButton(MoveRight);
+
+        SaveButton.setOnAction(event -> {
+            client.sendGameManager(gameManager);
+        });
 
         RestartButton.setOnAction(event -> {
-            if(EasyMode==false)
-            {ReStart();}
-            else {
-                ReStart();
-                EasyMode();
-            }
+            ReStart();
             updateStepCount(0);
 
+        });
+
+        PauseButton.setOnAction(event -> {
+            pauseSwitch();
+        });
+
+        QuitButton.setOnAction(event -> {
+            // TODO: 退出游戏，返回用户登录后的界面，或者模式选择界面
         });
 
         MoveUp.setOnAction(event -> { // 每次移动之后，检查胜利和失败
             gameManager.getGrid().moveUp();
             updateStepCount(gameManager.getGrid().getSteps());
-            System.out.println("UP");
+            updateScore(gameManager.getGrid().getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
         MoveDown.setOnAction(event -> {
             gameManager.getGrid().moveDown();
             updateStepCount(gameManager.getGrid().getSteps());
-            System.out.println("DOWN");
+            updateScore(gameManager.getGrid().getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
         MoveLeft.setOnAction(event -> {
             gameManager.getGrid().moveLeft();
             updateStepCount(gameManager.getGrid().getSteps());
-            System.out.println("LEFT");
+            updateScore(gameManager.getGrid().getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
         MoveRight.setOnAction(event -> {
             gameManager.getGrid().moveRight();
             updateStepCount(gameManager.getGrid().getSteps());
-            System.out.println("RIGHT");
+            updateScore(gameManager.getGrid().getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
@@ -110,28 +150,28 @@ public class GameViewController {
                     case W:
                         gameManager.getGrid().moveUp();
                         updateStepCount(gameManager.getGrid().getSteps());
-                        System.out.println("UP");
+                        updateScore(gameManager.getGrid().getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
                     case S:
                         gameManager.getGrid().moveDown();
                         updateStepCount(gameManager.getGrid().getSteps());
-                        System.out.println("DOWN");
+                        updateScore(gameManager.getGrid().getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
                     case A:
                         gameManager.getGrid().moveLeft();
                         updateStepCount(gameManager.getGrid().getSteps());
-                        System.out.println("LEFT");
+                        updateScore(gameManager.getGrid().getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
                     case D:
                         gameManager.getGrid().moveRight();
                         updateStepCount(gameManager.getGrid().getSteps());
-                        System.out.println("RIGHT");
+                        updateScore(gameManager.getGrid().getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
@@ -141,40 +181,59 @@ public class GameViewController {
     }
 
     // 初始化游戏
-    private void InitialGame() {
+    private void initialGame() {
         initializeStep();
-        System.out.println("尝试启动游戏······");
-        gameManager = new GameManager(1);
+        System.out.println("尝试启动游戏");
+        gameManager = new GameManager();
+        gameManager.setTimeUpdateListener(this::updateTimeDisplay); // 设置时间监听器
+        // 使用 Timeline 定期更新时间显示
+//        timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+//            updateTimeDisplay(gameManager.getElapsedTime());
+//        }));
+//        timeline.setCycleCount(Timeline.INDEFINITE);
+//        timeline.play();
         gameBoard = new GameBoard(gameManager);
         GameHasWon = false;
-        EasyMode = false;
         //移除原来的GameBoard存在，则移除
         //将新的GameBoard显示在视图中心
         gameViewCenter.getChildren().add(gameBoard);
-
     }
 
-    private void PauseGame() {
-        // 暂停游戏
-        System.out.println("Game paused");
+    private void pauseSwitch() {
+        if (Objects.equals(PauseButton.getText(), "暂停")) {
+            gameManager.pauseGame();
+            PauseButton.setText("继续");
+        } else {
+            gameManager.resumeGame();
+            PauseButton.setText("暂停");
+        }
     }
 
-    private void QuitGame() {
-        // 退出游戏
-        System.out.println("Game quit");
+
+    private void updateTimeDisplay(long elapsedTime) {
+        // 在 JavaFX 应用程序线程上更新 UI
+        javafx.application.Platform.runLater(() -> {
+            long seconds = elapsedTime / 1000;
+            text_TimeNumber.setText(String.valueOf(seconds));
+//            if (status.getMode()==3&&elapsedTime>=status.getTargetTime()){
+//                showAlert("你输了", "游戏结束，时间到了");
+//                gameManager.stopGame();
+//            }
+        });
     }
 
     public void handleMoveCompletion() { //检测游戏是否胜利
         if(GameHasWon==false) {//这个if保证了只弹出一次胜利界面
-            if (gameManager.getGrid().checkWin() >= 8) {
+            if (gameManager.getGrid().getMaxNumber() >= status.getTargetNumber()) {
                 showAlert("恭喜!", "你真是数学天才，达到了8分!");
                 GameHasWon = true;
             }
         }
     }
+
     public void handleLoseCondition(){
         if(gameManager.getGrid().isGameOver()==true){
-            showAlert("你输了", "你真是数学天才，你已经不能移动了");
+            showAlert("你输了", "游戏结束，你已经不能移动了");
         }
     }
 
@@ -192,7 +251,7 @@ public class GameViewController {
                 case UP:
                     gameManager.getGrid().moveUp();
                     updateStepCount(gameManager.getGrid().getSteps());
-                    System.out.println("UP");
+                    updateScore(gameManager.getGrid().getScore());
                     handleMoveCompletion();
                     handleLoseCondition();
                     event.consume();
@@ -200,7 +259,7 @@ public class GameViewController {
                 case DOWN:
                     gameManager.getGrid().moveDown();
                     updateStepCount(gameManager.getGrid().getSteps());
-                    System.out.println("DOWN");
+                    updateScore(gameManager.getGrid().getScore());
                     handleMoveCompletion();
                     handleLoseCondition();
                     event.consume();
@@ -208,7 +267,7 @@ public class GameViewController {
                 case LEFT:
                     gameManager.getGrid().moveLeft();
                     updateStepCount(gameManager.getGrid().getSteps());
-                    System.out.println("LEFT");
+                    updateScore(gameManager.getGrid().getScore());
                     handleMoveCompletion();
                     handleLoseCondition();
                     event.consume();
@@ -216,7 +275,7 @@ public class GameViewController {
                 case RIGHT:
                     gameManager.getGrid().moveRight();
                     updateStepCount(gameManager.getGrid().getSteps());
-                    System.out.println("RIGHT");
+                    updateScore(gameManager.getGrid().getScore());
                     handleMoveCompletion();
                     handleLoseCondition();
                     event.consume();
@@ -230,13 +289,14 @@ public class GameViewController {
         updateStepCount(0);
     }
     public void ReStart(){
-        gameManager.remake();
+        PauseButton.setText("暂停");
+        gameManager.restartGame();
     }
     public void updateStepCount(int steps) {
-        stepLabel.setText("步数: " + steps);
+        text_step.setText("步数: " + steps);
     }
-    public void EasyMode(){
-        gameManager.EasyMode();
-        EasyMode=true;
+
+    public void updateScore(int score) {
+        text_ScoreNumber.setText(String.valueOf(score));
     }
 }

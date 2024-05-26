@@ -27,7 +27,12 @@
     -fx-font-size: 25px;
     -fx-text-fill: #776e65;
 }
-
+.game-digital {
+    -fx-font-family: "HYWenHei-85W";
+    -fx-font-size: 25px;
+    -fx-text-fill: #8d8769;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.15), 10, 0.2, 0, 0 );
+}
 /* 按钮样式 */
 .game-button {
     -fx-font-family: "HYWenHei-85W";
@@ -35,15 +40,17 @@
     -fx-text-fill: white;
     -fx-background-color: #c88a61;
     -fx-background-radius: 5;
-}
-.game-button:pressed {
-    -fx-background-color: #c58c67;
-}
-.game-button:focused, .game-button:hover {
-    -fx-background-color: #c68e68;
     -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.28), 10, 0.2, 0, 0 );
 }
 /* 砖块样式 */
+.game-tile--1   {
+    -fx-font-size: 25px;
+    -fx-text-fill: #776e65;
+    -fx-background-color: rgba(212, 222, 231, 0.84);
+    -fx-background-radius: 3;
+    -fx-border-radius: 3;
+}
+
 .game-tile-0    {
     -fx-font-size: 25px;
     -fx-text-fill: #776e65;

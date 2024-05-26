@@ -21,7 +21,6 @@ public class GameBoard extends GridPane {
     private void initializeBoard(GameManager gameManager) {
         String cellColor = "BDB3A9B2";
 
-
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
                 StackPane cell = new StackPane();

@@ -5,8 +5,10 @@ import java.util.Scanner;
 public class PlayableTest {
     public static void main(String[] args) {
         System.out.println("测试指南：w(上) s(下) a(左) d(右) q(退出)");
-        GameManager gameManager = new GameManager(1);
-        GridNumber model = gameManager.grid;
+        GameStatus status = GameStatus.getInstance();
+        status.setMode(1);
+        GameManager gameManager = new GameManager();
+        GridNumber model = gameManager.getGrid();
         model.printNumber();
 
         Scanner scanner = new Scanner(System.in);

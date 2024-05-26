@@ -107,7 +107,7 @@ public class LoginViewController implements ClientListener {
         System.out.println("用户进入离线模式。");
         try {
             // 直接加载游戏界面 FXML 文件
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/game-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/offline-mode-view.fxml"));
             Scene offLineScene = new Scene(loader.load());
             // 获取当前的舞台并设置场景
             Stage stage = (Stage) Button_offline.getScene().getWindow();

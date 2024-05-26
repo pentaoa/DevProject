@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class ModeViewController {
+public class OfflineModeViewController {
 
     @FXML
     private Button Button_classical;
@@ -42,8 +42,9 @@ public class ModeViewController {
             e.printStackTrace();
         }
     }
+
     @FXML
-    void ObstacleModeTrigger(){
+    void ObstacleModeTrigger() {
         try {
             GameStatus status = GameStatus.getInstance();
             status.setMode(2);
@@ -61,6 +62,7 @@ public class ModeViewController {
             e.printStackTrace();
         }
     }
+
     @FXML
     void TimeModeTrigger(ActionEvent event) {
         try {
@@ -79,4 +81,5 @@ public class ModeViewController {
             e.printStackTrace();
         }
     }
+
 }
