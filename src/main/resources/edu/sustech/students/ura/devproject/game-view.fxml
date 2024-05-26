@@ -17,6 +17,16 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </VBox.margin>
             </Label>
+            <Label fx:id="timeLabel" styleClass="game-title" text="剩余时间:">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /> <!-- 根据需要调整内外边距 -->
+               </VBox.margin>
+            </Label>
+            <Label fx:id="gradeLabel" styleClass="game-title" text="分数: 0">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /> <!-- 调整边距以适应您的布局 -->
+               </VBox.margin>
+            </Label>
          </children></VBox>
    </right>
    <left>
@@ -28,6 +38,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="ReviveButton" mnemonicParsing="false" styleClass="game-button" text="复活" />
             <Button fx:id="SaveButton" mnemonicParsing="false" styleClass="game-button" text="存档" />
             <Button fx:id="LoadButton" mnemonicParsing="false" styleClass="game-button" text="载入" />
             <Button fx:id="PauseButton" mnemonicParsing="false" styleClass="game-button" text="暂停" />

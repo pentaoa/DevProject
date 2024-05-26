@@ -40,7 +40,7 @@ public class GameManager {
     }
     public void remake(){
         grid.resetGrid();
-
+        grid.setGrades(0);
     }
     public void EasyMode(){
         for(int row = 0 ;row<grid.getNumbers().length;row++)
@@ -53,4 +53,5 @@ public class GameManager {
             }
         }
     }
+
 }

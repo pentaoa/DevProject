@@ -15,7 +15,7 @@ public class ModeViewController {
     private Button Button_classical;
 
     @FXML
-    private Button Button_hard;
+    private Button Button_Time;
 
     @FXML
     private Button Button_obstacle;
@@ -57,8 +57,22 @@ public class ModeViewController {
         }
     }
     @FXML
-    void HardModeTrigger(ActionEvent event) {
+    void TimeModeTrigger(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/game-view.fxml"));
+            Scene loginScene = new Scene(loader.load());
 
+            GameViewController gameController = loader.getController();
+            gameController.EasyMode();//先把障碍物清除，再在此基础上调用计时模式
+            gameController.TimeMode();
+
+            Stage stage = (Stage) Button_Time.getScene().getWindow();
+            stage.setScene(loginScene);
+            stage.setTitle("计时模式 | 2048");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

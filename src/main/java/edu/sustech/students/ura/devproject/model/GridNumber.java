@@ -14,6 +14,7 @@ import java.util.Random;
  */
 
 public class GridNumber {
+    private int grades;
     private int steps;
     private final int X_COUNT;
     private final int Y_COUNT;
@@ -24,6 +25,7 @@ public class GridNumber {
     static Random random = new Random();
 
     public GridNumber(int xCount, int yCount) {
+        this.grades = 0;
         //初始化游戏网格
         this.steps = 0;
         this.X_COUNT = xCount;
@@ -113,6 +115,7 @@ public class GridNumber {
                 if (numbers[row][column].get() != 0 && numbers[row][column].get() == numbers[row][column - 1].get()) {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
                     numbers[row][column - 1].setValue(0);
+                    grades+=numbers[row][column].get();
                     moveSuccessfully = true;
                     column--; // Skip the next column since it's already merged
                 }
@@ -167,6 +170,7 @@ public class GridNumber {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
                     numbers[row][column + 1].setValue(0);
                     moveSuccessfully = true;
+                    grades+=numbers[row][column].get();
                     column++; // Skip the next column since it's already merged
                 }
             }
@@ -221,6 +225,7 @@ public class GridNumber {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
                     numbers[row + 1][column].setValue(0);
                     moveSuccessfully = true;
+                    grades+=numbers[row][column].get();
                     row++; // Skip the next row since it's already merged
                 }
             }
@@ -274,6 +279,7 @@ public class GridNumber {
                     numbers[row][column].setValue(numbers[row][column].get() * 2);
                     numbers[row - 1][column].setValue(0);
                     moveSuccessfully = true;
+                    grades+=numbers[row][column].get();
                     row--; // Skip the next row since it's already merged
                 }
             }
@@ -432,5 +438,23 @@ public class GridNumber {
             }
         }
         this.steps = 0;
+    }
+    public void setGrades(int grades){
+        this.grades = grades;
+    }
+    public int getGrades (){
+        return grades;
+    }
+    public void Revise(){
+        //这是复活功能，随机删去一个数字网格的数。
+        int whetherRevise = 0;
+        while(whetherRevise==0){//确保不要把障碍删除了
+        int row = random.nextInt(4);
+        int column = random.nextInt(4);
+        if(numbers[row][column].get()!=-1) {
+            numbers[row][column].setValue(0);
+            whetherRevise++;
+        }
+        }
     }
 }
