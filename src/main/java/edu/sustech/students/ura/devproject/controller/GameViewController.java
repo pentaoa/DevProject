@@ -1,6 +1,7 @@
 package edu.sustech.students.ura.devproject.controller;
 
 import edu.sustech.students.ura.devproject.model.GameManager;
+import edu.sustech.students.ura.devproject.model.GridNumber;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,6 +15,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.util.Duration;
+
+import java.util.Random;
+
+
 /**
  * GameController
  * 游戏界面控制器
@@ -23,6 +28,7 @@ import javafx.util.Duration;
  * @version 1.0
  */
 public class GameViewController {
+    private Random random = new Random();
     @FXML
     private Label timeLabel; // 假设这是用于显示时间的Label
     @FXML
@@ -40,6 +46,8 @@ public class GameViewController {
 
     @FXML
     private AnchorPane gameViewCenter;
+    @FXML
+    private Button AIButton;
     @FXML
     private Button ReviveButton;
     @FXML
@@ -85,8 +93,17 @@ public class GameViewController {
             }
             updateStepCount(0);
         });
+
         ReviveButton.setOnAction(event -> {
             gameManager.grid.Revise();
+        });
+
+        AIButton.setOnAction(event -> {
+            AutoChoosing();
+            handleMoveCompletion();
+            handleLoseCondition();
+            updateScoreDisplay(gameManager.grid.getGrades());
+            updateStepCount(gameManager.grid.getSteps());
         });
 
         MoveUp.setOnAction(event -> { // 每次移动之后，检查胜利和失败
@@ -453,4 +470,41 @@ public class GameViewController {
             gradeLabel.setText("分数: " + score);
         });
     }
+    public void AutoChoosing (){
+        int maxScore = -1;
+        int bestDirection = -1; // 尝试所有可能的移动方向
+        for (int direction = 0; direction < 4; direction++) {
+            GridNumber tempGrid = gameManager.grid.clone(); // 使用clone方法来避免更改原始grid
+            int scoreBeforeMove = tempGrid.getGrades(); // 记录移动前的分数
+            // 根据方向执行移动
+            switch (direction) {
+                case 0: tempGrid.moveUp(); break;
+                case 1: tempGrid.moveDown(); break;
+                case 2: tempGrid.moveLeft(); break;
+                case 3: tempGrid.moveRight(); break;
+            }
+            int scoreAfterMove = tempGrid.getGrades(); // 计算这次移动后的总分数
+            // 检查是否有得分增加，即移动有效
+            if (scoreAfterMove > scoreBeforeMove && scoreAfterMove > maxScore) {
+                maxScore = scoreAfterMove;
+                bestDirection = direction;
+            }
+        }
+// 如果所有方向都没有得分增加，随机选择一个方向
+        if (maxScore <= gameManager.grid.getGrades()) {
+            bestDirection = random.nextInt(4); // 随机选择0-3，代表上、下、左、右
+        }
+// 根据最佳方向执行实际的移动操作
+        switch (bestDirection) {
+            case 0: gameManager.grid.moveUp();
+            break;
+            case 1: gameManager.grid.moveDown();
+            break;
+            case 2: gameManager.grid.moveLeft();
+            break;
+            case 3: gameManager.grid.moveRight();
+            break;
+        }
+    }
 }
+

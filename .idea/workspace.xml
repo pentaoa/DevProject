@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="增加了障碍物">
+    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="增加了计时模式，增加了分数显示（分数逻辑：加合成出来的数字网格的分，比如说2合成4，那就加4分），增加了复活功能（你可以把它升级成看广告复活（😀））">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GridNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GridNumber.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/game-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/game-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/mode-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/mode-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +153,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716594379403</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="增加了计时模式，增加了分数显示（分数逻辑：加合成出来的数字网格的分，比如说2合成4，那就加4分），增加了复活功能（你可以把它升级成看广告复活（😀））">
+      <option name="closed" value="true" />
+      <created>1716691245854</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1716691245854</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,7 +181,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="增加了步数显示" />
     <MESSAGE value="增加了障碍物" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加了障碍物" />
+    <MESSAGE value="增加了计时模式，增加了分数显示（分数逻辑：加合成出来的数字网格的分，比如说2合成4，那就加4分），增加了复活功能（你可以把它升级成看广告复活（））" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加了计时模式，增加了分数显示（分数逻辑：加合成出来的数字网格的分，比如说2合成4，那就加4分），增加了复活功能（你可以把它升级成看广告复活（））" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

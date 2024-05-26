@@ -457,4 +457,16 @@ public class GridNumber {
         }
         }
     }
+    public GridNumber clone() {//克隆游戏数据，方便ai对游戏数据进行判断
+        GridNumber clone = new GridNumber(X_COUNT, Y_COUNT);
+        clone.numbers = new IntegerProperty[X_COUNT][Y_COUNT];
+        for (int row = 0; row < numbers.length; row++) {
+            for (int column = 0; column < numbers[row].length; column++) {
+                // 创建新的IntegerProperty实例以确保深拷贝
+                clone.numbers[row][column] = new SimpleIntegerProperty(this.numbers[row][column].get());
+            }
+        }
+        clone.grades = this.grades;
+        return clone;
+    }
 }

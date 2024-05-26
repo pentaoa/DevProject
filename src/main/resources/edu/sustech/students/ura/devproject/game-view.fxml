@@ -38,6 +38,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="AIButton" mnemonicParsing="false" styleClass="game-button" text="自动走下一步" />
             <Button fx:id="ReviveButton" mnemonicParsing="false" styleClass="game-button" text="复活" />
             <Button fx:id="SaveButton" mnemonicParsing="false" styleClass="game-button" text="存档" />
             <Button fx:id="LoadButton" mnemonicParsing="false" styleClass="game-button" text="载入" />
