@@ -4,29 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="增加视频">
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/OfflineModeViewController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/offline-mode-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/logo.png" afterDir="false" />
+    <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="新增游戏状态监控，新增暂停等功能">
+      <change afterPath="$PROJECT_DIR$/savegame.okcome" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameBoardInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/LocalSaveManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/savegame.okcome" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/util/Direction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/audio/start.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/video/open1.mp4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/GameLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/GameLauncher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/ClientManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/client/ClientManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/LoginViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/LoginViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/Direction.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GridNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GridNumber.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/PlayableTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/PlayableTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/UserManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/game-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/game-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/mode-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/edu/sustech/students/ura/devproject/mode-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/game.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/PlayableTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/util/AudioPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/util/AudioPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/video/open.mp4" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/video/open.mp4" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +32,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="FxmlFile" />
+        <option value="Enum" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -61,6 +58,10 @@
     &quot;accountId&quot;: &quot;ae2b025a-6bd7-40ad-9b1a-1ea519247ad4&quot;
   }
 }</component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -68,13 +69,16 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="2gMPxEGwCWFEZTxSoUJJnQ1uk2f" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.GameLauncher.executor": "Run",
     "Application.Server.executor": "Run",
     "Maven.DevProject [clean].executor": "Run",
@@ -107,6 +111,7 @@
       <recent name="C:\Users\Grada\IdeaProjects\DevProject" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Grada\IdeaProjects\DevProject\src\main\resources\audio" />
       <recent name="C:\Users\Grada\IdeaProjects\DevProject\src\main\resources\images" />
       <recent name="C:\Users\41059\Documents\GitHub\DevProject\src\main\resources\video" />
     </key>
@@ -163,7 +168,12 @@
       <workItem from="1716645852884" duration="3836000" />
       <workItem from="1716649750392" duration="5834000" />
       <workItem from="1716655985230" duration="70000" />
-      <workItem from="1716691423722" duration="18280000" />
+      <workItem from="1716691423722" duration="18933000" />
+      <workItem from="1716714864930" duration="3688000" />
+      <workItem from="1716722478140" duration="3059000" />
+      <workItem from="1716730122443" duration="6000" />
+      <workItem from="1716734302354" duration="1044000" />
+      <workItem from="1716810729342" duration="13880000" />
     </task>
     <task id="LOCAL-00001" summary="增加了步数显示">
       <option name="closed" value="true" />
@@ -181,7 +191,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716594379403</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="新增游戏状态监控，新增暂停等功能">
+      <option name="closed" value="true" />
+      <created>1716713941849</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1716713941849</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,9 +217,11 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="增加了步数显示" />
     <MESSAGE value="增加了障碍物" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加了障碍物" />
+    <MESSAGE value="新增游戏状态监控，新增暂停等功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="新增游戏状态监控，新增暂停等功能" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -7,7 +7,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class GameBoard extends GridPane {
+public class GameBoard extends GridPane implements GameBoardInterface {
     private static final int SIZE = 4;
     private StackPane[][] cells;
     private Tile[][] tiles;
@@ -30,14 +30,24 @@ public class GameBoard extends GridPane {
                 cell.getChildren().add(background);
                 cells[row][col] = cell;
                 add(cell, col, row);
-                Tile tile = new Tile(gameManager.getGrid().getNumber(row, col).get());
+                Tile tile = new Tile(gameManager.getNumber(row, col).get());
 
                 tiles[row][col] = tile;
-                gameManager.getGrid().getNumber(row,col).addListener((obs, oldVal, newVal) -> {
+                gameManager.getNumber(row,col).addListener((obs, oldVal, newVal) -> {
                     tile.setValue(newVal.intValue());
                 });
                 cell.getChildren().add(tile);
             }
         }
+    }
+
+    @Override
+    public void createTile(int row, int col, int value) {
+        tiles[row][col].setValue(value);
+    }
+
+    @Override
+    public void removeTile(int row, int col) {
+        tiles[row][col].setValue(0);
     }
 }

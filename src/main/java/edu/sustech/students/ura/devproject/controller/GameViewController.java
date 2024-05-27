@@ -4,8 +4,8 @@ import edu.sustech.students.ura.devproject.client.Client;
 import edu.sustech.students.ura.devproject.client.ClientManager;
 import edu.sustech.students.ura.devproject.model.GameManager;
 import edu.sustech.students.ura.devproject.model.GameStatus;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import edu.sustech.students.ura.devproject.model.LocalSaveManager;
+import edu.sustech.students.ura.devproject.util.Direction;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,7 +14,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.util.Duration;
 
 import java.util.Objects;
 
@@ -33,6 +32,7 @@ public class GameViewController {
     private GameBoard gameBoard;
     private boolean GameHasWon = false;
     private Client client = ClientManager.getClient();
+    private LocalSaveManager localSaveManager = new LocalSaveManager();
 //    private Timeline timeline;
 
     @FXML
@@ -97,7 +97,14 @@ public class GameViewController {
         addEventFilterToButton(MoveRight);
 
         SaveButton.setOnAction(event -> {
-            client.sendGameManager(gameManager);
+            localSaveManager.save(gameManager);
+        });
+
+        LoadButton.setOnAction(event -> {
+            gameManager = localSaveManager.load();
+            gameViewCenter.getChildren().remove(gameBoard);
+            gameBoard = new GameBoard(gameManager);
+            gameViewCenter.getChildren().add(gameBoard);
         });
 
         RestartButton.setOnAction(event -> {
@@ -115,30 +122,30 @@ public class GameViewController {
         });
 
         MoveUp.setOnAction(event -> { // 每次移动之后，检查胜利和失败
-            gameManager.getGrid().moveUp();
-            updateStepCount(gameManager.getGrid().getSteps());
-            updateScore(gameManager.getGrid().getScore());
+            gameManager.moveUp();
+            updateStepCount(gameManager.getSteps());
+            updateScore(gameManager.getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
         MoveDown.setOnAction(event -> {
-            gameManager.getGrid().moveDown();
-            updateStepCount(gameManager.getGrid().getSteps());
-            updateScore(gameManager.getGrid().getScore());
+            gameManager.moveDown();
+            updateStepCount(gameManager.getSteps());
+            updateScore(gameManager.getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
         MoveLeft.setOnAction(event -> {
-            gameManager.getGrid().moveLeft();
-            updateStepCount(gameManager.getGrid().getSteps());
-            updateScore(gameManager.getGrid().getScore());
+            gameManager.moveLeft();
+            updateStepCount(gameManager.getSteps());
+            updateScore(gameManager.getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
         MoveRight.setOnAction(event -> {
-            gameManager.getGrid().moveRight();
-            updateStepCount(gameManager.getGrid().getSteps());
-            updateScore(gameManager.getGrid().getScore());
+            gameManager.moveRight();
+            updateStepCount(gameManager.getSteps());
+            updateScore(gameManager.getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
@@ -148,30 +155,30 @@ public class GameViewController {
             gameViewCenter.getScene().setOnKeyPressed(event -> {
                 switch (event.getCode()) {
                     case W:
-                        gameManager.getGrid().moveUp();
-                        updateStepCount(gameManager.getGrid().getSteps());
-                        updateScore(gameManager.getGrid().getScore());
+                        gameManager.moveUp();
+                        updateStepCount(gameManager.getSteps());
+                        updateScore(gameManager.getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
                     case S:
-                        gameManager.getGrid().moveDown();
-                        updateStepCount(gameManager.getGrid().getSteps());
-                        updateScore(gameManager.getGrid().getScore());
+                        gameManager.moveDown();
+                        updateStepCount(gameManager.getSteps());
+                        updateScore(gameManager.getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
                     case A:
-                        gameManager.getGrid().moveLeft();
-                        updateStepCount(gameManager.getGrid().getSteps());
-                        updateScore(gameManager.getGrid().getScore());
+                        gameManager.moveLeft();
+                        updateStepCount(gameManager.getSteps());
+                        updateScore(gameManager.getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
                     case D:
-                        gameManager.getGrid().moveRight();
-                        updateStepCount(gameManager.getGrid().getSteps());
-                        updateScore(gameManager.getGrid().getScore());
+                        gameManager.moveRight();
+                        updateStepCount(gameManager.getSteps());
+                        updateScore(gameManager.getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
@@ -197,6 +204,7 @@ public class GameViewController {
         //移除原来的GameBoard存在，则移除
         //将新的GameBoard显示在视图中心
         gameViewCenter.getChildren().add(gameBoard);
+
     }
 
     private void pauseSwitch() {
@@ -215,16 +223,16 @@ public class GameViewController {
         javafx.application.Platform.runLater(() -> {
             long seconds = elapsedTime / 1000;
             text_TimeNumber.setText(String.valueOf(seconds));
-//            if (status.getMode()==3&&elapsedTime>=status.getTargetTime()){
-//                showAlert("你输了", "游戏结束，时间到了");
-//                gameManager.stopGame();
-//            }
+            if (status.getMode()==3&&elapsedTime>=status.getTargetTime()){
+                showAlert("你输了", "游戏结束，时间到了");
+                gameManager.stopGame();
+            }
         });
     }
 
     public void handleMoveCompletion() { //检测游戏是否胜利
         if(GameHasWon==false) {//这个if保证了只弹出一次胜利界面
-            if (gameManager.getGrid().getMaxNumber() >= status.getTargetNumber()) {
+            if (gameManager.getMaxNumber() >= status.getTargetNumber()) {
                 showAlert("恭喜!", "你真是数学天才，达到了8分!");
                 GameHasWon = true;
             }
@@ -232,7 +240,7 @@ public class GameViewController {
     }
 
     public void handleLoseCondition(){
-        if(gameManager.getGrid().isGameOver()==true){
+        if(gameManager.isGameOver()==true){
             showAlert("你输了", "游戏结束，你已经不能移动了");
         }
     }
@@ -249,33 +257,33 @@ public class GameViewController {
         button.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             switch (event.getCode()) {
                 case UP:
-                    gameManager.getGrid().moveUp();
-                    updateStepCount(gameManager.getGrid().getSteps());
-                    updateScore(gameManager.getGrid().getScore());
+                    gameManager.moveUp();
+                    updateStepCount(gameManager.getSteps());
+                    updateScore(gameManager.getScore());
                     handleMoveCompletion();
                     handleLoseCondition();
                     event.consume();
                     break;
                 case DOWN:
-                    gameManager.getGrid().moveDown();
-                    updateStepCount(gameManager.getGrid().getSteps());
-                    updateScore(gameManager.getGrid().getScore());
+                    gameManager.moveDown();
+                    updateStepCount(gameManager.getSteps());
+                    updateScore(gameManager.getScore());
                     handleMoveCompletion();
                     handleLoseCondition();
                     event.consume();
                     break;
                 case LEFT:
-                    gameManager.getGrid().moveLeft();
-                    updateStepCount(gameManager.getGrid().getSteps());
-                    updateScore(gameManager.getGrid().getScore());
+                    gameManager.moveLeft();
+                    updateStepCount(gameManager.getSteps());
+                    updateScore(gameManager.getScore());
                     handleMoveCompletion();
                     handleLoseCondition();
                     event.consume();
                     break;
                 case RIGHT:
-                    gameManager.getGrid().moveRight();
-                    updateStepCount(gameManager.getGrid().getSteps());
-                    updateScore(gameManager.getGrid().getScore());
+                    gameManager.moveRight();
+                    updateStepCount(gameManager.getSteps());
+                    updateScore(gameManager.getScore());
                     handleMoveCompletion();
                     handleLoseCondition();
                     event.consume();
@@ -298,5 +306,9 @@ public class GameViewController {
 
     public void updateScore(int score) {
         text_ScoreNumber.setText(String.valueOf(score));
+    }
+
+    public GameBoard getGameBoard() {
+        return gameBoard;
     }
 }

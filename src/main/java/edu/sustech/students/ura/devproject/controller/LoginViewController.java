@@ -2,6 +2,7 @@ package edu.sustech.students.ura.devproject.controller;
 
 import edu.sustech.students.ura.devproject.client.*;
 import edu.sustech.students.ura.devproject.client.ClientManager;
+import edu.sustech.students.ura.devproject.util.AudioPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * LoginViewController
@@ -24,7 +26,7 @@ import java.io.IOException;
  */
 
 public class LoginViewController implements ClientListener {
-
+    private MediaPlayer mediaPlayer;
     private Client client;
 
     @FXML
@@ -54,6 +56,13 @@ public class LoginViewController implements ClientListener {
     public LoginViewController() {
         client = ClientManager.getClient();
         client.setListener(this);
+
+        // 加载媒体文件
+        String videoPath = Objects.requireNonNull(getClass().getResource("/video/background.mp4")).toExternalForm();
+        Media media = new Media(videoPath);
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
     }
 
     @FXML
@@ -104,7 +113,8 @@ public class LoginViewController implements ClientListener {
 
     @FXML
     protected void OfflineTrigger() {
-        System.out.println("用户进入离线模式。");
+        AudioPlayer.stopStaticPlayer();
+        System.out.println("转为离线模式");
         try {
             // 直接加载游戏界面 FXML 文件
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/offline-mode-view.fxml"));
@@ -121,6 +131,7 @@ public class LoginViewController implements ClientListener {
 
     @FXML
     protected void RegisterTrigger() {
+        AudioPlayer.stopStaticPlayer();
         try {
             // 加载下一个 FXML 文件
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/register-view.fxml"));
@@ -137,14 +148,7 @@ public class LoginViewController implements ClientListener {
     }
 
     public void initialize() {
-        String videoPath = getClass().getResource("/video/background.mp4").toExternalForm();
-        Media media = new Media(videoPath);
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
-
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();
-
         rootPane.getChildren().add(0, mediaView);
     }
 
@@ -169,6 +173,7 @@ public class LoginViewController implements ClientListener {
         });
     }
     public void loadModeFXML() {
+        AudioPlayer.stopStaticPlayer();
         try {
             // 加载下一个 FXML 文件
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/mode-view.fxml"));

@@ -2,6 +2,7 @@ package edu.sustech.students.ura.devproject;
 
 import edu.sustech.students.ura.devproject.client.*;
 import edu.sustech.students.ura.devproject.controller.LoginViewController;
+import edu.sustech.students.ura.devproject.util.AudioPlayer;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +26,8 @@ public class GameLauncher extends Application {
     public void start(Stage stage) throws IOException {
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo.png")));
         stage.getIcons().add(icon);
+        // 播放开始音乐
+        AudioPlayer.playStaticSound("src/main/resources/audio/start.wav");
         // 加载视频
         File videoFile = new File("src/main/resources/video/open.mp4");
         Media media = new Media(videoFile.toURI().toString());
@@ -34,6 +37,8 @@ public class GameLauncher extends Application {
         stage.setWidth(620);
         stage.setMinHeight(440);
         stage.setMinWidth(620);
+        stage.setMaxHeight(600);
+        stage.setMaxWidth(900);
         // 设置视频播放器的大小
         mediaView.setFitWidth(620);
         mediaView.setFitHeight(410);
