@@ -24,7 +24,7 @@ public class Client {
 
             // Start listening for messages from the server
             new Thread(this::listenForServerMessages).start();
-            status.setOnlineGame(true);
+//            status.setOnlineGame(true);
             System.out.println("连接到服务器！");
 
             // Start sending heartbeat messages
@@ -129,15 +129,6 @@ public class Client {
         }
     }
 
-    public void sendGameManager(GameManager gameManager) {
-        try {
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeObject(gameManager);
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String[] args) {
         Client client = new Client("localhost", 8192);

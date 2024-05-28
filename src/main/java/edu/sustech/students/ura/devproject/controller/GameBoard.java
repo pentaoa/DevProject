@@ -1,53 +1,109 @@
 package edu.sustech.students.ura.devproject.controller;
 
 import edu.sustech.students.ura.devproject.model.GameManager;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
+import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
-public class GameBoard extends GridPane implements GameBoardInterface {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class GameBoard extends GridPane implements GameBoardInterface, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private static final int SIZE = 4;
-    private StackPane[][] cells;
     private Tile[][] tiles;
 
-    public GameBoard(GameManager gameManager) {
-        cells = new StackPane[SIZE][SIZE];
+    public GameBoard() {
         tiles = new Tile[SIZE][SIZE];
-        initializeBoard(gameManager);
+        initializeBoard();
     }
 
-    private void initializeBoard(GameManager gameManager) {
-        String cellColor = "BDB3A9B2";
-
-        for (int row = 0; row < SIZE; row++) {
-            for (int col = 0; col < SIZE; col++) {
-                StackPane cell = new StackPane();
-                Rectangle background = new Rectangle(75,75);
-                background.setFill(Color.web(cellColor));// 设置 cell 颜色
-                background.setStyle("-fx-arc-width: 15; -fx-arc-height: 15;");// 设置圆角
-                cell.getChildren().add(background);
-                cells[row][col] = cell;
-                add(cell, col, row);
-                Tile tile = new Tile(gameManager.getNumber(row, col).get());
-
-                tiles[row][col] = tile;
-                gameManager.getNumber(row,col).addListener((obs, oldVal, newVal) -> {
-                    tile.setValue(newVal.intValue());
-                });
-                cell.getChildren().add(tile);
-            }
-        }
+    private void initializeBoard() {
+        setHgap(10);
+        setVgap(10);
+        setPadding(new Insets(10));
     }
 
     @Override
     public void createTile(int row, int col, int value) {
-        tiles[row][col].setValue(value);
+        tiles[row][col] = new Tile(value);
+        add(tiles[row][col], col, row);
+        SequentialTransition animation = tiles[row][col].createAnimation();
+        animation.play();
     }
 
     @Override
     public void removeTile(int row, int col) {
-        tiles[row][col].setValue(0);
+        getChildren().remove(tiles[row][col]);
+        tiles[row][col] = null;
+    }
+
+    @Override
+    public void moveTile(int fromRow, int fromCol, int toRow, int toCol) {
+//
+//        Tile tile = tiles[fromRow][fromCol];
+//        tiles[toRow][toCol].setValue(tile.getValue());
+//        tiles[fromRow][fromCol].setValue(0);
+//
+//
+//        // Create a translation animation
+//        TranslateTransition transition = new TranslateTransition(Duration.millis(200), tile);
+//        transition.setByX((toCol - fromCol) * 75);
+//        transition.setByY((toRow - fromRow) * 75);
+//        transition.setOnFinished(event -> {
+//            tile.setTranslateX(0);
+//            tile.setTranslateY(0);
+//            getChildren().remove(tile);
+//            add(tile, toCol, toRow);
+//        });
+//        transition.play();
+    }
+
+    @Override
+    public void mergeTile(int fromRow, int fromCol, int toRow, int toCol) {
+//        Tile fromTile = tiles[fromRow][fromCol];
+//        Tile toTile = tiles[toRow][toCol];
+//
+//        TranslateTransition transition = new TranslateTransition(Duration.millis(200), fromTile);
+//        transition.setByX((toCol - fromCol) * 75);
+//        transition.setByY((toRow - fromRow) * 75);
+//        transition.setOnFinished(event -> {
+//            toTile.setValue(toTile.getValue() * 2);
+//            fromTile.setValue(0);
+//            fromTile.setTranslateX(0);
+//            fromTile.setTranslateY(0);
+//            getChildren().remove(fromTile);
+//            add(fromTile, fromCol, fromRow);
+//
+//            // Merge effect
+//            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), toTile);
+//            scaleTransition.setFromX(1);
+//            scaleTransition.setFromY(1);
+//            scaleTransition.setToX(1.2);
+//            scaleTransition.setToY(1.2);
+//            scaleTransition.setAutoReverse(true);
+//            scaleTransition.setCycleCount(2);
+//            scaleTransition.play();
+//        });
+//        transition.play();
+    }
+    @Override
+    public void setTileValue(int row, int col, int value) {
+        tiles[row][col].setValue(value);
+    }
+
+    @Override
+    public boolean haveTile(int row, int col) {
+        return tiles[row][col] != null;
     }
 }

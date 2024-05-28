@@ -14,8 +14,9 @@ public class User implements Serializable {
     private int easyModeHighScore = 0;
     private int timeModeHighScore = 0;
     private int obstacleModeHighScore = 0;
-    private GameManager currentGame;
-
+    private int[][] easyModeGameBoard = new int[4][4];
+    private int[][] obstacleModeGameBoard = new int[4][4];
+    private int[][] timeModeGameBoard = new int[4][4];
 
     public User(String username, String password) {
         this.username = username;
@@ -62,11 +63,27 @@ public class User implements Serializable {
         this.easyModeHighScore = easyModeHighScore;
     }
 
-    public GameManager getCurrentGame() {
-        return currentGame;
+    public int[][] getEasyModeGameBoard() {
+        return easyModeGameBoard;
     }
 
-    public void setCurrentGame(GameManager currentGame) {
-        this.currentGame = currentGame;
+    public void setEasyModeGameBoard(int[][] easyModeGameBoard) {
+        this.easyModeGameBoard = easyModeGameBoard;
+    }
+
+    public int[][] getObstacleModeGameBoard() {
+        return obstacleModeGameBoard;
+    }
+
+    public void setObstacleModeGameBoard(int[][] obstacleModeGameBoard) {
+        this.obstacleModeGameBoard = obstacleModeGameBoard;
+    }
+
+    public int[][] getTimeModeGameBoard() {
+        return timeModeGameBoard;
+    }
+
+    public void setTimeModeGameBoard(int[][] timeModeGameBoard) {
+        this.timeModeGameBoard = timeModeGameBoard;
     }
 }

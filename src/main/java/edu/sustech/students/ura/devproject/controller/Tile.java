@@ -1,26 +1,29 @@
 package edu.sustech.students.ura.devproject.controller;
 
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.layout.StackPane;
-import javafx.scene.Scene;
 import javafx.util.Duration;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Tile extends StackPane {
-    private IntegerProperty value;
+public class Tile extends StackPane implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    private int value;
     private Rectangle tile;
     private Text text;
 
     public Tile(int initialValue) {
-        value = new SimpleIntegerProperty(initialValue);
+        value = initialValue;
         // 简单地设置Tile的样式
         tile = new Rectangle(65, 65);
         tile.setArcWidth(15);
@@ -29,38 +32,50 @@ public class Tile extends StackPane {
 
         getChildren().addAll(tile, text);
 
-        // 在Tile值变化的时候，更新Tile的样式
-        value.addListener((observable, oldValue, newValue) -> {
-            updateStyle(newValue.intValue());
-            text.setText(String.valueOf(newValue.intValue()));
-        });
-
         // 初始化Tile的样式
-        updateStyle(initialValue);
+        update(initialValue);
     }
 
     public int getValue() {
-        return value.get();
+        return value;
     }
 
     public void setValue(int value) {
-        this.value.set(value);
+        this.value=value;
+        update(value);
     }
 
-    public void animateMove(int toX, int toY) {
-        TranslateTransition animation = new TranslateTransition(Duration.seconds(0.2),this);
-        animation.setFromX(0);
-        animation.setFromY(0);
-        animation.setToX(toX * 75);
-        animation.setToY(toY * 75);
-        animation.play();
+    public SequentialTransition createAnimation() {
+        ScaleTransition firstAnimation = new ScaleTransition(Duration.seconds(0.1), this);
+        firstAnimation.setFromX(0.8);
+        firstAnimation.setFromY(0.8);
+        firstAnimation.setToX(1.1);
+        firstAnimation.setToY(1.1);
+
+        ScaleTransition secondAnimation = new ScaleTransition(Duration.seconds(0.1), this);
+        secondAnimation.setFromX(1.1);
+        secondAnimation.setFromY(1.1);
+        secondAnimation.setToX(1.0);
+        secondAnimation.setToY(1.0);
+
+        SequentialTransition combinedAnimation = new SequentialTransition(firstAnimation, secondAnimation);
+        return combinedAnimation;
     }
 
-    private void updateStyle(int value) {
+    public SequentialTransition moveAnimation(int fromRow, int fromCol, int toRow, int toCol) {
+        TranslateTransition move = new TranslateTransition(Duration.seconds(0.1), this);
+        move.setByX((toCol - fromCol) * 75);
+        move.setByY((toRow - fromRow) * 75);
+        return new SequentialTransition(move);
+    }
+
+    private void update(int value) {
         String backgroundColor;
         String textColor;
         int fontSize;
-
+        getChildren().remove(text);
+        text = new Text(String.valueOf(value));
+        getChildren().add(text);
         switch (value) {
             case -1:
                 backgroundColor = "D4DEE7D5";

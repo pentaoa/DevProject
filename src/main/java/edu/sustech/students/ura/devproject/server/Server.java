@@ -77,6 +77,14 @@ public class Server {
                 String content = message.substring(8);
                 // Process message (e.g., broadcast to other clients)
                 out.writeObject("Server received message: " + content);
+            } else if (message.startsWith("SET_HIGHSCORE:")) {
+                System.out.println(message);
+                String[] parts = message.split(":");
+                String username = parts[1];
+                int mode = Integer.parseInt(parts[2]);
+                int score = Integer.parseInt(parts[3]);
+                boolean success = userManager.setHighScore(username, mode, score);
+                out.writeObject(success ? "SET_HIGHSCORE_SUCCESS" : "SET_HIGHSCORE_FAIL:用户不存在");
             } else {
                 out.writeObject("Unknown command: " + message);
             }

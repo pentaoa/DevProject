@@ -42,6 +42,40 @@
     -fx-background-radius: 5;
     -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.28), 10, 0.2, 0, 0 );
 }
+/* 输入框样式 */
+.game-input {
+    -fx-font-family: "HYWenHei-85W";
+    -fx-font-size: 14px;
+    -fx-text-fill: #2a2622;
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-background-radius: 6;
+    -fx-border-radius: 5;
+    -fx-border-color: rgba(70, 62, 54, 0.75);
+    -fx-border-width: 2;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.38), 10, 0.2, 0, 0 );
+}
+/* 警示框样式 */
+.alert .dialog-pane {
+    -fx-background-color: #f9f6f2;
+    -fx-border-color: #45788c;
+    -fx-border-width: 2;
+}
+
+.alert .header-panel {
+    -fx-font-family: "HYWenHei-85W";
+    -fx-font-size: 20px;
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+}
+
+.alert .content-panel {
+    -fx-font-family: "HYWenHei-85W";
+    -fx-font-size: 16px;
+    -fx-background-color: white;
+}
+
+.alert .button-bar {
+    -fx-background-color: #3c3a32;
+}
 /* 砖块样式 */
 .game-tile--1   {
     -fx-font-size: 25px;

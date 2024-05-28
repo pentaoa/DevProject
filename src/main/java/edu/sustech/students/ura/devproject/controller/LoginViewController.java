@@ -2,6 +2,7 @@ package edu.sustech.students.ura.devproject.controller;
 
 import edu.sustech.students.ura.devproject.client.*;
 import edu.sustech.students.ura.devproject.client.ClientManager;
+import edu.sustech.students.ura.devproject.model.GameStatus;
 import edu.sustech.students.ura.devproject.util.AudioPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +29,7 @@ import java.util.Objects;
 public class LoginViewController implements ClientListener {
     private MediaPlayer mediaPlayer;
     private Client client;
+    public GameStatus status = GameStatus.getInstance();
 
     @FXML
     private StackPane rootPane;
@@ -115,6 +117,7 @@ public class LoginViewController implements ClientListener {
     protected void OfflineTrigger() {
         AudioPlayer.stopStaticPlayer();
         System.out.println("转为离线模式");
+        status.setOnlineGame(false);
         try {
             // 直接加载游戏界面 FXML 文件
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/offline-mode-view.fxml"));
@@ -162,6 +165,8 @@ public class LoginViewController implements ClientListener {
                 alert.setHeaderText("登录成功");
                 alert.setContentText("登录成功");
                 alert.showAndWait();
+                status.setOnlineGame(true);
+                status.setUsername(Input_name.getText());
                 loadModeFXML();
             } else if (message.startsWith("LOGIN_FAIL")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);

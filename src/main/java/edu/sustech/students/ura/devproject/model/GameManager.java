@@ -1,8 +1,7 @@
 package edu.sustech.students.ura.devproject.model;
 
+import edu.sustech.students.ura.devproject.controller.GameBoardInterface;
 import edu.sustech.students.ura.devproject.util.Direction;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,8 +14,9 @@ import java.util.function.Consumer;
  * GameManager
  * 游戏管理器
  * 这个类是游戏的核心，负责管理游戏的进行，包括游戏的初始化、暂停、保存、读取等操作。
- * @version 1.0
  *
+ * @version 1.0
+ * <p>
  * TODO: 增加限时模式
  */
 
@@ -34,28 +34,26 @@ public class GameManager implements Serializable {
     private final int X_COUNT = 4;
     private final int Y_COUNT = 4;
     private int obstacleNumber;
+    private GameBoardInterface gameBoard;
+    public GameStatus status = GameStatus.getInstance();
 
-    public IntegerProperty[][] numbers;
+    public int[][] numbers;
 
     static Random random = new Random();
 
-    public GameManager() {
-        // 新建游戏
-        System.out.println("成功新建游戏！");
-        initialGame();
-    }
-
-    // 初始化游戏
-    private void initialGame() {
-        GameStatus status = GameStatus.getInstance();
+    public GameManager(GameBoardInterface gameBoard) throws InterruptedException {
+        this.gameBoard = gameBoard;
+        steps = status.getSteps();
+        score = status.getScore();
         mode = status.getMode();
-        numbers = new IntegerProperty[X_COUNT][Y_COUNT];
+        numbers = status.getGridNumber();
         initialNumbers();
         placeRandomObstacle();
         if (mode != 2) {
             removeObstacles();
         }
         startTimer();
+        System.out.println("成功新建游戏！");
     }
 
     // 开始计时
@@ -91,6 +89,7 @@ public class GameManager implements Serializable {
     private void stopTimer() {
         timer.cancel();
     }
+
     public void pauseGame() {
         // 暂停游戏
         System.out.println("暂停游戏······");
@@ -119,7 +118,7 @@ public class GameManager implements Serializable {
         System.out.println("读取游戏······");
     }
 
-    public void restartGame(){
+    public void restartGame() throws InterruptedException {
         // 重开游戏
         resetGrid();
         if (mode == 1) {
@@ -129,16 +128,19 @@ public class GameManager implements Serializable {
         startTimer();
     }
 
-    public void removeObstacles(){
-        for(int row = 0 ;row<numbers.length;row++)
-        {
-            for(int column = 0 ; column<numbers[row].length;column++){
-                if(numbers[row][column].get()==-1)
-                {
-                    numbers[row][column].setValue(0);
+    public void removeObstacles() {
+        for (int row = 0; row < numbers.length; row++) {
+            for (int column = 0; column < numbers[row].length; column++) {
+                if (numbers[row][column] == -1) {
+                    numbers[row][column] = 0;
+                    gameBoard.setTileValue(row, column, 0);
                 }
             }
         }
+    }
+
+    public void setElapsedTime(long elapsedTime) {
+        this.elapsedTime = elapsedTime;
     }
 
     public long getElapsedTime() {
@@ -157,17 +159,21 @@ public class GameManager implements Serializable {
         while (obstacleNumber == 0) {
             int row = random.nextInt(4);
             int column = random.nextInt(4);
-            if (numbers[row][column].get() == 0) {
-                numbers[row][column].setValue(-1);
+            if (numbers[row][column] == 0) {
+                numbers[row][column] = -1;
+                gameBoard.setTileValue(row, column, -1);
                 obstacleNumber++;
             }
         }
     }
 
-    public void initialNumbers() {
+    public void initialNumbers() throws InterruptedException {
         for (int row = 0; row < X_COUNT; row++) {
             for (int column = 0; column < Y_COUNT; column++) {
-                numbers[row][column] = new SimpleIntegerProperty(0);
+                if (gameBoard.haveTile(row, column)) {
+                    gameBoard.removeTile(row, column);
+                }
+                gameBoard.createTile(row, column, numbers[row][column]);
             }
         }
         int initialNumber = 0;
@@ -175,25 +181,29 @@ public class GameManager implements Serializable {
         while (initialNumber < 2) {
             int row = random.nextInt(X_COUNT);
             int column = random.nextInt(Y_COUNT);
-            if (numbers[row][column].get() == 0 && whether4exist == 0) {
-                numbers[row][column].setValue(4);
+            if (numbers[row][column] == 0 && whether4exist == 0) {
+                numbers[row][column] = 4;
+                gameBoard.setTileValue(row, column, 4);
                 whether4exist++;
                 initialNumber++;
-            } else if (numbers[row][column].get() == 0 && whether4exist != 0) {
-                numbers[row][column].setValue(2);
+            } else if (numbers[row][column] == 0 && whether4exist != 0) {
+                numbers[row][column] = 2;
+                gameBoard.setTileValue(row, column, 2);
                 initialNumber++;
             }
         }
         this.steps = 0;
     }
 
+
     public void generateNewNumbers(GameManager model) {
         int newNumber = 0;
         while (newNumber == 0) {
             int row = random.nextInt(model.getX_COUNT());
             int column = random.nextInt(model.getY_COUNT());
-            if (model.numbers[row][column].getValue() == 0) {
-                model.numbers[row][column].setValue(random.nextInt(2) == 0 ? 2 : 4);
+            if (model.numbers[row][column] == 0) {
+                model.numbers[row][column] = random.nextInt(2) == 0 ? 2 : 4;
+                gameBoard.setTileValue(row, column, model.numbers[row][column]);
                 newNumber++;
             }
         }
@@ -202,45 +212,41 @@ public class GameManager implements Serializable {
     public void moveRight() {
         boolean moveSuccessfully = false;
         for (int row = 0; row < X_COUNT; row++) {
-            // Step 1: Move all non-zero elements to the right
-            int targetColumn = Y_COUNT - 1; // The target column for the next non-zero element
+            int targetColumn = Y_COUNT - 1;
             for (int column = Y_COUNT - 1; column >= 0; column--) {
-                if (numbers[row][column].get() != 0) {
-                    if (column != targetColumn) {
-                        if(numbers[row][column].get()==-1) {// Only move if it's not already in the correct position
-                            targetColumn=column;
-                        }else if (numbers[row][targetColumn].get()==0){
-                            numbers[row][targetColumn].setValue(numbers[row][column].get());
-                            numbers[row][column].setValue(0);
-                            moveSuccessfully = true;
-                        }
+                if (numbers[row][column] != 0 && numbers[row][column] != -1) {
+                    if (column != targetColumn && numbers[row][targetColumn] == 0) {
+                        numbers[row][targetColumn] = numbers[row][column];
+                        numbers[row][column] = 0;
+                        gameBoard.moveTile(row, column, row, targetColumn);
+                        moveSuccessfully = true;
                     }
+                    targetColumn--;
+                } else if (numbers[row][column] == -1) {
                     targetColumn--;
                 }
             }
-            // Step 2: Merge adjacent elements if they are equal
             for (int column = Y_COUNT - 1; column > 0; column--) {
-                if (numbers[row][column].get() != 0 && numbers[row][column].get() == numbers[row][column - 1].get()) {
-                    numbers[row][column].setValue(numbers[row][column].get() * 2);
-                    numbers[row][column - 1].setValue(0);
-                    score +=numbers[row][column].get();
+                if (numbers[row][column] != 0 && numbers[row][column] == numbers[row][column - 1] && numbers[row][column] != -1) {
+                    numbers[row][column] *= 2;
+                    numbers[row][column - 1] = 0;
+                    score += numbers[row][column];
+                    gameBoard.mergeTile(row, column - 1, row, column);
                     moveSuccessfully = true;
-                    column--; // Skip the next column since it's already merged
+                    column--;
                 }
             }
-            // Step 3: Move again to fill the gaps created by merging
             targetColumn = Y_COUNT - 1;
             for (int column = Y_COUNT - 1; column >= 0; column--) {
-                if (numbers[row][column].get() != 0) {
-                    if (column != targetColumn) {
-                        if(numbers[row][column].get()==-1) {// Only move if it's not already in the correct position
-                            targetColumn=column;
-                        }else if (numbers[row][targetColumn].get()==0){
-                            numbers[row][targetColumn].setValue(numbers[row][column].get());
-                            numbers[row][column].setValue(0);
-                            moveSuccessfully = true;
-                        }
+                if (numbers[row][column] != 0 && numbers[row][column] != -1) {
+                    if (column != targetColumn && numbers[row][targetColumn] == 0) {
+                        numbers[row][targetColumn] = numbers[row][column];
+                        numbers[row][column] = 0;
+                        gameBoard.moveTile(row, column, row, targetColumn);
+                        moveSuccessfully = true;
                     }
+                    targetColumn--;
+                } else if (numbers[row][column] == -1) {
                     targetColumn--;
                 }
             }
@@ -249,54 +255,48 @@ public class GameManager implements Serializable {
             generateNewNumbers(this);
             steps++;
         }
+        printNumbers();
+        updateTile();
     }
 
     public void moveLeft() {
         boolean moveSuccessfully = false;
         for (int row = 0; row < X_COUNT; row++) {
-            // Step 1: Move all non-zero elements to the left
-            int targetColumn = 0; // The target column for the next non-zero element
+            int targetColumn = 0;
             for (int column = 0; column < Y_COUNT; column++) {
-
-                if (numbers[row][column].get() != 0) {
-                    if (column != targetColumn) {
-                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
-                            targetColumn = column;
-                        }
-                        else if(numbers[row][targetColumn].get()==0){
-                            numbers[row][targetColumn].setValue(numbers[row][column].get());
-                            numbers[row][column].setValue(0);
-                            moveSuccessfully = true;
-                        }
+                if (numbers[row][column] != 0 && numbers[row][column] != -1) {
+                    if (column != targetColumn && numbers[row][targetColumn] == 0) {
+                        numbers[row][targetColumn] = numbers[row][column];
+                        numbers[row][column] = 0;
+                        gameBoard.moveTile(row, column, row, targetColumn);
+                        moveSuccessfully = true;
                     }
+                    targetColumn++;
+                } else if (numbers[row][column] == -1) {
                     targetColumn++;
                 }
             }
-            // Step 2: Merge adjacent elements if they are equal
             for (int column = 0; column < Y_COUNT - 1; column++) {
-                if (numbers[row][column].get() != 0 && numbers[row][column].get() == numbers[row][column + 1].get()) {
-                    numbers[row][column].setValue(numbers[row][column].get() * 2);
-                    numbers[row][column + 1].setValue(0);
+                if (numbers[row][column] != 0 && numbers[row][column] == numbers[row][column + 1] && numbers[row][column] != -1) {
+                    numbers[row][column] *= 2;
+                    numbers[row][column + 1] = 0;
+                    score += numbers[row][column];
+                    gameBoard.mergeTile(row, column + 1, row, column);
                     moveSuccessfully = true;
-                    score +=numbers[row][column].get();
-                    column++; // Skip the next column since it's already merged
+                    column++;
                 }
             }
-            // Step 3: Move again to fill the gaps created by merging
             targetColumn = 0;
             for (int column = 0; column < Y_COUNT; column++) {
-
-                if (numbers[row][column].get() != 0) {
-                    if (column != targetColumn) {
-                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
-                            targetColumn = column;
-                        }
-                        else if(numbers[row][targetColumn].get()==0){
-                            numbers[row][targetColumn].setValue(numbers[row][column].get());
-                            numbers[row][column].setValue(0);
-                            moveSuccessfully = true;
-                        }
+                if (numbers[row][column] != 0 && numbers[row][column] != -1) {
+                    if (column != targetColumn && numbers[row][targetColumn] == 0) {
+                        numbers[row][targetColumn] = numbers[row][column];
+                        numbers[row][column] = 0;
+                        gameBoard.moveTile(row, column, row, targetColumn);
+                        moveSuccessfully = true;
                     }
+                    targetColumn++;
+                } else if (numbers[row][column] == -1) {
                     targetColumn++;
                 }
             }
@@ -305,52 +305,48 @@ public class GameManager implements Serializable {
             generateNewNumbers(this);
             steps++;
         }
+        printNumbers();
+        updateTile();
     }
 
     public void moveUp() {
         boolean moveSuccessfully = false;
         for (int column = 0; column < Y_COUNT; column++) {
-            // Step 1: Move all non-zero elements upwards
-            int targetRow = 0; // The target row for the next non-zero element
+            int targetRow = 0;
             for (int row = 0; row < X_COUNT; row++) {
-                if (numbers[row][column].get() != 0) {
-                    if (row != targetRow) {
-                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
-                            targetRow = row;
-                        }
-                        else if (numbers[targetRow][column].get()==0){
-                            numbers[targetRow][column].setValue(numbers[row][column].get());
-                            numbers[row][column].setValue(0);
-                            moveSuccessfully = true;
-                        }
+                if (numbers[row][column] != 0 && numbers[row][column] != -1) {
+                    if (row != targetRow && numbers[targetRow][column] == 0) {
+                        numbers[targetRow][column] = numbers[row][column];
+                        numbers[row][column] = 0;
+                        gameBoard.moveTile(row, column, targetRow, column);
+                        moveSuccessfully = true;
                     }
+                    targetRow++;
+                } else if (numbers[row][column] == -1) {
                     targetRow++;
                 }
             }
-            // Step 2: Merge adjacent elements if they are equal
             for (int row = 0; row < X_COUNT - 1; row++) {
-                if (numbers[row][column].get() != 0 && numbers[row][column].get() == numbers[row + 1][column].get()) {
-                    numbers[row][column].setValue(numbers[row][column].get() * 2);
-                    numbers[row + 1][column].setValue(0);
+                if (numbers[row][column] != 0 && numbers[row][column] == numbers[row + 1][column] && numbers[row][column] != -1) {
+                    numbers[row][column] *= 2;
+                    numbers[row + 1][column] = 0;
+                    score += numbers[row][column];
+                    gameBoard.mergeTile(row + 1, column, row, column);
                     moveSuccessfully = true;
-                    score +=numbers[row][column].get();
-                    row++; // Skip the next row since it's already merged
+                    row++;
                 }
             }
-            // Step 3: Move again to fill the gaps created by merging
             targetRow = 0;
             for (int row = 0; row < X_COUNT; row++) {
-                if (numbers[row][column].get() != 0) {
-                    if (row != targetRow) {
-                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
-                            targetRow = row;
-                        }
-                        else if (numbers[targetRow][column].get()==0){
-                            numbers[targetRow][column].setValue(numbers[row][column].get());
-                            numbers[row][column].setValue(0);
-                            moveSuccessfully = true;
-                        }
+                if (numbers[row][column] != 0 && numbers[row][column] != -1) {
+                    if (row != targetRow && numbers[targetRow][column] == 0) {
+                        numbers[targetRow][column] = numbers[row][column];
+                        numbers[row][column] = 0;
+                        gameBoard.moveTile(row, column, targetRow, column);
+                        moveSuccessfully = true;
                     }
+                    targetRow++;
+                } else if (numbers[row][column] == -1) {
                     targetRow++;
                 }
             }
@@ -359,52 +355,48 @@ public class GameManager implements Serializable {
             generateNewNumbers(this);
             steps++;
         }
+        printNumbers();
+        updateTile();
     }
 
     public void moveDown() {
         boolean moveSuccessfully = false;
         for (int column = 0; column < Y_COUNT; column++) {
-            // Step 1: Move all non-zero elements downwards
-            int targetRow = X_COUNT - 1; // The target row for the next non-zero element
+            int targetRow = X_COUNT - 1;
             for (int row = X_COUNT - 1; row >= 0; row--) {
-                if (numbers[row][column].get() != 0) {
-                    if (row != targetRow) {
-                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
-                            targetRow = row;
-                        }
-                        else if (numbers[targetRow][column].get()==0){
-                            numbers[targetRow][column].setValue(numbers[row][column].get());
-                            numbers[row][column].setValue(0);
-                            moveSuccessfully = true;
-                        }
+                if (numbers[row][column] != 0 && numbers[row][column] != -1) {
+                    if (row != targetRow && numbers[targetRow][column] == 0) {
+                        numbers[targetRow][column] = numbers[row][column];
+                        numbers[row][column] = 0;
+                        gameBoard.moveTile(row, column, targetRow, column);
+                        moveSuccessfully = true;
                     }
+                    targetRow--;
+                } else if (numbers[row][column] == -1) {
                     targetRow--;
                 }
             }
-            // Step 2: Merge adjacent elements if they are equal
             for (int row = X_COUNT - 1; row > 0; row--) {
-                if (numbers[row][column].get() != 0 && numbers[row][column].get() == numbers[row - 1][column].get()) {
-                    numbers[row][column].setValue(numbers[row][column].get() * 2);
-                    numbers[row - 1][column].setValue(0);
+                if (numbers[row][column] != 0 && numbers[row][column] == numbers[row - 1][column] && numbers[row][column] != -1) {
+                    numbers[row][column] *= 2;
+                    numbers[row - 1][column] = 0;
+                    score += numbers[row][column];
+                    gameBoard.mergeTile(row - 1, column, row, column);
                     moveSuccessfully = true;
-                    score +=numbers[row][column].get();
-                    row--; // Skip the next row since it's already merged
+                    row--;
                 }
             }
-            // Step 3: Move again to fill the gaps created by merging
             targetRow = X_COUNT - 1;
             for (int row = X_COUNT - 1; row >= 0; row--) {
-                if (numbers[row][column].get() != 0) {
-                    if (row != targetRow) {
-                        if(numbers[row][column].get()==-1){// Only move if it's not already in the correct position
-                            targetRow = row;
-                        }
-                        else if (numbers[targetRow][column].get()==0){
-                            numbers[targetRow][column].setValue(numbers[row][column].get());
-                            numbers[row][column].setValue(0);
-                            moveSuccessfully = true;
-                        }
+                if (numbers[row][column] != 0 && numbers[row][column] != -1) {
+                    if (row != targetRow && numbers[targetRow][column] == 0) {
+                        numbers[targetRow][column] = numbers[row][column];
+                        numbers[row][column] = 0;
+                        gameBoard.moveTile(row, column, targetRow, column);
+                        moveSuccessfully = true;
                     }
+                    targetRow--;
+                } else if (numbers[row][column] == -1) {
                     targetRow--;
                 }
             }
@@ -412,9 +404,11 @@ public class GameManager implements Serializable {
         if (moveSuccessfully) {
             generateNewNumbers(this);
             steps++;
-
         }
+        printNumbers();
+        updateTile();
     }
+
 
     public boolean isGameOver() {
         if (hasEmptyCells()) return false;
@@ -422,31 +416,33 @@ public class GameManager implements Serializable {
     }
 
     private boolean hasEmptyCells() {
-        for (IntegerProperty[] row : numbers) {
-            for (IntegerProperty cell : row) {
-                if (cell.get() == 0) return true;
+        for (int[] row : numbers) {
+            for (int number : row) {
+                if (number == 0) return true;
             }
         }
         return false;
     }
 
-    private boolean canMove(Direction direction) {
+    public boolean canMove(Direction direction) {
         for (int row = 0; row < X_COUNT; row++) {
             for (int col = 0; col < Y_COUNT; col++) {
-                int current = numbers[row][col].get();
+                int current = numbers[row][col];
                 if (current == 0) continue;
                 switch (direction) {
                     case UP:
-                        if (row > 0 && (numbers[row - 1][col].get() == 0 || numbers[row - 1][col].get() == current)) return true;
+                        if (row > 0 && (numbers[row - 1][col] == 0 || numbers[row - 1][col] == current)) return true;
                         break;
                     case DOWN:
-                        if (row < X_COUNT - 1 && (numbers[row + 1][col].get() == 0 || numbers[row + 1][col].get() == current)) return true;
+                        if (row < X_COUNT - 1 && (numbers[row + 1][col] == 0 || numbers[row + 1][col] == current))
+                            return true;
                         break;
                     case LEFT:
-                        if (col > 0 && (numbers[row][col - 1].get() == 0 || numbers[row][col - 1].get() == current)) return true;
+                        if (col > 0 && (numbers[row][col - 1] == 0 || numbers[row][col - 1] == current)) return true;
                         break;
                     case RIGHT:
-                        if (col < Y_COUNT - 1 && (numbers[row][col + 1].get() == 0 || numbers[row][col + 1].get() == current)) return true;
+                        if (col < Y_COUNT - 1 && (numbers[row][col + 1] == 0 || numbers[row][col + 1] == current))
+                            return true;
                         break;
                 }
             }
@@ -454,8 +450,9 @@ public class GameManager implements Serializable {
         return false;
     }
 
-    public void resetGrid() {
-        numbers = new IntegerProperty[X_COUNT][Y_COUNT];
+    public void resetGrid() throws InterruptedException {
+
+        numbers = new int[X_COUNT][Y_COUNT];
         initialNumbers();
         placeRandomObstacle();
         steps = 0;
@@ -463,9 +460,10 @@ public class GameManager implements Serializable {
     }
 
     public void printNumbers() {
-        for (IntegerProperty[] row : numbers) {
-            for (IntegerProperty cell : row) {
-                System.out.print(cell.get() + " ");
+        System.out.println();
+        for (int[] row : numbers) {
+            for (int number : row) {
+                System.out.print(number + " ");
             }
             System.out.println();
         }
@@ -473,9 +471,9 @@ public class GameManager implements Serializable {
 
     public int getMaxNumber() {
         int max = 0;
-        for (IntegerProperty[] row : numbers) {
-            for (IntegerProperty cell : row) {
-                if (cell.get() > max) max = cell.get();
+        for (int[] row : numbers) {
+            for (int number : row) {
+                if (number > max) max = number;
             }
         }
         return max;
@@ -485,8 +483,8 @@ public class GameManager implements Serializable {
         while (true) {
             int row = random.nextInt(X_COUNT);
             int column = random.nextInt(Y_COUNT);
-            if (numbers[row][column].get() != -1) {
-                numbers[row][column].setValue(0);
+            if (numbers[row][column] != -1) {
+                numbers[row][column] = 0;
                 break;
             }
         }
@@ -516,15 +514,32 @@ public class GameManager implements Serializable {
         return Y_COUNT;
     }
 
-    public IntegerProperty getNumber(int row, int col) {
+    public int getNumber(int row, int col) {
         return numbers[row][col];
     }
 
-    public IntegerProperty[][] getNumbers() {
+    public int[][] getNumbers() {
         return numbers;
     }
 
-    public void setNumbers(IntegerProperty[][] numbers) {
+    public void setNumbers(int[][] numbers) {
         this.numbers = numbers;
+        updateTile();
+    }
+
+    public void updateTile() {
+        for (int row = 0; row < X_COUNT; row++) {
+            for (int col = 0; col < Y_COUNT; col++) {
+                gameBoard.setTileValue(row, col, numbers[row][col]);
+            }
+        }
+    }
+
+    public int[][] getGridNumber() {
+        return numbers;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 }

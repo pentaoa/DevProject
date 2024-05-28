@@ -1,7 +1,5 @@
 package edu.sustech.students.ura.devproject.server;
 
-import edu.sustech.students.ura.devproject.model.GameManager;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,18 +62,31 @@ public class UserManager {
         return true;
     }
 
-    // 保存用户游戏
-    public synchronized void saveUserGame(String username, GameManager game) {
+    public synchronized boolean setHighScore(String username, int mode, int score) {
         User user = users.get(username);
-        if (user != null) {
-            user.setCurrentGame(game);
-            saveUsers();
+        if (user == null) {
+            return false;
         }
-    }
-
-    // 获取用户游戏
-    public synchronized GameManager getUserGame(String username) {
-        User user = users.get(username);
-        return user != null ? user.getCurrentGame() : null;
+        switch (mode) {
+            case 1:
+                if (score > user.getEasyModeHighScore()) {
+                    user.setEasyModeHighScore(score);
+                }
+                break;
+            case 3:
+                if (score > user.getTimeModeHighScore()) {
+                    user.setTimeModeHighScore(score);
+                }
+                break;
+            case 2:
+                if (score > user.getObstacleModeHighScore()) {
+                    user.setObstacleModeHighScore(score);
+                }
+                break;
+            default:
+                return false;
+        }
+        saveUsers();
+        return true;
     }
 }

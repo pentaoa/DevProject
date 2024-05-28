@@ -3,33 +3,101 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sustech.students.ura.devproject.controller.ModeViewController">
-    <center>
-        <VBox focusTraversable="true" spacing="20.0">
-            <children>
-            <Label fx:id="Text_HelloUser" text="欢迎，">
+<BorderPane minHeight="420.0" minWidth="630.0" prefHeight="420.0" prefWidth="630.0" styleClass="game-root" stylesheets="@../../../../../game.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sustech.students.ura.devproject.controller.ModeViewController">
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="235.0" prefWidth="311.0">
+               <children>
+                  <Label fx:id="text_ModeSet" styleClass="game-title" text="设置模式">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Button fx:id="Button_classical" mnemonicParsing="false" onAction="#EasyModeTrigger" styleClass="game-button" text="经典模式">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="Button_obstacle" mnemonicParsing="false" onAction="#ObstacleModeTrigger" styleClass="game-button" text="障碍模式">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="Button_time" mnemonicParsing="false" onAction="#TimeModeTrigger" styleClass="game-button" text="困难模式">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox prefHeight="235.0" prefWidth="264.0">
+               <children>
+                  <Label fx:id="text_TargetSet" styleClass="game-title" text="设置目标">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="numberInputer" maxWidth="200.0" minWidth="100.0" prefWidth="100.0" promptText="目标数字" styleClass="game-input">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Button fx:id="button_Set" mnemonicParsing="false" onAction="#SetTarget" styleClass="game-button" text="确定">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+   <top>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="Text_HelloUser" styleClass="game-title" text="欢迎，">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
-               <VBox.margin>
+               <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </VBox.margin>
+               </HBox.margin>
             </Label>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-               <children>
-                  <Button fx:id="Button_classical" mnemonicParsing="false" onAction="#EasyModeTrigger" text="经典模式" />
-                  <Button fx:id="Button_obstacle" mnemonicParsing="false" onAction="#ObstacleModeTrigger" text="障碍模式" />
-                  <Button fx:id="Button_time" mnemonicParsing="false" onAction="#TimeModeTrigger" text="困难模式" />
-               </children>
-            </VBox>
-            </children>
-            <BorderPane.margin>
-                <Insets />
-            </BorderPane.margin>
-        </VBox>
-    </center>
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <BorderPane prefHeight="85.0" prefWidth="630.0" BorderPane.alignment="CENTER">
+         <right>
+            <Button fx:id="button_StartGame" mnemonicParsing="false" onAction="#StartGame" styleClass="game-button" text="开始游戏" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </BorderPane.margin>
+            </Button>
+         </right>
+         <left>
+            <Label fx:id="text_status" styleClass="game-title" text="当前模式" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </BorderPane.margin>
+            </Label>
+         </left>
+      </BorderPane>
+   </bottom>
 </BorderPane>

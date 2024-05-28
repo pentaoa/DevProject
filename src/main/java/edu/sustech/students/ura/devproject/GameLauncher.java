@@ -33,15 +33,13 @@ public class GameLauncher extends Application {
         Media media = new Media(videoFile.toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
-        stage.setHeight(440);
-        stage.setWidth(620);
-        stage.setMinHeight(440);
-        stage.setMinWidth(620);
+        stage.setMinHeight(460);
+        stage.setMinWidth(650);
         stage.setMaxHeight(600);
         stage.setMaxWidth(900);
         // 设置视频播放器的大小
-        mediaView.setFitWidth(620);
-        mediaView.setFitHeight(410);
+//        mediaView.setFitWidth(630);
+        mediaView.setFitHeight(440);
         mediaPlayer.setAutoPlay(true); // 设置视频自动播放
         // 添加鼠标点击事件, 点击鼠标时停止播放动画
         mediaView.setOnMouseClicked(event -> {
