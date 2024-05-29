@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="60e557d3-29e0-4085-bb4c-263a83fde50a" name="更改" comment="太多更新，不知道怎么说了">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/GameLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/GameLauncher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/GameViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/controller/ModeViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/model/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sustech/students/ura/devproject/server/UserManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/game.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +40,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/pentaoa/DevProject.git&quot;,
-    &quot;accountId&quot;: &quot;ae2b025a-6bd7-40ad-9b1a-1ea519247ad4&quot;
+    &quot;accountId&quot;: &quot;f8280d95-5c00-4765-900b-2d4ca3041103&quot;
   }
 }</component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -83,7 +75,7 @@
     &quot;git-widget-placeholder&quot;: &quot;modefix&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Grada/IdeaProjects/DevProject/src/main/resources/images&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/grada/Documents/GitHub/DevProject&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -204,6 +196,8 @@
       <workItem from="1716946253476" duration="675000" />
       <workItem from="1716948153742" duration="1980000" />
       <workItem from="1716954892166" duration="3633000" />
+      <workItem from="1716971937835" duration="15000" />
+      <workItem from="1716972861710" duration="73000" />
     </task>
     <task id="LOCAL-00001" summary="增加了步数显示">
       <option name="closed" value="true" />
