@@ -133,50 +133,40 @@ public class GameViewController{
         addEventFilterToButton(MoveRight);
 
         gif_mona.setOnMouseClicked(mouseEvent -> {
-            long startTime = System.nanoTime(); // 记录开始时间用于计算循环间隔
-            try {
-                while (true) {
-                    long elapsedTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
-                    // 确保至少经过了一定的时间间隔
-                    if (elapsedTime < 500) { // 500毫秒是半秒，控制ai的速度
-                        Thread.sleep(500 - elapsedTime); // 等待半秒
-                        startTime = System.nanoTime(); // 更新开始时间
-                    }
-                    // 尝试左下移动
-                    gameManager.moveLeft();
-                    updateStepCount(gameManager.getSteps());
-                    updateScore(gameManager.getScore());
-                    handleMoveCompletion();
-                    handleLoseCondition();
-                    gameManager.moveDown();
-                    updateStepCount(gameManager.getSteps());
-                    updateScore(gameManager.getScore());
-                    handleMoveCompletion();
-                    handleLoseCondition();
-                    // 检查是否还能继续左下移动
-                    if (!gameManager.canMove(Direction.DOWN) && !gameManager.canMove(Direction.LEFT)) {
-                        // 如果不能继续左下移动，执行一次上下移动
-                        gameManager.moveUp();
-                        updateStepCount(gameManager.getSteps());
-                        updateScore(gameManager.getScore());
-                        handleMoveCompletion();
-                        handleLoseCondition();
-                        gameManager.moveDown();
-                        updateStepCount(gameManager.getSteps());
-                        updateScore(gameManager.getScore());
-                        handleMoveCompletion();
-                        handleLoseCondition();
-                        // 再次检查是否可以恢复左下移动
-                        if (!gameManager.canMove(Direction.DOWN) && !gameManager.canMove(Direction.LEFT)) {
-                            break; // 无法继续移动，结束循环
-                        }
-                    }
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // 保持中断状态
-                System.out.println("Thread was interrupted");
-
+//            long startTime = System.nanoTime(); // 记录开始时间用于计算循环间隔
+            //                    long elapsedTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
+            // 确保至少经过了一定的时间间隔
+//                    if (elapsedTime < 300) { // 500毫秒是半秒，控制ai的速度
+//                        Thread.sleep(300 - elapsedTime); // 等待半秒
+//                        startTime = System.nanoTime(); // 更新开始时间
+//                    }
+            // 尝试左下移动
+            gameManager.moveLeft();
+            updateStepCount(gameManager.getSteps());
+            updateScore(gameManager.getScore());
+            handleMoveCompletion();
+            handleLoseCondition();
+            gameManager.moveDown();
+            updateStepCount(gameManager.getSteps());
+            updateScore(gameManager.getScore());
+            handleMoveCompletion();
+            handleLoseCondition();
+            // 检查是否还能继续左下移动
+            if (!gameManager.canMove(Direction.DOWN) && !gameManager.canMove(Direction.LEFT)) {
+                // 如果不能继续左下移动，执行一次上下移动
+                gameManager.moveUp();
+                updateStepCount(gameManager.getSteps());
+                updateScore(gameManager.getScore());
+                handleMoveCompletion();
+                handleLoseCondition();
+                gameManager.moveDown();
+                updateStepCount(gameManager.getSteps());
+                updateScore(gameManager.getScore());
+                handleMoveCompletion();
+                handleLoseCondition();
+                // 再次检查是否可以恢复左下移动
             }
+
         });
 
         QuitButton.setOnAction(event -> {
@@ -390,10 +380,20 @@ public class GameViewController{
 
     public void handleLoseCondition(){
         if(gameManager.isGameOver()==true){
-            showAlert("你输了", "游戏结束，你已经不能移动了");
-            if (status.isOnlineGame()) {
-                client.sendMessage("SET_HIGHSCORE:" + status.getUsername() + ":" + status.getMode() + ":" + gameManager.getScore());
-            }
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("你输了");
+            alert.setHeaderText("但是可以复活！");
+            alert.setContentText("是否充值以获取复活机会？");
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    gameManager.revise();
+                } else if(response == ButtonType.CANCEL){
+                    gameManager.stopGame();
+                    if (status.isOnlineGame()) {
+                        client.sendMessage("SET_HIGHSCORE:" + status.getUsername() + ":" + status.getMode() + ":" + gameManager.getScore());
+                    }
+                }
+            });
         }
     }
 

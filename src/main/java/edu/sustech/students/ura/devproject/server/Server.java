@@ -85,6 +85,19 @@ public class Server {
                 int score = Integer.parseInt(parts[3]);
                 boolean success = userManager.setHighScore(username, mode, score);
                 out.writeObject(success ? "SET_HIGHSCORE_SUCCESS" : "SET_HIGHSCORE_FAIL:用户不存在");
+            } else if (message.startsWith("GET_HIGHSCORE:")) {
+                String[] parts = message.split(":");
+                String username = parts[1];
+                int mode = Integer.parseInt(parts[2]);
+                int highScore = userManager.getHighScore(username, mode);
+                out.writeObject("GET_HIGHSCORE:" + highScore);
+            } else if (message.startsWith("CHANGE_PASSWORD:")) {
+                String[] parts = message.split(":");
+                String username = parts[1];
+                String oldPassword = parts[2];
+                String newPassword = parts[3];
+                boolean success = userManager.changePassword(username, oldPassword, newPassword);
+                out.writeObject(success ? "CHANGE_PASSWORD_SUCCESS" : "CHANGE_PASSWORD_FAIL:用户名或密码错误");
             } else {
                 out.writeObject("Unknown command: " + message);
             }

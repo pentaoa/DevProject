@@ -488,6 +488,7 @@ public class GameManager implements Serializable {
                 break;
             }
         }
+        updateTile();
     }
 
     public int getScore() {

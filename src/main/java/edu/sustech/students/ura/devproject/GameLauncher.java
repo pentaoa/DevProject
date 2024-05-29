@@ -14,6 +14,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class GameLauncher extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+//        stage.initStyle(StageStyle.TRANSPARENT);
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo.png")));
         stage.getIcons().add(icon);
         // 播放开始音乐

@@ -89,4 +89,21 @@ public class UserManager {
         saveUsers();
         return true;
     }
+
+    public synchronized int getHighScore(String username, int mode) {
+        User user = users.get(username);
+        if (user == null) {
+            return 0;
+        }
+        switch (mode) {
+            case 1:
+                return user.getEasyModeHighScore();
+            case 3:
+                return user.getTimeModeHighScore();
+            case 2:
+                return user.getObstacleModeHighScore();
+            default:
+                return 0;
+        }
+    }
 }
