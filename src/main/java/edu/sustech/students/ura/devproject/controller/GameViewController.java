@@ -141,12 +141,20 @@ public class GameViewController{
 //                        startTime = System.nanoTime(); // 更新开始时间
 //                    }
             // 尝试左下移动
-            gameManager.moveLeft();
+            try {
+                gameManager.moveLeft();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             updateStepCount(gameManager.getSteps());
             updateScore(gameManager.getScore());
             handleMoveCompletion();
             handleLoseCondition();
-            gameManager.moveDown();
+            try {
+                gameManager.moveDown();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             updateStepCount(gameManager.getSteps());
             updateScore(gameManager.getScore());
             handleMoveCompletion();
@@ -154,12 +162,20 @@ public class GameViewController{
             // 检查是否还能继续左下移动
             if (!gameManager.canMove(Direction.DOWN) && !gameManager.canMove(Direction.LEFT)) {
                 // 如果不能继续左下移动，执行一次上下移动
-                gameManager.moveUp();
+                try {
+                    gameManager.moveUp();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 updateStepCount(gameManager.getSteps());
                 updateScore(gameManager.getScore());
                 handleMoveCompletion();
                 handleLoseCondition();
-                gameManager.moveDown();
+                try {
+                    gameManager.moveDown();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 updateStepCount(gameManager.getSteps());
                 updateScore(gameManager.getScore());
                 handleMoveCompletion();
@@ -261,28 +277,44 @@ public class GameViewController{
 
 
         MoveUp.setOnAction(event -> { // 每次移动之后，检查胜利和失败
-            gameManager.moveUp();
+            try {
+                gameManager.moveUp();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             updateStepCount(gameManager.getSteps());
             updateScore(gameManager.getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
         MoveDown.setOnAction(event -> {
-            gameManager.moveDown();
+            try {
+                gameManager.moveDown();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             updateStepCount(gameManager.getSteps());
             updateScore(gameManager.getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
         MoveLeft.setOnAction(event -> {
-            gameManager.moveLeft();
+            try {
+                gameManager.moveLeft();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             updateStepCount(gameManager.getSteps());
             updateScore(gameManager.getScore());
             handleMoveCompletion();
             handleLoseCondition();
         });
         MoveRight.setOnAction(event -> {
-            gameManager.moveRight();
+            try {
+                gameManager.moveRight();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             updateStepCount(gameManager.getSteps());
             updateScore(gameManager.getScore());
             handleMoveCompletion();
@@ -294,28 +326,44 @@ public class GameViewController{
             gameViewCenter.getScene().setOnKeyPressed(event -> {
                 switch (event.getCode()) {
                     case W:
-                        gameManager.moveUp();
+                        try {
+                            gameManager.moveUp();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         updateStepCount(gameManager.getSteps());
                         updateScore(gameManager.getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
                     case S:
-                        gameManager.moveDown();
+                        try {
+                            gameManager.moveDown();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         updateStepCount(gameManager.getSteps());
                         updateScore(gameManager.getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
                     case A:
-                        gameManager.moveLeft();
+                        try {
+                            gameManager.moveLeft();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         updateStepCount(gameManager.getSteps());
                         updateScore(gameManager.getScore());
                         handleMoveCompletion();
                         handleLoseCondition();
                         break;
                     case D:
-                        gameManager.moveRight();
+                        try {
+                            gameManager.moveRight();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         updateStepCount(gameManager.getSteps());
                         updateScore(gameManager.getScore());
                         handleMoveCompletion();
@@ -409,7 +457,11 @@ public class GameViewController{
         button.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             switch (event.getCode()) {
                 case UP:
-                    gameManager.moveUp();
+                    try {
+                        gameManager.moveUp();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     updateStepCount(gameManager.getSteps());
                     updateScore(gameManager.getScore());
                     handleMoveCompletion();
@@ -417,7 +469,11 @@ public class GameViewController{
                     event.consume();
                     break;
                 case DOWN:
-                    gameManager.moveDown();
+                    try {
+                        gameManager.moveDown();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     updateStepCount(gameManager.getSteps());
                     updateScore(gameManager.getScore());
                     handleMoveCompletion();
@@ -425,7 +481,11 @@ public class GameViewController{
                     event.consume();
                     break;
                 case LEFT:
-                    gameManager.moveLeft();
+                    try {
+                        gameManager.moveLeft();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     updateStepCount(gameManager.getSteps());
                     updateScore(gameManager.getScore());
                     handleMoveCompletion();
@@ -433,7 +493,11 @@ public class GameViewController{
                     event.consume();
                     break;
                 case RIGHT:
-                    gameManager.moveRight();
+                    try {
+                        gameManager.moveRight();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     updateStepCount(gameManager.getSteps());
                     updateScore(gameManager.getScore());
                     handleMoveCompletion();

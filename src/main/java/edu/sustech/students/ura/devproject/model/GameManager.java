@@ -5,10 +5,12 @@ import edu.sustech.students.ura.devproject.util.Direction;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
+import javafx.application.Platform;
 
 /**
  * GameManager
@@ -26,7 +28,9 @@ public class GameManager implements Serializable {
 
     public int mode;
     private Timer timer;
+    private Timer animationTimer;
     private long elapsedTime; // 以毫秒为单位
+    private long animationTime;
     private boolean isPaused;
     private Consumer<Long> timeUpdateListener;
     private int score = 0;
@@ -51,6 +55,27 @@ public class GameManager implements Serializable {
         startTimer();
         System.out.println("成功新建游戏！");
     }
+
+    private void startAnimationTimer() {
+        animationTimer = new Timer();
+        animationTime = 0;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                animationTime += 100;
+                if (animationTime >= 101) {
+                    Platform.runLater(() -> {
+                        System.out.println("动画结束");
+                        updateTile();
+                    });
+                    animationTimer.cancel();
+                    animationTime=0;
+                }
+            }
+        };
+        animationTimer.scheduleAtFixedRate(task, 0, 100);
+    }
+
 
     // 开始计时
     private void startTimer() {
@@ -204,7 +229,7 @@ public class GameManager implements Serializable {
         }
     }
 
-    public void moveRight() {
+    public void moveRight() throws InterruptedException {
         boolean moveSuccessfully = false;
         for (int row = 0; row < X_COUNT; row++) {
             int targetColumn = Y_COUNT - 1;
@@ -251,10 +276,10 @@ public class GameManager implements Serializable {
             steps++;
         }
         printNumbers();
-//        updateTile();
+        startAnimationTimer();
     }
 
-    public void moveLeft() {
+    public void moveLeft() throws InterruptedException {
         boolean moveSuccessfully = false;
         for (int row = 0; row < X_COUNT; row++) {
             int targetColumn = 0;
@@ -301,10 +326,11 @@ public class GameManager implements Serializable {
             steps++;
         }
         printNumbers();
-//        updateTile();
+        startAnimationTimer();
+
     }
 
-    public void moveUp() {
+    public void moveUp() throws InterruptedException {
         boolean moveSuccessfully = false;
         for (int column = 0; column < Y_COUNT; column++) {
             int targetRow = 0;
@@ -351,10 +377,10 @@ public class GameManager implements Serializable {
             steps++;
         }
         printNumbers();
-//        updateTile();
+        startAnimationTimer();
     }
 
-    public void moveDown() {
+    public void moveDown() throws InterruptedException {
         boolean moveSuccessfully = false;
         for (int column = 0; column < Y_COUNT; column++) {
             int targetRow = X_COUNT - 1;
@@ -401,7 +427,7 @@ public class GameManager implements Serializable {
             steps++;
         }
         printNumbers();
-//        updateTile();
+        startAnimationTimer();
     }
 
 
@@ -483,7 +509,7 @@ public class GameManager implements Serializable {
                 break;
             }
         }
-//        updateTile();
+        updateTile();
     }
 
     public int getScore() {

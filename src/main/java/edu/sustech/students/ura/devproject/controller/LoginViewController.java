@@ -160,6 +160,7 @@ public class LoginViewController implements ClientListener {
         // Update UI in JavaFX application thread
         javafx.application.Platform.runLater(() -> {
             if (message.startsWith("LOGIN_SUCCESS")) {
+                AudioPlayer.playSound("src/main/resources/audio/LinkStart.wav");
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("提示");
                 alert.setHeaderText("登录成功");
