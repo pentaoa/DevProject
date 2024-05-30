@@ -82,6 +82,15 @@ public class GameLauncher extends Application {
         stage.show();
     }
 
+    public void showToolStage(Stage stage) throws IOException {
+        // 新建一个舞台
+        Stage toolStage = new Stage();
+        toolStage.setTitle("工具");
+
+        // 加载工具界面
+        // TODO: 完善工具窗口
+    }
+
 
     public static void main(String[] args) {
         launch(args);

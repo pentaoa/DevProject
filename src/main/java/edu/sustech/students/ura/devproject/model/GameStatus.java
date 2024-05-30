@@ -27,6 +27,9 @@ public class GameStatus implements Serializable {
     private int score = 0;
     private int step = 0;
     private long time = 0;
+    private boolean isSoundOn = true;
+    private boolean isMusicOn = true;
+    private boolean isCheat = false;
 
     // 私有构造函数，防止外部实例化
     private GameStatus() {

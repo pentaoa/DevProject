@@ -48,10 +48,6 @@ public class GameManager implements Serializable {
         mode = status.getMode();
         numbers = status.getGridNumber();
         initialNumbers();
-        placeRandomObstacle();
-        if (mode != 2) {
-            removeObstacles();
-        }
         startTimer();
         System.out.println("成功新建游戏！");
     }
@@ -151,10 +147,6 @@ public class GameManager implements Serializable {
         this.timeUpdateListener = listener;
     }
 
-    public int getMode() {
-        return mode;
-    }
-
     private void placeRandomObstacle() {
         while (obstacleNumber == 0) {
             int row = random.nextInt(4);
@@ -191,6 +183,9 @@ public class GameManager implements Serializable {
                 gameBoard.setTileValue(row, column, 2);
                 initialNumber++;
             }
+        }
+        if (mode == 2) {
+            placeRandomObstacle();
         }
         this.steps = 0;
     }
@@ -256,7 +251,7 @@ public class GameManager implements Serializable {
             steps++;
         }
         printNumbers();
-        updateTile();
+//        updateTile();
     }
 
     public void moveLeft() {
@@ -306,7 +301,7 @@ public class GameManager implements Serializable {
             steps++;
         }
         printNumbers();
-        updateTile();
+//        updateTile();
     }
 
     public void moveUp() {
@@ -356,7 +351,7 @@ public class GameManager implements Serializable {
             steps++;
         }
         printNumbers();
-        updateTile();
+//        updateTile();
     }
 
     public void moveDown() {
@@ -406,7 +401,7 @@ public class GameManager implements Serializable {
             steps++;
         }
         printNumbers();
-        updateTile();
+//        updateTile();
     }
 
 
@@ -488,7 +483,7 @@ public class GameManager implements Serializable {
                 break;
             }
         }
-        updateTile();
+//        updateTile();
     }
 
     public int getScore() {
@@ -542,5 +537,9 @@ public class GameManager implements Serializable {
 
     public void setMode(int mode) {
         this.mode = mode;
+    }
+
+    public int getMode() {
+        return mode;
     }
 }

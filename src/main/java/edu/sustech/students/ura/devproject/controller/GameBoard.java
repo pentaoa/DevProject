@@ -25,10 +25,6 @@ public class GameBoard extends GridPane implements GameBoardInterface, Serializa
 
     public GameBoard() {
         tiles = new Tile[SIZE][SIZE];
-        initializeBoard();
-    }
-
-    private void initializeBoard() {
         setHgap(10);
         setVgap(10);
         setPadding(new Insets(10));
@@ -45,12 +41,10 @@ public class GameBoard extends GridPane implements GameBoardInterface, Serializa
     @Override
     public void removeTile(int row, int col) {
         getChildren().remove(tiles[row][col]);
-        tiles[row][col] = null;
     }
 
     @Override
     public void moveTile(int fromRow, int fromCol, int toRow, int toCol) {
-//
 //        Tile tile = tiles[fromRow][fromCol];
 //        tiles[toRow][toCol].setValue(tile.getValue());
 //        tiles[fromRow][fromCol].setValue(0);

@@ -9,6 +9,7 @@ public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private String ID;
     private String username;
     private String password;
     private int easyModeHighScore = 0;
