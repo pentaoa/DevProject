@@ -83,8 +83,8 @@ public class Tile extends StackPane implements Serializable {
                 fontSize = 40;
                 break;
             case 0:
-                backgroundColor = "FFFAF584";
-                textColor = "776E6500";
+                backgroundColor = "00000000";
+                textColor = "00000000";
                 fontSize = 40;
                 break;
             case 2:

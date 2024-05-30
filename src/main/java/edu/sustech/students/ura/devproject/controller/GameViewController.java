@@ -121,6 +121,8 @@ public class GameViewController{
 
         initialGame();
 
+
+
         // 为按钮添加事件过滤器
         addEventFilterToButton(LoadButton);
         addEventFilterToButton(PauseButton);

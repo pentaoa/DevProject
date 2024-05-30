@@ -11,5 +11,7 @@ public interface GameBoardInterface {
 
     void setTileValue(int row, int col, int value);
 
+    void generateTile(int row, int col, int value);
+
     boolean haveTile(int row, int col);
 }

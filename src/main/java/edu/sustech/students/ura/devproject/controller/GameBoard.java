@@ -1,16 +1,10 @@
 package edu.sustech.students.ura.devproject.controller;
 
-import edu.sustech.students.ura.devproject.model.GameManager;
 import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.io.Serial;
@@ -27,6 +21,12 @@ public class GameBoard extends GridPane implements GameBoardInterface, Serializa
         setHgap(10);
         setVgap(10);
         setPadding(new Insets(10));
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                Cell cell = new Cell();
+                add(cell, j, i);
+            }
+        }
     }
 
     @Override
@@ -73,7 +73,7 @@ public class GameBoard extends GridPane implements GameBoardInterface, Serializa
 //        fromTile.setValue(0);
 
         // Animation Merge
-        TranslateTransition transition = new TranslateTransition(Duration.millis(10), fromTile);
+        TranslateTransition transition = new TranslateTransition(Duration.millis(40), fromTile);
         transition.setByX((toCol - fromCol) * 75);
         transition.setByY((toRow - fromRow) * 75);
         transition.setOnFinished(event -> {
@@ -85,7 +85,7 @@ public class GameBoard extends GridPane implements GameBoardInterface, Serializa
             add(fromTile, fromCol, fromRow);
 
             // Merge effect
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(10), toTile);
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(40), toTile);
             scaleTransition.setFromX(1);
             scaleTransition.setFromY(1);
             scaleTransition.setToX(1.2);
@@ -106,5 +106,12 @@ public class GameBoard extends GridPane implements GameBoardInterface, Serializa
     @Override
     public boolean haveTile(int row, int col) {
         return tiles[row][col] != null;
+    }
+
+    @Override
+    public void generateTile(int row, int col, int value) {
+        tiles[row][col].setValue(value);
+        SequentialTransition animation = tiles[row][col].createAnimation();
+        animation.play();
     }
 }

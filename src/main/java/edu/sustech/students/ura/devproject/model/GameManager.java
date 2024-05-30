@@ -5,12 +5,14 @@ import edu.sustech.students.ura.devproject.util.Direction;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.function.Consumer;
+
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
+import javafx.util.Duration;
+import javafx.util.Pair;
 
 /**
  * GameManager
@@ -63,13 +65,14 @@ public class GameManager implements Serializable {
             @Override
             public void run() {
                 animationTime += 100;
-                if (animationTime >= 101) {
+                System.out.println("Current animationTime: " + animationTime);
+                if (animationTime >= 150) {
                     Platform.runLater(() -> {
                         System.out.println("动画结束");
                         updateTile();
+                        animationTimer.cancel(); // 确保动画结束后取消定时器
+                        animationTime = 0; // 重置 animationTime 仅在动画结束后
                     });
-                    animationTimer.cancel();
-                    animationTime=0;
                 }
             }
         };
@@ -223,7 +226,7 @@ public class GameManager implements Serializable {
             int column = random.nextInt(model.getY_COUNT());
             if (model.numbers[row][column] == 0) {
                 model.numbers[row][column] = random.nextInt(2) == 0 ? 2 : 4;
-                gameBoard.setTileValue(row, column, model.numbers[row][column]);
+                gameBoard.generateTile(row, column, model.numbers[row][column]);
                 newNumber++;
             }
         }
@@ -231,14 +234,26 @@ public class GameManager implements Serializable {
 
     public void moveRight() throws InterruptedException {
         boolean moveSuccessfully = false;
+        Queue<Pair<int[], Runnable>> move1Queue = new LinkedList<>();
+        Queue<Pair<int[], Runnable>> mergeQueue = new LinkedList<>();
+        Queue<Pair<int[], Runnable>> move2Queue = new LinkedList<>();
+
         for (int row = 0; row < X_COUNT; row++) {
             int targetColumn = Y_COUNT - 1;
             for (int column = Y_COUNT - 1; column >= 0; column--) {
                 if (numbers[row][column] != 0 && numbers[row][column] != -1) {
                     if (column != targetColumn && numbers[row][targetColumn] == 0) {
+                        final int fromRow = row, fromCol = column, toCol = targetColumn;
                         numbers[row][targetColumn] = numbers[row][column];
                         numbers[row][column] = 0;
-                        gameBoard.moveTile(row, column, row, targetColumn);
+                        move1Queue.add(new Pair<>(new int[]{fromRow, fromCol, fromRow, toCol},
+                                () -> {
+                                    try {
+                                        gameBoard.moveTile(fromRow, fromCol, fromRow, toCol);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }));
                         moveSuccessfully = true;
                     }
                     targetColumn--;
@@ -246,23 +261,39 @@ public class GameManager implements Serializable {
                     targetColumn--;
                 }
             }
+        }
+
+        for (int row = 0; row < X_COUNT; row++) {
             for (int column = Y_COUNT - 1; column > 0; column--) {
                 if (numbers[row][column] != 0 && numbers[row][column] == numbers[row][column - 1] && numbers[row][column] != -1) {
+                    final int fromRow = row, fromCol = column - 1, toCol = column;
                     numbers[row][column] *= 2;
                     numbers[row][column - 1] = 0;
                     score += numbers[row][column];
-                    gameBoard.mergeTile(row, column - 1, row, column);
+                    mergeQueue.add(new Pair<>(new int[]{fromRow, fromCol, fromRow, toCol},
+                            () -> gameBoard.mergeTile(fromRow, fromCol, fromRow, toCol)));
                     moveSuccessfully = true;
                     column--;
                 }
             }
-            targetColumn = Y_COUNT - 1;
+        }
+
+        for (int row = 0; row < X_COUNT; row++) {
+            int targetColumn = Y_COUNT - 1;
             for (int column = Y_COUNT - 1; column >= 0; column--) {
                 if (numbers[row][column] != 0 && numbers[row][column] != -1) {
                     if (column != targetColumn && numbers[row][targetColumn] == 0) {
+                        final int fromRow = row, fromCol = column, toCol = targetColumn;
                         numbers[row][targetColumn] = numbers[row][column];
                         numbers[row][column] = 0;
-                        gameBoard.moveTile(row, column, row, targetColumn);
+                        move2Queue.add(new Pair<>(new int[]{fromRow, fromCol, fromRow, toCol},
+                                () -> {
+                                    try {
+                                        gameBoard.moveTile(fromRow, fromCol, fromRow, toCol);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }));
                         moveSuccessfully = true;
                     }
                     targetColumn--;
@@ -271,24 +302,66 @@ public class GameManager implements Serializable {
                 }
             }
         }
+
         if (moveSuccessfully) {
-            generateNewNumbers(this);
-            steps++;
+            SequentialTransition sequence = new SequentialTransition();
+            // Execute all move operations
+            while (!move1Queue.isEmpty()) {
+                Pair<int[], Runnable> moveAction = move1Queue.poll();
+                moveAction.getValue().run();
+            }
+            PauseTransition pause = new PauseTransition(Duration.millis(100));
+            pause.setOnFinished(e -> {
+                // Execute all merge operations
+                while (!mergeQueue.isEmpty()) {
+                    Pair<int[], Runnable> mergeAction = mergeQueue.poll();
+                    mergeAction.getValue().run();
+                }
+                PauseTransition laterPause = new PauseTransition(Duration.millis(100));
+                laterPause.setOnFinished(e2 -> {
+                    while(!move2Queue.isEmpty()) {
+                        Pair<int[], Runnable> moveAction = move2Queue.poll();
+                        moveAction.getValue().run();
+                    }
+                });
+                sequence.getChildren().add(laterPause);
+            });
+            sequence.getChildren().add(pause);
+
+            sequence.setOnFinished(e -> {
+                // After all moves and merges, generate new numbers and update steps
+                generateNewNumbers(this);
+                steps++;
+                printNumbers();
+                startAnimationTimer();
+            });
+
+            sequence.play();
         }
-        printNumbers();
-        startAnimationTimer();
     }
 
     public void moveLeft() throws InterruptedException {
         boolean moveSuccessfully = false;
+        Queue<Pair<int[], Runnable>> move1Queue = new LinkedList<>();
+        Queue<Pair<int[], Runnable>> mergeQueue = new LinkedList<>();
+        Queue<Pair<int[], Runnable>> move2Queue = new LinkedList<>();
+
         for (int row = 0; row < X_COUNT; row++) {
             int targetColumn = 0;
             for (int column = 0; column < Y_COUNT; column++) {
                 if (numbers[row][column] != 0 && numbers[row][column] != -1) {
                     if (column != targetColumn && numbers[row][targetColumn] == 0) {
+                        final int fromRow = row, fromCol = column, toCol = targetColumn;
                         numbers[row][targetColumn] = numbers[row][column];
                         numbers[row][column] = 0;
-                        gameBoard.moveTile(row, column, row, targetColumn);
+                        move1Queue.add(new Pair<>(new int[]{fromRow, fromCol, fromRow, toCol},
+                                () -> {
+                                    try {
+                                        gameBoard.moveTile(fromRow, fromCol, fromRow, toCol);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }));
                         moveSuccessfully = true;
                     }
                     targetColumn++;
@@ -296,23 +369,39 @@ public class GameManager implements Serializable {
                     targetColumn++;
                 }
             }
+        }
+
+        for (int row = 0; row < X_COUNT; row++) {
             for (int column = 0; column < Y_COUNT - 1; column++) {
                 if (numbers[row][column] != 0 && numbers[row][column] == numbers[row][column + 1] && numbers[row][column] != -1) {
+                    final int fromRow = row, fromCol = column + 1, toCol = column;
                     numbers[row][column] *= 2;
                     numbers[row][column + 1] = 0;
                     score += numbers[row][column];
-                    gameBoard.mergeTile(row, column + 1, row, column);
+                    mergeQueue.add(new Pair<>(new int[]{fromRow, fromCol, fromRow, toCol},
+                            () -> gameBoard.mergeTile(fromRow, fromCol, fromRow, toCol)));
                     moveSuccessfully = true;
                     column++;
                 }
             }
-            targetColumn = 0;
+        }
+
+        for (int row = 0; row < X_COUNT; row++) {
+            int targetColumn = 0;
             for (int column = 0; column < Y_COUNT; column++) {
                 if (numbers[row][column] != 0 && numbers[row][column] != -1) {
                     if (column != targetColumn && numbers[row][targetColumn] == 0) {
+                        final int fromRow = row, fromCol = column, toCol = targetColumn;
                         numbers[row][targetColumn] = numbers[row][column];
                         numbers[row][column] = 0;
-                        gameBoard.moveTile(row, column, row, targetColumn);
+                        move2Queue.add(new Pair<>(new int[]{fromRow, fromCol, fromRow, toCol},
+                                () -> {
+                                    try {
+                                        gameBoard.moveTile(fromRow, fromCol, fromRow, toCol);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }));
                         moveSuccessfully = true;
                     }
                     targetColumn++;
@@ -321,25 +410,67 @@ public class GameManager implements Serializable {
                 }
             }
         }
-        if (moveSuccessfully) {
-            generateNewNumbers(this);
-            steps++;
-        }
-        printNumbers();
-        startAnimationTimer();
 
+        if (moveSuccessfully) {
+            SequentialTransition sequence = new SequentialTransition();
+            // Execute all move operations
+            while (!move1Queue.isEmpty()) {
+                Pair<int[], Runnable> moveAction = move1Queue.poll();
+                moveAction.getValue().run();
+            }
+            PauseTransition pause = new PauseTransition(Duration.millis(100));
+            pause.setOnFinished(e -> {
+                // Execute all merge operations
+                while (!mergeQueue.isEmpty()) {
+                    Pair<int[], Runnable> mergeAction = mergeQueue.poll();
+                    mergeAction.getValue().run();
+                }
+                PauseTransition laterPause = new PauseTransition(Duration.millis(100));
+                laterPause.setOnFinished(e2 -> {
+                    while(!move2Queue.isEmpty()) {
+                        Pair<int[], Runnable> moveAction = move2Queue.poll();
+                        moveAction.getValue().run();
+                    }
+                });
+                sequence.getChildren().add(laterPause);
+            });
+            sequence.getChildren().add(pause);
+
+            sequence.setOnFinished(e -> {
+                // After all moves and merges, generate new numbers and update steps
+                generateNewNumbers(this);
+                steps++;
+                printNumbers();
+                startAnimationTimer();
+            });
+
+            sequence.play();
+        }
     }
+
 
     public void moveUp() throws InterruptedException {
         boolean moveSuccessfully = false;
+        Queue<Pair<int[], Runnable>> move1Queue = new LinkedList<>();
+        Queue<Pair<int[], Runnable>> mergeQueue = new LinkedList<>();
+        Queue<Pair<int[], Runnable>> move2Queue = new LinkedList<>();
+
         for (int column = 0; column < Y_COUNT; column++) {
             int targetRow = 0;
             for (int row = 0; row < X_COUNT; row++) {
                 if (numbers[row][column] != 0 && numbers[row][column] != -1) {
                     if (row != targetRow && numbers[targetRow][column] == 0) {
+                        final int fromRow = row, toRow = targetRow, fromCol = column;
                         numbers[targetRow][column] = numbers[row][column];
                         numbers[row][column] = 0;
-                        gameBoard.moveTile(row, column, targetRow, column);
+                        move1Queue.add(new Pair<>(new int[]{fromRow, fromCol, toRow, fromCol},
+                                () -> {
+                                    try {
+                                        gameBoard.moveTile(fromRow, fromCol, toRow, fromCol);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }));
                         moveSuccessfully = true;
                     }
                     targetRow++;
@@ -347,23 +478,39 @@ public class GameManager implements Serializable {
                     targetRow++;
                 }
             }
+        }
+
+        for (int column = 0; column < Y_COUNT; column++) {
             for (int row = 0; row < X_COUNT - 1; row++) {
                 if (numbers[row][column] != 0 && numbers[row][column] == numbers[row + 1][column] && numbers[row][column] != -1) {
+                    final int fromRow = row + 1, toRow = row, fromCol = column;
                     numbers[row][column] *= 2;
                     numbers[row + 1][column] = 0;
                     score += numbers[row][column];
-                    gameBoard.mergeTile(row + 1, column, row, column);
+                    mergeQueue.add(new Pair<>(new int[]{fromRow, fromCol, toRow, fromCol},
+                            () -> gameBoard.mergeTile(fromRow, fromCol, toRow, fromCol)));
                     moveSuccessfully = true;
                     row++;
                 }
             }
-            targetRow = 0;
+        }
+
+        for (int column = 0; column < Y_COUNT; column++) {
+            int targetRow = 0;
             for (int row = 0; row < X_COUNT; row++) {
                 if (numbers[row][column] != 0 && numbers[row][column] != -1) {
                     if (row != targetRow && numbers[targetRow][column] == 0) {
+                        final int fromRow = row, toRow = targetRow, fromCol = column;
                         numbers[targetRow][column] = numbers[row][column];
                         numbers[row][column] = 0;
-                        gameBoard.moveTile(row, column, targetRow, column);
+                        move2Queue.add(new Pair<>(new int[]{fromRow, fromCol, toRow, fromCol},
+                                () -> {
+                                    try {
+                                        gameBoard.moveTile(fromRow, fromCol, toRow, fromCol);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }));
                         moveSuccessfully = true;
                     }
                     targetRow++;
@@ -372,24 +519,67 @@ public class GameManager implements Serializable {
                 }
             }
         }
+
         if (moveSuccessfully) {
-            generateNewNumbers(this);
-            steps++;
+            SequentialTransition sequence = new SequentialTransition();
+            // Execute all move operations
+            while (!move1Queue.isEmpty()) {
+                Pair<int[], Runnable> moveAction = move1Queue.poll();
+                moveAction.getValue().run();
+            }
+            PauseTransition pause = new PauseTransition(Duration.millis(100));
+            pause.setOnFinished(e -> {
+                // Execute all merge operations
+                while (!mergeQueue.isEmpty()) {
+                    Pair<int[], Runnable> mergeAction = mergeQueue.poll();
+                    mergeAction.getValue().run();
+                }
+                PauseTransition laterPause = new PauseTransition(Duration.millis(100));
+                laterPause.setOnFinished(e2 -> {
+                    while(!move2Queue.isEmpty()) {
+                        Pair<int[], Runnable> moveAction = move2Queue.poll();
+                        moveAction.getValue().run();
+                    }
+                });
+                sequence.getChildren().add(laterPause);
+            });
+            sequence.getChildren().add(pause);
+
+            sequence.setOnFinished(e -> {
+                // After all moves and merges, generate new numbers and update steps
+                generateNewNumbers(this);
+                steps++;
+                printNumbers();
+                startAnimationTimer();
+            });
+
+            sequence.play();
         }
-        printNumbers();
-        startAnimationTimer();
     }
+
 
     public void moveDown() throws InterruptedException {
         boolean moveSuccessfully = false;
+        Queue<Pair<int[], Runnable>> move1Queue = new LinkedList<>();
+        Queue<Pair<int[], Runnable>> mergeQueue = new LinkedList<>();
+        Queue<Pair<int[], Runnable>> move2Queue = new LinkedList<>();
+
         for (int column = 0; column < Y_COUNT; column++) {
             int targetRow = X_COUNT - 1;
             for (int row = X_COUNT - 1; row >= 0; row--) {
                 if (numbers[row][column] != 0 && numbers[row][column] != -1) {
                     if (row != targetRow && numbers[targetRow][column] == 0) {
+                        final int fromRow = row, toRow = targetRow, fromCol = column;
                         numbers[targetRow][column] = numbers[row][column];
                         numbers[row][column] = 0;
-                        gameBoard.moveTile(row, column, targetRow, column);
+                        move1Queue.add(new Pair<>(new int[]{fromRow, fromCol, toRow, fromCol},
+                                () -> {
+                                    try {
+                                        gameBoard.moveTile(fromRow, fromCol, toRow, fromCol);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }));
                         moveSuccessfully = true;
                     }
                     targetRow--;
@@ -397,23 +587,39 @@ public class GameManager implements Serializable {
                     targetRow--;
                 }
             }
+        }
+
+        for (int column = 0; column < Y_COUNT; column++) {
             for (int row = X_COUNT - 1; row > 0; row--) {
                 if (numbers[row][column] != 0 && numbers[row][column] == numbers[row - 1][column] && numbers[row][column] != -1) {
+                    final int fromRow = row - 1, toRow = row, fromCol = column;
                     numbers[row][column] *= 2;
                     numbers[row - 1][column] = 0;
                     score += numbers[row][column];
-                    gameBoard.mergeTile(row - 1, column, row, column);
+                    mergeQueue.add(new Pair<>(new int[]{fromRow, fromCol, toRow, fromCol},
+                            () -> gameBoard.mergeTile(fromRow, fromCol, toRow, fromCol)));
                     moveSuccessfully = true;
                     row--;
                 }
             }
-            targetRow = X_COUNT - 1;
+        }
+
+        for (int column = 0; column < Y_COUNT; column++) {
+            int targetRow = X_COUNT - 1;
             for (int row = X_COUNT - 1; row >= 0; row--) {
                 if (numbers[row][column] != 0 && numbers[row][column] != -1) {
                     if (row != targetRow && numbers[targetRow][column] == 0) {
+                        final int fromRow = row, toRow = targetRow, fromCol = column;
                         numbers[targetRow][column] = numbers[row][column];
                         numbers[row][column] = 0;
-                        gameBoard.moveTile(row, column, targetRow, column);
+                        move2Queue.add(new Pair<>(new int[]{fromRow, fromCol, toRow, fromCol},
+                                () -> {
+                                    try {
+                                        gameBoard.moveTile(fromRow, fromCol, toRow, fromCol);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }));
                         moveSuccessfully = true;
                     }
                     targetRow--;
@@ -422,12 +628,42 @@ public class GameManager implements Serializable {
                 }
             }
         }
+
         if (moveSuccessfully) {
-            generateNewNumbers(this);
-            steps++;
+            SequentialTransition sequence = new SequentialTransition();
+            // Execute all move operations
+            while (!move1Queue.isEmpty()) {
+                Pair<int[], Runnable> moveAction = move1Queue.poll();
+                moveAction.getValue().run();
+            }
+            PauseTransition pause = new PauseTransition(Duration.millis(100));
+            pause.setOnFinished(e -> {
+                // Execute all merge operations
+                while (!mergeQueue.isEmpty()) {
+                    Pair<int[], Runnable> mergeAction = mergeQueue.poll();
+                    mergeAction.getValue().run();
+                }
+                PauseTransition laterPause = new PauseTransition(Duration.millis(100));
+                laterPause.setOnFinished(e2 -> {
+                    while(!move2Queue.isEmpty()) {
+                        Pair<int[], Runnable> moveAction = move2Queue.poll();
+                        moveAction.getValue().run();
+                    }
+                });
+                sequence.getChildren().add(laterPause);
+            });
+            sequence.getChildren().add(pause);
+
+            sequence.setOnFinished(e -> {
+                // After all moves and merges, generate new numbers and update steps
+                generateNewNumbers(this);
+                steps++;
+                printNumbers();
+                startAnimationTimer();
+            });
+
+            sequence.play();
         }
-        printNumbers();
-        startAnimationTimer();
     }
 
 
