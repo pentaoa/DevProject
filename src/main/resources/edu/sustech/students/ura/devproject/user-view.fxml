@@ -1,32 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="420.0" minWidth="630.0" prefHeight="420.0" prefWidth="630.0" stylesheets="@../../../../../game.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sustech.students.ura.devproject.controller.ModeViewController">
-    <center>
-        <VBox focusTraversable="true" spacing="20.0">
-            <children>
-                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-               <children>
-                  <Label fx:id="Text_HelloUser1" text="最高达到的数字">
-                     <font>
-                        <Font name="System Bold" size="23.0" />
-                     </font>
-                  </Label>
-               </children></VBox>
-            </children>
-            <BorderPane.margin>
-                <Insets />
-            </BorderPane.margin>
-        </VBox>
-    </center>
+<BorderPane minHeight="420.0" minWidth="630.0" prefHeight="420.0" prefWidth="630.0" styleClass="game-root" stylesheets="@../../../../../game.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sustech.students.ura.devproject.controller.UserViewController">
    <top>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="67.0" prefWidth="630.0" BorderPane.alignment="CENTER">
          <children>
                 <Label fx:id="Text_HelloUser" styleClass="game-title" text="欢迎，">
                     <font>
@@ -39,4 +23,109 @@
          </children>
       </HBox>
    </top>
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="265.0" prefWidth="257.0">
+               <children>
+                  <Label fx:id="text_scores" styleClass="game-title" text="战绩">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="text_scoresClassical" styleClass="game-digital" text="战绩">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="text_scoresObstacle" styleClass="game-digital" text="战绩">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="text_scoresTime" styleClass="game-digital" text="战绩">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="265.0" prefWidth="280.0">
+               <children>
+                  <Label fx:id="text_gradeBoard" styleClass="game-title" text="排行榜">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="text_boardClassical" styleClass="game-digital" text="排行">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="text_boardObstacle" styleClass="game-digital" text="排行">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="text_boardTime" styleClass="game-digital" text="排行">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+   <bottom>
+      <BorderPane prefHeight="80.0" prefWidth="630.0" BorderPane.alignment="CENTER">
+         <right>
+            <Button fx:id="button_newGame" mnemonicParsing="false" onAction="#newGame" styleClass="game-button" text="&gt;  新建游戏" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </BorderPane.margin>
+            </Button>
+         </right>
+         <left>
+            <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="320.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="button_setPassword" mnemonicParsing="false" styleClass="game-button" text="更改密码">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="button_readGame" mnemonicParsing="false" styleClass="game-button" text="读取游戏">
+                     <HBox.margin>
+                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </left>
+      </BorderPane>
+   </bottom>
 </BorderPane>

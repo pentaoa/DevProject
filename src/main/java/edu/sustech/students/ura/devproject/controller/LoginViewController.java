@@ -182,13 +182,13 @@ public class LoginViewController implements ClientListener {
         AudioPlayer.stopStaticPlayer();
         try {
             // 加载下一个 FXML 文件
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/mode-view.fxml"));
-            Scene loginScene = new Scene(loader.load());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/user-view.fxml"));
+            Scene userScene = new Scene(loader.load());
 
             // 获取当前的舞台并设置场景
             Stage stage = (Stage) Button_login.getScene().getWindow();
-            stage.setScene(loginScene);
-            stage.setTitle("模式选择 | 2048");
+            stage.setScene(userScene);
+            stage.setTitle("用户总览 | 2048");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

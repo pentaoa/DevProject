@@ -1,5 +1,8 @@
 package edu.sustech.students.ura.devproject.server;
 
+import edu.sustech.students.ura.devproject.model.GameManager;
+import edu.sustech.students.ura.devproject.model.SaveData;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,6 +107,43 @@ public class UserManager {
                 return user.getObstacleModeHighScore();
             default:
                 return 0;
+        }
+    }
+
+    public synchronized void saveUserSaveData(String username, int mode, SaveData saveData) {
+        User user = users.get(username);
+        if (user == null) {
+            return;
+        }
+        switch (mode) {
+            case 1:
+                user.setClassicalSaveData(saveData);
+                break;
+            case 2:
+                user.setObstacleSaveData(saveData);
+                break;
+            case 3:
+                user.setTimeSaveData(saveData);
+                break;
+            default:
+                break;
+        }
+        saveUsers();
+    }
+    public synchronized SaveData getUserSaveData(String username, int mode) {
+        User user = users.get(username);
+        if (user == null) {
+            return null;
+        }
+        switch (mode) {
+            case 1:
+                return user.getClassicalSaveData();
+            case 2:
+                return user.getObstacleSaveData();
+            case 3:
+                return user.getTimeSaveData();
+            default:
+                return null;
         }
     }
 }

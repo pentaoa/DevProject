@@ -1,12 +1,13 @@
 package edu.sustech.students.ura.devproject.controller;
 
 import edu.sustech.students.ura.devproject.client.Client;
+import edu.sustech.students.ura.devproject.client.ClientListener;
 import edu.sustech.students.ura.devproject.client.ClientManager;
 import edu.sustech.students.ura.devproject.model.GameManager;
 import edu.sustech.students.ura.devproject.model.GameStatus;
 import edu.sustech.students.ura.devproject.model.LocalSaveManager;
-import edu.sustech.students.ura.devproject.util.Direction;
-import javafx.animation.SequentialTransition;
+import edu.sustech.students.ura.devproject.model.SaveData;
+import edu.sustech.students.ura.devproject.util.AudioPlayer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,11 +20,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.io.*;
+import java.util.Base64;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * GameController
@@ -33,17 +35,22 @@ import java.util.concurrent.TimeUnit;
  *
  * @version 1.0
  */
-public class GameViewController{
+public class GameViewController implements ClientListener {
     private int mode;
+    private boolean whetherCanMove = true;
     private GameStatus status = GameStatus.getInstance();
     private GameManager gameManager;
     private GameBoard gameBoard;
     private boolean GameHasWon = false;
-    private Client client = ClientManager.getClient();
+    private Client client;
     private LocalSaveManager localSaveManager = new LocalSaveManager();
-//    private Timeline timeline;
+    //    private Timeline timeline;
     public Tile[][] tiles;
+    private long lastInputTime = 0;
+    Word word = Word.getInstance();
 
+    @FXML
+    private Button RollBackButton;
     @FXML
     private Button LoadButton;
 
@@ -95,9 +102,18 @@ public class GameViewController{
     @FXML
     private ImageView gif_mona;
 
+    @FXML
+    private BorderPane rootpane;
+
+    @FXML
+    private Button button_setTheme;
 
     @FXML
     private void initialize() throws InterruptedException {
+        client = ClientManager.getClient();
+        client.setListener(this);
+        iniTheme();
+        whetherCanMove = true;
         String modeName;
         switch (status.getMode()) {
             case 1:
@@ -105,22 +121,31 @@ public class GameViewController{
                 break;
             case 2:
                 modeName = "障碍模式";
+                word.updateWord("这个障碍模式可\n能会有点难哦");
                 break;
             case 3:
                 modeName = "计时模式";
+                word.updateWord("看看你在规定时间\n内能拿多少分");
+                break;
+            case 4:
+                modeName = "作弊模式";
+                word.updateWord("游戏可以作弊，\n期末考试不能");
+                break;
+            case 5:
+                modeName = "欢乐模式";
+                word.updateWord("骗骗cheems就行了，\n别骗自己");
                 break;
             default:
                 modeName = "未知模式";
         }
 
-        if(status.isOnlineGame()) {
-            text_GameName.setText(status.getUsername()+": "+modeName);
+        if (status.isOnlineGame()) {
+            text_GameName.setText(status.getUsername() + ": " + modeName);
         } else {
             text_GameName.setText("离线模式");
         }
 
         initialGame();
-
 
 
         // 为按钮添加事件过滤器
@@ -134,57 +159,81 @@ public class GameViewController{
         addEventFilterToButton(MoveLeft);
         addEventFilterToButton(MoveRight);
 
-        gif_mona.setOnMouseClicked(mouseEvent -> {
-//            long startTime = System.nanoTime(); // 记录开始时间用于计算循环间隔
-            //                    long elapsedTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
-            // 确保至少经过了一定的时间间隔
-//                    if (elapsedTime < 300) { // 500毫秒是半秒，控制ai的速度
-//                        Thread.sleep(300 - elapsedTime); // 等待半秒
-//                        startTime = System.nanoTime(); // 更新开始时间
-//                    }
-            // 尝试左下移动
-            try {
-                gameManager.moveLeft();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            updateStepCount(gameManager.getSteps());
-            updateScore(gameManager.getScore());
-            handleMoveCompletion();
-            handleLoseCondition();
-            try {
-                gameManager.moveDown();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            updateStepCount(gameManager.getSteps());
-            updateScore(gameManager.getScore());
-            handleMoveCompletion();
-            handleLoseCondition();
-            // 检查是否还能继续左下移动
-            if (!gameManager.canMove(Direction.DOWN) && !gameManager.canMove(Direction.LEFT)) {
-                // 如果不能继续左下移动，执行一次上下移动
-                try {
-                    gameManager.moveUp();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                updateStepCount(gameManager.getSteps());
-                updateScore(gameManager.getScore());
-                handleMoveCompletion();
-                handleLoseCondition();
-                try {
-                    gameManager.moveDown();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                updateStepCount(gameManager.getSteps());
-                updateScore(gameManager.getScore());
-                handleMoveCompletion();
-                handleLoseCondition();
-                // 再次检查是否可以恢复左下移动
-            }
+        GameAi ai = new GameAi(gameManager);
 
+        gif_mona.setOnMouseClicked(mouseEvent -> {
+            int direction = ai.move();
+            if (whetherCanMove == true) {
+                switch (direction) {
+                    case 1 -> {
+                        if (status.getMode() != 5) {
+                            gameManager.moveRight();
+                        } else {
+                            try {
+                                gameManager.moveRightForHappy();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        word.updateWord("听我的，向右走");
+                    }
+                    case 2 -> {
+                        if (status.getMode() != 5) {
+                            gameManager.moveLeft();
+                        } else {
+                            try {
+                                gameManager.moveLeftForHappy();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        word.updateWord("听我的，向左走");
+                    }
+                    case 3 -> {
+                        if (status.getMode() != 5) {
+                            gameManager.moveUp();
+                        } else {
+                            try {
+                                gameManager.moveUpForHappy();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        word.updateWord("听我的，向上走");
+                    }
+                    case 4 -> {
+                        if (status.getMode() != 5) {
+                            gameManager.moveDown();
+                        } else {
+                            try {
+                                gameManager.moveDownForHappy();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        word.updateWord("听我的，向下走");
+                    }
+                    case -1 -> {
+                        System.out.println("AI 无法找到有效移动");
+                        word.updateWord("我也不知道走哪好了");
+                    }
+                }
+                updateStepCount(gameManager.getSteps());
+                updateScore(gameManager.getScore());
+                handleMoveCompletion();
+                handleLoseCondition();
+            } else {
+                showAlert("不许动", "你不能再移动了");
+            }
+        });
+
+
+        button_setTheme.setOnAction(event -> {
+            status.theme++;
+            if (status.theme == 4) {
+                status.theme = 0;
+            }
+            updateTheme();
         });
 
         QuitButton.setOnAction(event -> {
@@ -195,16 +244,17 @@ public class GameViewController{
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     gameManager.stopGame();
-                    if(status.isOnlineGame()) {
+                    status.initialNumber();
+                    if (status.isOnlineGame()) {
                         try {
                             // Load mode-view.fxml
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/mode-view.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/user-view.fxml"));
                             Scene modeScene = new Scene(loader.load());
 
                             // Get current stage and set scene
                             Stage stage = (Stage) QuitButton.getScene().getWindow();
                             stage.setScene(modeScene);
-                            stage.setTitle("选择模式 | 2048");
+                            stage.setTitle("用户总览 | 2048");
                             stage.show();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -228,46 +278,99 @@ public class GameViewController{
             });
         });
 
+        RollBackButton.setOnAction(event -> {
+            if (status.getSteps() != 0) {
+                if (status.getMode() != 4) {
+                    if (gameManager.getWhetherCanRollback() == false) {
+                        showAlert("撤回失败", "一次只能撤回一步哦");
+                    }
+                    gameManager.rollBack();
+                    updateStepCount(gameManager.getSteps());
+                    updateScore(gameManager.getScore());
+                    gameManager.printNumbers();
+                    gameManager.updateTile();
+                } else if (gameManager.getArrayListForRollBackInfinitely().size() != 0) {
+                    gameManager.rollBackInfinitely();
+                    updateStepCount(gameManager.getSteps());
+                    updateScore(gameManager.getScore());
+                    gameManager.printNumbers();
+                    gameManager.updateTile();
+                } else {
+                    showAlert("撤回失败", "你已经回到最初的起点了");
+                }
+            } else {
+                showAlert("撤回失败", "你已经回到最初的起点了");
+            }
+        });
+
         SaveButton.setOnAction(event -> {
-            localSaveManager.save(gameManager);
+            if (status.isOnlineGame() == true) {
+                gameManager.save();
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                ObjectOutputStream objectOutputStream = null;
+                try {
+                    objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    objectOutputStream.writeObject(gameManager.saveData);
+                    objectOutputStream.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                byte[] bytes = byteArrayOutputStream.toByteArray();
+                String message = Base64.getEncoder().encodeToString(bytes);
+                client.sendMessage("SAVE:" + status.getUsername() + ":" + status.getMode() + ":" + message);
+            } else {
+                localSaveManager.save(gameManager);
+            }
         });
 
         LoadButton.setOnAction(event -> {
-            localSaveManager.load();
-
-            boolean allZero = true;
-            for (int[] row : status.getGridNumber()) {
-                for (int num : row) {
-                    if (num != 0) {
-                        allZero = false;
+            if (status.isOnlineGame()) {
+                client.sendMessage("LOAD:" + status.getUsername() + ":" + status.getMode());
+            } else {
+                localSaveManager.load();
+                boolean allZero = true;
+                for (int[] row : status.getGridNumber()) {
+                    for (int num : row) {
+                        if (num != 0) {
+                            allZero = false;
+                            break;
+                        }
+                    }
+                    if (!allZero) {
                         break;
                     }
                 }
-                if (!allZero) {
-                    break;
-                }
-            }
 
-            if (allZero) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("载入失败");
-                alert.setHeaderText(null);
-                alert.setContentText("载入的游戏数据无效");
-                alert.showAndWait();
-            } else {
-                gameManager.setScore(status.getScore());
-                gameManager.setSteps(status.getSteps());
-                gameManager.setNumbers(status.getGridNumber());
-                gameManager.setElapsedTime(status.getTime());
+                if (allZero) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("载入失败");
+                    alert.setHeaderText(null);
+                    alert.setContentText("载入的游戏数据无效");
+                    alert.showAndWait();
+                } else {
+                    gameManager.setScore(status.getScore());
+                    gameManager.setSteps(status.getSteps());
+                    gameManager.setNumbers(status.getGridNumber());
+                    gameManager.setElapsedTime(status.getTime());
+                }
             }
         });
 
         RestartButton.setOnAction(event -> {
+            whetherCanMove = true;
             PauseButton.setText("暂停");
             try {
                 gameManager.restartGame();
+
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
+            }
+            if (status.getMode() == 2) {
+                gameManager.placeRandomObstacle();
             }
             updateStepCount(0);
             updateScore(0);
@@ -278,99 +381,200 @@ public class GameViewController{
         });
 
 
-        MoveUp.setOnAction(event -> { // 每次移动之后，检查胜利和失败
-            try {
-                gameManager.moveUp();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+        MoveUp.setOnAction(event -> {
+            if (whetherCanMove == true) {// 每次移动之后，检查胜利和失败
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastInputTime < 200) {
+                    return;
+                }
+                try {
+                    if (status.getMode() != 4) {
+                        gameManager.copyForRollBack();
+                    } else {
+                        gameManager.copyForRollBackInfinitely();
+                    }
+                    if (status.getMode() == 5) {
+                        gameManager.moveUpForHappy();
+                    } else gameManager.moveUp();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                updateStepCount(gameManager.getSteps());
+                updateScore(gameManager.getScore());
+                handleMoveCompletion();
+                handleLoseCondition();
+                lastInputTime = currentTime;
+            } else {
+                showAlert("不许动", "你不能再移动了");
             }
-            updateStepCount(gameManager.getSteps());
-            updateScore(gameManager.getScore());
-            handleMoveCompletion();
-            handleLoseCondition();
         });
         MoveDown.setOnAction(event -> {
-            try {
-                gameManager.moveDown();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            if (whetherCanMove == true) {
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastInputTime < 200) {
+                    return;
+                }
+                try {
+                    if (status.getMode() != 4) {
+                        gameManager.copyForRollBack();
+                    } else {
+                        gameManager.copyForRollBackInfinitely();
+                    }
+                    if (status.getMode() == 5) {
+                        gameManager.moveDownForHappy();
+                    } else gameManager.moveDown();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                updateStepCount(gameManager.getSteps());
+                updateScore(gameManager.getScore());
+                handleMoveCompletion();
+                handleLoseCondition();
+                lastInputTime = currentTime;
+            } else {
+                showAlert("不许动", "你不能再移动了");
             }
-            updateStepCount(gameManager.getSteps());
-            updateScore(gameManager.getScore());
-            handleMoveCompletion();
-            handleLoseCondition();
         });
         MoveLeft.setOnAction(event -> {
-            try {
-                gameManager.moveLeft();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            if (whetherCanMove == true) {
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastInputTime < 200) {
+                    return;
+                }
+                try {
+                    if (status.getMode() != 4) {
+                        gameManager.copyForRollBack();
+                    } else {
+                        gameManager.copyForRollBackInfinitely();
+                    }
+                    if (status.getMode() == 5) {
+                        gameManager.moveLeftForHappy();
+                    } else gameManager.moveLeft();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                updateStepCount(gameManager.getSteps());
+                updateScore(gameManager.getScore());
+                handleMoveCompletion();
+                handleLoseCondition();
+                lastInputTime = currentTime;
+            } else {
+                showAlert("不许动", "你不能再移动了");
             }
-            updateStepCount(gameManager.getSteps());
-            updateScore(gameManager.getScore());
-            handleMoveCompletion();
-            handleLoseCondition();
         });
         MoveRight.setOnAction(event -> {
-            try {
-                gameManager.moveRight();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            if (whetherCanMove == true) {
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastInputTime < 200) {
+                    return;
+                }
+                try {
+                    if (status.getMode() != 4) {
+                        gameManager.copyForRollBack();
+                    } else {
+                        gameManager.copyForRollBackInfinitely();
+                    }
+                    if (status.getMode() == 5) {
+                        gameManager.moveRightForHappy();
+                    } else gameManager.moveRight();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                updateStepCount(gameManager.getSteps());
+                updateScore(gameManager.getScore());
+                handleMoveCompletion();
+                handleLoseCondition();
+                lastInputTime = currentTime;
+            } else {
+                showAlert("不许动", "你不能再移动了");
             }
-            updateStepCount(gameManager.getSteps());
-            updateScore(gameManager.getScore());
-            handleMoveCompletion();
-            handleLoseCondition();
         });
 
         // 为按钮添加事件监听器
         Platform.runLater(() -> {
             gameViewCenter.getScene().setOnKeyPressed(event -> {
-                switch (event.getCode()) {
-                    case W:
-                        try {
-                            gameManager.moveUp();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        updateStepCount(gameManager.getSteps());
-                        updateScore(gameManager.getScore());
-                        handleMoveCompletion();
-                        handleLoseCondition();
-                        break;
-                    case S:
-                        try {
-                            gameManager.moveDown();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        updateStepCount(gameManager.getSteps());
-                        updateScore(gameManager.getScore());
-                        handleMoveCompletion();
-                        handleLoseCondition();
-                        break;
-                    case A:
-                        try {
-                            gameManager.moveLeft();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        updateStepCount(gameManager.getSteps());
-                        updateScore(gameManager.getScore());
-                        handleMoveCompletion();
-                        handleLoseCondition();
-                        break;
-                    case D:
-                        try {
-                            gameManager.moveRight();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        updateStepCount(gameManager.getSteps());
-                        updateScore(gameManager.getScore());
-                        handleMoveCompletion();
-                        handleLoseCondition();
-                        break;
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastInputTime < 200) {
+                    return;
+                }
+                if (whetherCanMove == true) {
+                    switch (event.getCode()) {
+                        case W:
+                            try {
+                                if (status.getMode() != 4) {
+                                    gameManager.copyForRollBack();
+                                } else {
+                                    gameManager.copyForRollBackInfinitely();
+                                }
+                                if (status.getMode() == 5) {
+                                    gameManager.moveUpForHappy();
+                                } else gameManager.moveUp();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            updateStepCount(gameManager.getSteps());
+                            updateScore(gameManager.getScore());
+                            handleMoveCompletion();
+                            handleLoseCondition();
+                            break;
+                        case S:
+                            try {
+                                if (status.getMode() != 4) {
+                                    gameManager.copyForRollBack();
+                                } else {
+                                    gameManager.copyForRollBackInfinitely();
+                                }
+                                if (status.getMode() == 5) {
+                                    gameManager.moveDownForHappy();
+                                } else gameManager.moveDown();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            updateStepCount(gameManager.getSteps());
+                            updateScore(gameManager.getScore());
+                            handleMoveCompletion();
+                            handleLoseCondition();
+                            break;
+                        case A:
+                            try {
+                                if (status.getMode() != 4) {
+                                    gameManager.copyForRollBack();
+                                } else {
+                                    gameManager.copyForRollBackInfinitely();
+                                }
+                                if (status.getMode() == 5) {
+                                    gameManager.moveLeftForHappy();
+                                } else gameManager.moveLeft();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            updateStepCount(gameManager.getSteps());
+                            updateScore(gameManager.getScore());
+                            handleMoveCompletion();
+                            handleLoseCondition();
+                            break;
+                        case D:
+                            try {
+                                if (status.getMode() != 4) {
+                                    gameManager.copyForRollBack();
+                                } else {
+                                    gameManager.copyForRollBackInfinitely();
+                                }
+                                if (status.getMode() == 5) {
+                                    gameManager.moveRightForHappy();
+                                } else gameManager.moveRight();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            updateStepCount(gameManager.getSteps());
+                            updateScore(gameManager.getScore());
+                            handleMoveCompletion();
+                            handleLoseCondition();
+                            break;
+                    }
+                    lastInputTime = currentTime;
+                } else {
+                    showAlert("不许动", "你不能再移动了");
                 }
             });
         });
@@ -383,25 +587,25 @@ public class GameViewController{
         gameBoard = new GameBoard();
         gameManager = new GameManager(gameBoard);
         gameManager.setTimeUpdateListener(this::updateTimeDisplay); // 设置时间监听器
-        // 使用 Timeline 定期更新时间显示
-//        timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
-//            updateTimeDisplay(gameManager.getElapsedTime());
-//        }));
-//        timeline.setCycleCount(Timeline.INDEFINITE);
-//        timeline.play();
 
         GameHasWon = false;
         //移除原来的GameBoard存在，则移除
         //将新的GameBoard显示在视图中心
+
         gameViewCenter.getChildren().add(gameBoard);
+        if (status.getMode() == 2) {
+            gameManager.placeRandomObstacle();
+        }
     }
 
     private void pauseSwitch() {
         if (Objects.equals(PauseButton.getText(), "暂停")) {
             gameManager.pauseGame();
+            whetherCanMove = false;
             PauseButton.setText("继续");
         } else {
             gameManager.resumeGame();
+            whetherCanMove = true;
             PauseButton.setText("暂停");
         }
     }
@@ -410,26 +614,59 @@ public class GameViewController{
     private void updateTimeDisplay(long elapsedTime) {
         // 在 JavaFX 应用程序线程上更新 UI
         javafx.application.Platform.runLater(() -> {
+            if (elapsedTime % 10000 == 0) {
+                localSaveManager.autoSave(gameManager);
+                if (status.isOnlineGame() == true) {
+                    gameManager.save();
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    ObjectOutputStream objectOutputStream = null;
+                    try {
+                        objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        objectOutputStream.writeObject(gameManager.saveData);
+                        objectOutputStream.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    byte[] bytes = byteArrayOutputStream.toByteArray();
+                    String message = Base64.getEncoder().encodeToString(bytes);
+                    client.sendMessage("SAVE:" + status.getUsername() + ":" + status.getMode() + ":" + message);
+                }
+            }
+
             long seconds = elapsedTime / 1000;
             text_TimeNumber.setText(String.valueOf(seconds));
-            if (status.getMode()==3&&elapsedTime>=status.getTargetTime()){
+            if (status.getMode() == 3 && elapsedTime >= status.getTargetTime()) {
+                gameManager.stopTimer();
                 showAlert("你输了", "游戏结束，时间到了");
                 gameManager.stopGame();
+                whetherCanMove = false;
             }
         });
     }
 
     public void handleMoveCompletion() { //检测游戏是否胜利
-        if(GameHasWon==false) {//这个if保证了只弹出一次胜利界面
+        if (GameHasWon == false) {//这个if保证了只弹出一次胜利界面
             if (gameManager.getMaxNumber() >= status.getTargetNumber()) {
-                showAlert("恭喜!", "你真是数学天才，达到了合成 "+status.getTargetNumber()+" 的目标！");
+                if (status.isSoundOn) {
+                    AudioPlayer.playSound("src/main/resources/audio/win.wav");
+                }
+                showAlert("恭喜!", "你真是数学天才，达到了合成 " + status.getTargetNumber() + " 的目标！");
+                word.updateWord("你是怎么玩到" + status.getTargetNumber() + "的？🤬");
                 GameHasWon = true;
             }
         }
     }
 
-    public void handleLoseCondition(){
-        if(gameManager.isGameOver()==true){
+    public void handleLoseCondition() {
+        if (gameManager.isGameOver() == true) {
+            if (status.isSoundOn) {
+                AudioPlayer.playSound("src/main/resources/audio/fail.wav");
+            }
+            word.updateWord("失败乃成功之母，再来一次吧");
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("你输了");
             alert.setHeaderText("但是可以复活！");
@@ -437,11 +674,11 @@ public class GameViewController{
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     gameManager.revise();
-                } else if(response == ButtonType.CANCEL){
-                    gameManager.stopGame();
+                } else if (response == ButtonType.CANCEL) {
                     if (status.isOnlineGame()) {
                         client.sendMessage("SET_HIGHSCORE:" + status.getUsername() + ":" + status.getMode() + ":" + gameManager.getScore());
                     }
+                    gameManager.stopGame();
                 }
             });
         }
@@ -457,60 +694,100 @@ public class GameViewController{
 
     private void addEventFilterToButton(Button button) {
         button.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            switch (event.getCode()) {
-                case UP:
-                    try {
-                        gameManager.moveUp();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    updateStepCount(gameManager.getSteps());
-                    updateScore(gameManager.getScore());
-                    handleMoveCompletion();
-                    handleLoseCondition();
-                    event.consume();
-                    break;
-                case DOWN:
-                    try {
-                        gameManager.moveDown();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    updateStepCount(gameManager.getSteps());
-                    updateScore(gameManager.getScore());
-                    handleMoveCompletion();
-                    handleLoseCondition();
-                    event.consume();
-                    break;
-                case LEFT:
-                    try {
-                        gameManager.moveLeft();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    updateStepCount(gameManager.getSteps());
-                    updateScore(gameManager.getScore());
-                    handleMoveCompletion();
-                    handleLoseCondition();
-                    event.consume();
-                    break;
-                case RIGHT:
-                    try {
-                        gameManager.moveRight();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    updateStepCount(gameManager.getSteps());
-                    updateScore(gameManager.getScore());
-                    handleMoveCompletion();
-                    handleLoseCondition();
-                    event.consume();
-                    break;
-                default:
-                    break;
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastInputTime < 200) {
+                return;
+            }
+            if (whetherCanMove == true) {
+                switch (event.getCode()) {
+                    case UP:
+                        try {
+                            if (status.getMode() != 4) {
+                                gameManager.copyForRollBack();
+                            } else {
+                                gameManager.copyForRollBackInfinitely();
+                            }
+                            if (status.getMode() == 5) {
+                                gameManager.moveUpForHappy();
+                            } else gameManager.moveUp();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        updateStepCount(gameManager.getSteps());
+                        updateScore(gameManager.getScore());
+                        handleMoveCompletion();
+                        handleLoseCondition();
+                        event.consume();
+                        break;
+                    case DOWN:
+                        try {
+                            if (status.getMode() != 4) {
+                                gameManager.copyForRollBack();
+                            } else {
+                                gameManager.copyForRollBackInfinitely();
+                            }
+                            if (status.getMode() == 5) {
+                                gameManager.moveDownForHappy();
+                            } else gameManager.moveDown();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        updateStepCount(gameManager.getSteps());
+                        updateScore(gameManager.getScore());
+                        handleMoveCompletion();
+                        handleLoseCondition();
+                        event.consume();
+                        break;
+                    case LEFT:
+                        try {
+                            if (status.getMode() != 4) {
+                                gameManager.copyForRollBack();
+                            } else {
+                                gameManager.copyForRollBackInfinitely();
+                            }
+                            if (status.getMode() == 5) {
+                                gameManager.moveLeftForHappy();
+                            } else {
+                                gameManager.moveLeft();
+                            }
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        updateStepCount(gameManager.getSteps());
+                        updateScore(gameManager.getScore());
+                        handleMoveCompletion();
+                        handleLoseCondition();
+                        event.consume();
+                        break;
+                    case RIGHT:
+                        try {
+                            if (status.getMode() != 4) {
+                                gameManager.copyForRollBack();
+                            } else {
+                                gameManager.copyForRollBackInfinitely();
+                            }
+                            if (status.getMode() == 5) {
+                                gameManager.moveRightForHappy();
+                            } else gameManager.moveRight();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        updateStepCount(gameManager.getSteps());
+                        updateScore(gameManager.getScore());
+                        handleMoveCompletion();
+                        handleLoseCondition();
+                        event.consume();
+                        break;
+                    default:
+                        break;
+                }
+                lastInputTime = currentTime;
+            } else {
+                showAlert("不许动", "你不能再移动了");
             }
         });
     }
+
     public void initializeStep() {
         updateStepCount(0);
     }
@@ -521,5 +798,128 @@ public class GameViewController{
 
     public void updateScore(int score) {
         text_ScoreNumber.setText(String.valueOf(score));
+    }
+
+    public void updateTheme() {
+        if (status.theme == 3) {
+            rootpane.setStyle("-fx-background-color: #211d1d");
+            gameViewCenter.setStyle("-fx-background-color: #36302c");
+            text_ScoreNumber.setStyle("-fx-text-fill: #ffffff");
+            text_TimeNumber.setStyle("-fx-text-fill: #ffffff");
+            text_score.setStyle("-fx-text-fill: #ffffff");
+            text_step.setStyle("-fx-text-fill: #ffffff");
+            text_time.setStyle("-fx-text-fill: #ffffff");
+            text_GameName.setStyle("-fx-text-fill: #ffffff");
+        } else if (status.theme == 0) {
+            rootpane.setStyle("-fx-background-color: #faf8ef");
+            gameViewCenter.setStyle("-fx-background-color: BDB3A9B2");
+            text_ScoreNumber.setStyle("-fx-text-fill: #776e65");
+            text_TimeNumber.setStyle("-fx-text-fill: #776e65");
+            text_score.setStyle("-fx-text-fill: #776e65");
+            text_step.setStyle("-fx-text-fill: #776e65");
+            text_time.setStyle("-fx-text-fill: #776e65");
+            text_GameName.setStyle("-fx-text-fill: #776e65");
+        } else if (status.theme == 1) {
+            rootpane.setStyle("-fx-background-color: #c0ece8");
+            gameViewCenter.setStyle("-fx-background-color: #66c0b8");
+            text_ScoreNumber.setStyle("-fx-text-fill: #776e65");
+            text_TimeNumber.setStyle("-fx-text-fill: #776e65");
+            text_score.setStyle("-fx-text-fill: #776e65");
+            text_step.setStyle("-fx-text-fill: #776e65");
+            text_time.setStyle("-fx-text-fill: #776e65");
+            text_GameName.setStyle("-fx-text-fill: #776e65");
+        } else if (status.theme == 2) {
+            rootpane.setStyle("-fx-background-color: #f7f7f7");
+            gameViewCenter.setStyle("-fx-background-color: #7c7c7c");
+            text_ScoreNumber.setStyle("-fx-text-fill: #776e65");
+            text_TimeNumber.setStyle("-fx-text-fill: #776e65");
+            text_score.setStyle("-fx-text-fill: #776e65");
+            text_step.setStyle("-fx-text-fill: #776e65");
+            text_time.setStyle("-fx-text-fill: #776e65");
+            text_GameName.setStyle("-fx-text-fill: #776e65");
+        }
+//        gameBoard.initiate();
+//        gameManager.updateTile();
+    }
+
+    public void iniTheme() {
+        if (status.theme == 3) {
+            rootpane.setStyle("-fx-background-color: #211d1d");
+            gameViewCenter.setStyle("-fx-background-color: #36302c");
+            text_ScoreNumber.setStyle("-fx-text-fill: #ffffff");
+            text_TimeNumber.setStyle("-fx-text-fill: #ffffff");
+            text_score.setStyle("-fx-text-fill: #ffffff");
+            text_step.setStyle("-fx-text-fill: #ffffff");
+            text_time.setStyle("-fx-text-fill: #ffffff");
+            text_GameName.setStyle("-fx-text-fill: #ffffff");
+        } else if (status.theme == 0) {
+            rootpane.setStyle("-fx-background-color: #faf8ef");
+            gameViewCenter.setStyle("-fx-background-color: BDB3A9B2");
+            text_ScoreNumber.setStyle("-fx-text-fill: #776e65");
+            text_TimeNumber.setStyle("-fx-text-fill: #776e65");
+            text_score.setStyle("-fx-text-fill: #776e65");
+            text_step.setStyle("-fx-text-fill: #776e65");
+            text_time.setStyle("-fx-text-fill: #776e65");
+            text_GameName.setStyle("-fx-text-fill: #776e65");
+        } else if (status.theme == 1) {
+            rootpane.setStyle("-fx-background-color: #c0ece8");
+            gameViewCenter.setStyle("-fx-background-color: #66c0b8");
+            text_ScoreNumber.setStyle("-fx-text-fill: #776e65");
+            text_TimeNumber.setStyle("-fx-text-fill: #776e65");
+            text_score.setStyle("-fx-text-fill: #776e65");
+            text_step.setStyle("-fx-text-fill: #776e65");
+            text_time.setStyle("-fx-text-fill: #776e65");
+            text_GameName.setStyle("-fx-text-fill: #776e65");
+        } else if (status.theme == 2) {
+            rootpane.setStyle("-fx-background-color: #f7f7f7");
+            gameViewCenter.setStyle("-fx-background-color: #7c7c7c");
+            text_ScoreNumber.setStyle("-fx-text-fill: #776e65");
+            text_TimeNumber.setStyle("-fx-text-fill: #776e65");
+            text_score.setStyle("-fx-text-fill: #776e65");
+            text_step.setStyle("-fx-text-fill: #776e65");
+            text_time.setStyle("-fx-text-fill: #776e65");
+            text_GameName.setStyle("-fx-text-fill: #776e65");
+        }
+    }
+
+    @Override
+    public void onMessageReceived(String message) {
+        // Update UI in JavaFX application thread
+        Platform.runLater(() -> {
+            if (message.startsWith("LOAD_SUCCESS")) {
+                System.out.println("尝试读取");
+                String[] parts = message.split(":");
+                String base64 = parts[1];
+                try {
+                    byte[] bytes = Base64.getDecoder().decode(base64);
+                    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+                    ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                    SaveData saveData = (SaveData) objectInputStream.readObject();
+                    System.out.println("加载到的分数是："+saveData.getScore());
+                    this.gameManager.setSteps(saveData.getStep());
+                    this.gameManager.setNumbers(saveData.getNumbers());
+                    this.gameManager.setElapsedTime(saveData.getTime());
+                    this.gameManager.setScore(saveData.getScore());
+                    updateStepCount(gameManager.getSteps());
+                    updateScore(gameManager.getScore());
+                } catch (IOException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (message.startsWith("LOAD_FAIL")) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("载入失败");
+                alert.setHeaderText(null);
+                alert.setContentText("载入的游戏数据无效");
+                alert.showAndWait();
+            } else if (message.startsWith("SAVE_SUCCESS")) {
+                text_GameName.setText("游戏进度已保存");
+            } else if (message.startsWith("SAVE_FAIL")) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("保存失败");
+                alert.setHeaderText(null);
+                alert.setContentText("游戏进度保存失败");
+                alert.showAndWait();
+            }
+        });
     }
 }

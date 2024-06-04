@@ -13,12 +13,12 @@
 ```angular2html
 src
 ├── main
-│   ├── java 
+│   ├── java
 │   │   └── devproject
 │   │       ├── controller
 │   │       ├── model
 │   │       ├── server
-│   │       ├── view 
+│   │       ├── view
 │   │       └── GameLauncher.java 程序入口
 │   └── resources
 │       ├── css
@@ -26,9 +26,9 @@ src
 │       ├── images
 │       └── sounds
 └── test
-    └── java
-        └── devproject
-            └── model
+└── java
+└── devproject
+└── model
 ```
 
 ## 功能
@@ -78,3 +78,15 @@ src
 - Grada：框架搭建
 - FragileHao: 游戏逻辑
 
+## 系统要求
+
+**Windows PC**
+- Windows11/10/8/7/Vista
+- Core2Duo 2.4Ghz
+- 8 GB RAM
+- 100MB available space
+
+**Mac**
+- macOS 10.12
+- Apple silicon M1
+- 8 GB RAM

@@ -44,9 +44,7 @@ public class Client {
             while (true) {
                 Object message = in.readObject();
                 System.out.println("接收到信息: " + message);
-                if (message instanceof String) {
                     listener.onMessageReceived((String) message);
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();

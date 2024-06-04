@@ -10,6 +10,7 @@ import javafx.util.Duration;
 import java.io.Serial;
 import java.io.Serializable;
 
+
 public class GameBoard extends GridPane implements GameBoardInterface, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -21,10 +22,15 @@ public class GameBoard extends GridPane implements GameBoardInterface, Serializa
         setHgap(10);
         setVgap(10);
         setPadding(new Insets(10));
+        initiate();
+    }
+
+    public void initiate () {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 Cell cell = new Cell();
                 add(cell, j, i);
+                cell.createAnimation().play();
             }
         }
     }

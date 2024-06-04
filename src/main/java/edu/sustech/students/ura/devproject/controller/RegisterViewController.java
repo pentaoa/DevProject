@@ -3,6 +3,7 @@ package edu.sustech.students.ura.devproject.controller;
 import edu.sustech.students.ura.devproject.client.*;
 import edu.sustech.students.ura.devproject.model.*;
 
+import edu.sustech.students.ura.devproject.util.AudioPlayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,6 +51,7 @@ public class RegisterViewController implements ClientListener{
     void BackTrigger(ActionEvent event) {
         System.out.println("返回登录界面");
         try {
+            AudioPlayer.playSound("src/main/resources/audio/navi.wav");
             // 加载游戏界面 FXML 文件
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/login-view.fxml"));
             // 创建新的场景

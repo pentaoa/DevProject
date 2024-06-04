@@ -16,6 +16,12 @@ public class ModeViewController {
     GameStatus status = GameStatus.getInstance();
 
     @FXML
+    private Button Button_Cheating;
+
+    @FXML
+    private Button Button_Happy;
+
+    @FXML
     private Button Button_classical;
 
     @FXML
@@ -28,10 +34,25 @@ public class ModeViewController {
     private Label Text_HelloUser;
 
     @FXML
+    private Button button_Set;
+
+    @FXML
     private Button button_StartGame;
 
     @FXML
+    private Button button_theme;
+
+    @FXML
+    private CheckBox check_music;
+
+    @FXML
+    private CheckBox check_sound;
+
+    @FXML
     private TextField numberInputer;
+
+    @FXML
+    private TextField scoreInputer;
 
     @FXML
     private Label text_ModeSet;
@@ -40,10 +61,11 @@ public class ModeViewController {
     private Label text_TargetSet;
 
     @FXML
-    private Label text_status;
+    private Label text_settings;
 
     @FXML
-    private Button button_Set;
+    private Label text_status;
+
 
     @FXML
     void initialize() {
@@ -53,8 +75,14 @@ public class ModeViewController {
     @FXML
     void SetTarget(ActionEvent event) {
         try {
-            int target = Integer.parseInt(numberInputer.getText());
-            status.setTargetNumber(target);
+            if(numberInputer.getText()!=null) {
+                int targetNumber = Integer.parseInt(numberInputer.getText());
+                status.setTargetNumber(targetNumber);
+            }
+            if(scoreInputer.getText()!=null) {
+                int targetScore = Integer.parseInt(scoreInputer.getText());
+                status.setTargetScore(targetScore);
+            }
             ScaleTransition pulse = new ScaleTransition(Duration.seconds(0.2), text_status);
             pulse.setFromX(1);
             pulse.setFromY(1);
@@ -64,7 +92,7 @@ public class ModeViewController {
             pulse.setAutoReverse(true);
             pulse.playFromStart();
 
-            text_status.setText("目标分数已设置为 " + target);
+            text_status.setText("目标数字 " + status.getTargetNumber()+";目标分数 " + status.getTargetScore());
 
             pulse.playFromStart();
         } catch (Exception e) {
@@ -126,9 +154,40 @@ public class ModeViewController {
         text_status.setText("已设置为计时模式");
         pulse.playFromStart();
     }
+    @FXML
+    void CheatingModeTrigger(ActionEvent event) {
+        status.setMode(4);
 
+        ScaleTransition pulse = new ScaleTransition(Duration.seconds(0.2), text_status);
+        pulse.setFromX(1);
+        pulse.setFromY(1);
+        pulse.setToX(1.1);
+        pulse.setToY(1.1);
+        pulse.setCycleCount(2);
+        pulse.setAutoReverse(true);
+        pulse.playFromStart();
+        text_status.setText("已设置为作弊模式");
+        pulse.playFromStart();
+    }
+    @FXML
+    void HappyModeTrigger(ActionEvent event) {
+        status.setMode(5);
+
+        ScaleTransition pulse = new ScaleTransition(Duration.seconds(0.2), text_status);
+        pulse.setFromX(1);
+        pulse.setFromY(1);
+        pulse.setToX(1.1);
+        pulse.setToY(1.1);
+        pulse.setCycleCount(2);
+        pulse.setAutoReverse(true);
+        pulse.playFromStart();
+        text_status.setText("已设置为欢乐模式");
+        pulse.playFromStart();
+    }
     @FXML
     void StartGame(ActionEvent event) {
+        status.isSoundOn = check_sound.isSelected();
+        status.isMusicOn = check_music.isSelected();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/sustech/students/ura/devproject/game-view.fxml"));
             Scene timeScene = new Scene(loader.load());
@@ -140,6 +199,22 @@ public class ModeViewController {
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    @FXML
+    void SetTheme(ActionEvent event) {
+        status.theme ++;
+        if (status.theme > 3) {
+            status.theme = 0;
+        }
+        if (status.theme == 0) {
+            text_status.setText("主题：摩卡");
+        } else if (status.theme == 1) {
+            text_status.setText("主题：小荷");
+        } else if (status.theme == 2) {
+            text_status.setText("主题：一股OG味");
+        } else if (status.theme == 3) {
+            text_status.setText("主题：枫桥夜泊");
         }
     }
 }

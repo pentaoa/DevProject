@@ -1,5 +1,6 @@
 package edu.sustech.students.ura.devproject.controller;
 
+import edu.sustech.students.ura.devproject.model.GameStatus;
 import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.scene.layout.StackPane;
@@ -13,13 +14,18 @@ import java.io.Serializable;
 public class Cell extends Rectangle implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+    GameStatus status = GameStatus.getInstance();
 
     public Cell() {
         setHeight(65);
         setWidth(65);
         setArcWidth(15);
         setArcHeight(15);
-        setFill(Color.web("FFFAF584"));
+        setFill(Color.web("FFFAF54C"));
+//        if (status.theme == 0)  setFill(Color.web("FFFAF584"));
+//        if (status.theme == 1)  setFill(Color.web("92D7D9FF"));
+//        if (status.theme == 2)  setFill(Color.web("FFFAF584"));
+//        if (status.theme == 3)  setFill(Color.web("1F2A31FF"));
     }
 
     public SequentialTransition createAnimation() {

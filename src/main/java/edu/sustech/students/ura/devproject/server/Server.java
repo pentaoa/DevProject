@@ -1,10 +1,12 @@
 package edu.sustech.students.ura.devproject.server;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import edu.sustech.students.ura.devproject.model.GameManager;
+import edu.sustech.students.ura.devproject.model.SaveData;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -90,7 +92,7 @@ public class Server {
                 String username = parts[1];
                 int mode = Integer.parseInt(parts[2]);
                 int highScore = userManager.getHighScore(username, mode);
-                out.writeObject("GET_HIGHSCORE:" + highScore);
+                out.writeObject("GET_HIGHSCORE:"+ mode+ ":" + highScore);
             } else if (message.startsWith("CHANGE_PASSWORD:")) {
                 String[] parts = message.split(":");
                 String username = parts[1];
@@ -98,12 +100,41 @@ public class Server {
                 String newPassword = parts[3];
                 boolean success = userManager.changePassword(username, oldPassword, newPassword);
                 out.writeObject(success ? "CHANGE_PASSWORD_SUCCESS" : "CHANGE_PASSWORD_FAIL:用户名或密码错误");
-            } else {
+            } else if (message.startsWith("SAVE:")) {
+                String[] parts = message.split(":");
+                String username = parts[1];
+                int mode = Integer.parseInt(parts[2]);
+                byte[] bytes = Base64.getDecoder().decode(parts[3]);
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+                ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                SaveData saveData = (SaveData) objectInputStream.readObject();
+                userManager.saveUserSaveData(username, mode, saveData);
+                out.writeObject("SAVE_SUCCESS");
+            } else if (message.startsWith("LOAD:")) {
+                String[] parts = message.split(":");
+                String username = parts[1];
+                int mode = Integer.parseInt(parts[2]);
+                SaveData saveData = userManager.getUserSaveData(username, mode);
+                if (saveData != null) {
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+                    objectOutputStream.writeObject(saveData);
+                    objectOutputStream.close();
+                    byte[] bytes = byteArrayOutputStream.toByteArray();
+                    String outMessage = Base64.getEncoder().encodeToString(bytes);
+                    out.writeObject("LOAD_SUCCESS:" + outMessage);
+                } else {
+                    out.writeObject("LOAD_FAIL:没有找到存档");
+                }
+            }
+            else {
                 out.writeObject("Unknown command: " + message);
             }
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

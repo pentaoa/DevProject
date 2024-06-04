@@ -27,9 +27,10 @@ public class GameStatus implements Serializable {
     private int score = 0;
     private int step = 0;
     private long time = 0;
-    private boolean isSoundOn = true;
-    private boolean isMusicOn = true;
-    private boolean isCheat = false;
+    public boolean isSoundOn = true;
+    public boolean isMusicOn = true;
+    public boolean isCheat = false;
+    public int theme = 0;
 
     // 私有构造函数，防止外部实例化
     private GameStatus() {
@@ -159,5 +160,14 @@ public class GameStatus implements Serializable {
         }
         System.out.println("======status======");
         return number;
+    }
+
+    public void initialNumber() {
+        gridNumber = new int[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                gridNumber[i][j] = 0;
+            }
+        }
     }
 }

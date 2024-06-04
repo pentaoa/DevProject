@@ -3,10 +3,6 @@
     font-family: 'HYWenHei-85W';
     src: url('fonts/HYWenHei-85W.ttf');
 }
-/* 窗口样式 */
-.root {
-    -fx-background-radius: 30;
-}
 /* 基础样式 */
 .game-root {
     -fx-background-color: rgba(250, 248, 239, 0.03);
@@ -57,10 +53,16 @@
     -fx-border-width: 2;
     -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.38), 10, 0.2, 0, 0 );
 }
+/* 选择框样式 */
+.game-checkbox {
+    -fx-font-family: "HYWenHei-85W";
+    -fx-font-size: 20px;
+    -fx-text-fill: #2a2622;
+}
 /* 警示框样式 */
 .alert .dialog-pane {
     -fx-background-color: #f9f6f2;
-    -fx-border-color: #45788c;
+    -fx-border-color: FFFAF584;
     -fx-border-width: 2;
 }
 
@@ -82,65 +84,64 @@
 /* 砖块样式 */
 .game-tile--1   {
     -fx-font-size: 25px;
-    -fx-text-fill: #776e65;
-    -fx-background-color: rgba(212, 222, 231, 0.84);
+    -fx-background-color: rgba(27, 31, 37, 0.84);
     -fx-background-radius: 3;
     -fx-border-radius: 3;
 }
 
 .game-tile-0    {
     -fx-font-size: 25px;
-    -fx-text-fill: #776e65;
-    -fx-background-color: rgba(255, 250, 245, 0.52);
+    -fx-text-fill: 00000000;
+    -fx-background-color: 00000000;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
 }
 .game-tile-2    {
     -fx-font-size: 25px;
-    -fx-text-fill: rgba(119, 110, 101, 0);
-    -fx-background-color: #eee4da;
+    -fx-text-fill: rgb(44, 39, 36);
+    -fx-background-color: rgba(255, 250, 245, 0.3);
     -fx-background-radius: 3;
     -fx-border-radius: 3;
 }
 .game-tile-4    {
     -fx-font-size: 25px;
-    -fx-text-fill: #776e65;
-    -fx-background-color: #ede0c8;
+    -fx-text-fill: #b1eed1;
+    -fx-background-color: #1b2623;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
 }
 .game-tile-8    {
     -fx-font-size: 25px;
-    -fx-text-fill: #f9f6f2;
-    -fx-background-color: #f2b179;
+    -fx-text-fill: #ffcea6;
+    -fx-background-color: #362125;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
 }
 .game-tile-16   {
     -fx-font-size: 25px;
-    -fx-text-fill: #f9f6f2;
-    -fx-background-color: #f59563;
+    -fx-text-fill: #c5e0c8;
+    -fx-background-color: #26393a;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
 }
 .game-tile-32   {
     -fx-font-size: 25px;
-    -fx-text-fill: #f9f6f2;
-    -fx-background-color: #f67c5f;
+    -fx-text-fill: #325245;
+    -fx-background-color: #27313b;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
 }
 .game-tile-64   {
     -fx-font-size: 25px;
     -fx-text-fill: #f9f6f2;
-    -fx-background-color: #f65e3b;
+    -fx-background-color: #1f2a31;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
 }
 .game-tile-128  {
     -fx-font-size: 25px;
-    -fx-text-fill: #f9f6f2;
-    -fx-background-color: #edcf72;
+    -fx-text-fill: #ece4db;
+    -fx-background-color: #263120;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
     -fx-effect: dropshadow( three-pass-box, rgba(243, 215, 116, 0.2381), 30, 0.5, 0, 0 );
@@ -149,18 +150,18 @@
 }
 .game-tile-256  {
     -fx-font-size: 25px;
-    -fx-text-fill: #f9f6f2;
-    -fx-background-color: #edcc61;
+    -fx-text-fill: #c3c3f5;
+    -fx-background-color: #282333;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
-    -fx-effect: dropshadow( three-pass-box, rgba(243, 215, 116, 0.31746), 30, 0.5, 0, 0 );
-    -fx-border-color: rgba(255, 255, 255, 0.19048);
+    -fx-effect: dropshadow( three-pass-box, rgba(241, 239, 232, 0.31), 30, 0.5, 0, 0 );
+    -fx-border-color: rgba(70, 45, 45, 0.19);
     -fx-border-width: 1;
 }
 .game-tile-512  {
     -fx-font-size: 25px;
-    -fx-text-fill: #f9f6f2;
-    -fx-background-color: #edc850;
+    -fx-text-fill: #eeeded;
+    -fx-background-color: #304846;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
     -fx-effect: dropshadow( three-pass-box, rgba(243, 215, 116, 0.39683), 30, 0.5, 0, 0 );
@@ -169,8 +170,8 @@
 }
 .game-tile-1024 {
     -fx-font-size: 25px;
-    -fx-text-fill: #f9f6f2;
-    -fx-background-color: #edc53f;
+    -fx-text-fill: #d2e3d2;
+    -fx-background-color: #342e23;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
     -fx-effect: dropshadow( three-pass-box, rgba(243, 215, 116, 0.47619), 30, 0.5, 0, 0 );
@@ -179,8 +180,8 @@
 }
 .game-tile-2048 {
     -fx-font-size: 25px;
-    -fx-text-fill: #f9f6f2;
-    -fx-background-color: #edc22e;
+    -fx-text-fill: #efe5dc;
+    -fx-background-color: #464630;
     -fx-background-radius: 3;
     -fx-border-radius: 3;
     -fx-effect: dropshadow( three-pass-box, rgba(243, 215, 116, 0.55556), 30, 0.5, 0, 0 );

@@ -1,6 +1,7 @@
 package edu.sustech.students.ura.devproject.server;
 
 import edu.sustech.students.ura.devproject.model.GameManager;
+import edu.sustech.students.ura.devproject.model.SaveData;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,9 +16,61 @@ public class User implements Serializable {
     private int easyModeHighScore = 0;
     private int timeModeHighScore = 0;
     private int obstacleModeHighScore = 0;
-    private int[][] easyModeGameBoard = new int[4][4];
-    private int[][] obstacleModeGameBoard = new int[4][4];
-    private int[][] timeModeGameBoard = new int[4][4];
+    private SaveData classicalSaveData = new SaveData();
+    private SaveData obstacleSaveData = new SaveData();
+    private SaveData timeSaveData = new SaveData();
+
+    public GameManager getTimeGameManager() {
+        return timeGameManager;
+    }
+
+    public SaveData getTimeSaveData() {
+        return timeSaveData;
+    }
+
+    public void setTimeSaveData(SaveData timeSaveData) {
+        this.timeSaveData = timeSaveData;
+    }
+
+    public SaveData getObstacleSaveData() {
+        return obstacleSaveData;
+    }
+
+    public void setObstacleSaveData(SaveData obstacleSaveData) {
+        this.obstacleSaveData = obstacleSaveData;
+    }
+
+    public SaveData getClassicalSaveData() {
+        return classicalSaveData;
+    }
+
+    public void setClassicalSaveData(SaveData classicalSaveData) {
+        this.classicalSaveData = classicalSaveData;
+    }
+
+    public void setTimeGameManager(GameManager timeGameManager) {
+        this.timeGameManager = timeGameManager;
+    }
+
+    public GameManager getObstacleGameManager() {
+        return obstacleGameManager;
+    }
+
+    public void setObstacleGameManager(GameManager obstacleGameManager) {
+        this.obstacleGameManager = obstacleGameManager;
+    }
+
+    public GameManager getClassicalGameManager() {
+        return classicalGameManager;
+    }
+
+    public void setClassicalGameManager(GameManager classicalGameManager) {
+        this.classicalGameManager = classicalGameManager;
+    }
+
+    private GameManager classicalGameManager = new GameManager();
+    private GameManager timeGameManager = new GameManager();
+    private GameManager obstacleGameManager = new GameManager();
 
     public User(String username, String password) {
         this.username = username;
@@ -62,29 +115,5 @@ public class User implements Serializable {
 
     public void setEasyModeHighScore(int easyModeHighScore) {
         this.easyModeHighScore = easyModeHighScore;
-    }
-
-    public int[][] getEasyModeGameBoard() {
-        return easyModeGameBoard;
-    }
-
-    public void setEasyModeGameBoard(int[][] easyModeGameBoard) {
-        this.easyModeGameBoard = easyModeGameBoard;
-    }
-
-    public int[][] getObstacleModeGameBoard() {
-        return obstacleModeGameBoard;
-    }
-
-    public void setObstacleModeGameBoard(int[][] obstacleModeGameBoard) {
-        this.obstacleModeGameBoard = obstacleModeGameBoard;
-    }
-
-    public int[][] getTimeModeGameBoard() {
-        return timeModeGameBoard;
-    }
-
-    public void setTimeModeGameBoard(int[][] timeModeGameBoard) {
-        this.timeModeGameBoard = timeModeGameBoard;
     }
 }

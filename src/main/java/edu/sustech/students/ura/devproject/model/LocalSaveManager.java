@@ -62,4 +62,16 @@ public class LocalSaveManager {
             System.err.println("无法加载游戏：" + e.getMessage());
         }
     }
+
+    public void autoSave(GameManager gameManager) {
+        status.setGridNumber(gameManager.getGridNumber());
+        status.setScore(gameManager.getScore());
+        status.setSteps(gameManager.getSteps());
+        status.setTime(gameManager.getElapsedTime());
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SAVE_FILE_PATH))) {
+            oos.writeObject(status);
+        } catch (IOException e) {
+            System.err.println("无法保存游戏：" + e.getMessage());
+        }
+    }
 }

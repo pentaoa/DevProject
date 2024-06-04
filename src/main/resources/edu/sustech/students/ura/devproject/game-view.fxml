@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane minHeight="420.0" minWidth="630.0" styleClass="game-background" stylesheets="@../../../../../game.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sustech.students.ura.devproject.controller.GameViewController">
+<BorderPane fx:id="rootpane" minHeight="420.0" minWidth="630.0" styleClass="game-background" stylesheets="@../../../../../game.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sustech.students.ura.devproject.controller.GameViewController">
    <right>
       <VBox prefHeight="300.0" prefWidth="150.0" BorderPane.alignment="CENTER">
          <children>
@@ -94,16 +94,18 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="button_setTheme" mnemonicParsing="false" styleClass="game-button" text="主题" />
+            <Button fx:id="RollBackButton" mnemonicParsing="false" styleClass="game-button" text="撤回" />
             <Button fx:id="SaveButton" mnemonicParsing="false" styleClass="game-button" text="存档" />
             <Button fx:id="LoadButton" mnemonicParsing="false" styleClass="game-button" text="载入" />
             <Button fx:id="PauseButton" mnemonicParsing="false" styleClass="game-button" text="暂停" />
-            <Button fx:id="RestartButton" mnemonicParsing="false" styleClass="game-button" text="重新开始" />
-            <Button fx:id="QuitButton" mnemonicParsing="false" styleClass="game-button" text="退出游戏" />
+            <Button fx:id="RestartButton" mnemonicParsing="false" styleClass="game-button" text="重开" />
+            <Button fx:id="QuitButton" mnemonicParsing="false" styleClass="game-button" text="退出" />
          </children>
       </HBox>
    </bottom>
    <center>
-      <AnchorPane fx:id="gameViewCenter" maxHeight="310.0" maxWidth="310.0" minHeight="310.0" minWidth="310.0" prefHeight="310.0" prefWidth="310.0" styleClass="game-board" stylesheets="@../../../../../game.css" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="gameViewCenter" maxHeight="310.0" maxWidth="310.0" minHeight="310.0" minWidth="310.0" prefHeight="310.0" prefWidth="310.0" styleClass="game-board" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin></AnchorPane>

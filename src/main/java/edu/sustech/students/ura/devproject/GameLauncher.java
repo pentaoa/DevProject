@@ -1,10 +1,9 @@
 package edu.sustech.students.ura.devproject;
 
 import edu.sustech.students.ura.devproject.client.*;
-import edu.sustech.students.ura.devproject.controller.LoginViewController;
 import edu.sustech.students.ura.devproject.util.AudioPlayer;
 import javafx.application.Application;
-import javafx.event.Event;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -13,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -22,11 +22,22 @@ import java.util.Objects;
 
 public class GameLauncher extends Application {
     ClientManager clientManager;
+    Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo.png")));
 
     @Override
     public void start(Stage stage) throws IOException {
+        // 设置主舞台的关闭请求事件
+        stage.setOnCloseRequest(event -> {
+            AudioPlayer.playSound("src/main/resources/audio/shutdown.wav");
+            try {
+                Thread.sleep(400);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            // 关闭整个JavaFX应用程序
+            Platform.exit();
+        });
 //        stage.initStyle(StageStyle.TRANSPARENT);
-        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo.png")));
         stage.getIcons().add(icon);
         // 播放开始音乐
         AudioPlayer.playStaticSound("src/main/resources/audio/start.wav");
@@ -48,6 +59,7 @@ public class GameLauncher extends Application {
             mediaPlayer.stop(); // 停止播放动画
             try {
                 showLoginView(stage); // 加载主菜单
+                showToolStage(stage); // 加载工具栏
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -85,10 +97,21 @@ public class GameLauncher extends Application {
     public void showToolStage(Stage stage) throws IOException {
         // 新建一个舞台
         Stage toolStage = new Stage();
-        toolStage.setTitle("工具");
+        toolStage.getIcons().add(icon);
+        toolStage.initStyle(StageStyle.TRANSPARENT);
 
         // 加载工具界面
-        // TODO: 完善工具窗口
+        FXMLLoader fxmlLoader = new FXMLLoader(GameLauncher.class.getResource("tool-view.fxml"));
+        Scene toolScene = new Scene(fxmlLoader.load());
+        toolScene.setFill(Color.TRANSPARENT);
+
+        toolStage.setScene(toolScene);
+        toolStage.setTitle("工具 | 2048");
+
+        // 设置工具界面的位置
+        toolStage.setX(stage.getX()-toolStage.getWidth());
+        toolStage.setY(stage.getY());
+        toolStage.show();
     }
 
 
