@@ -105,7 +105,7 @@ public class Tile extends StackPane implements Serializable {
             case 2:
                 if (status.theme==0) {
                     backgroundColor = "#eee4da";
-                    textColor = "2C2724FF";
+                    textColor = "776E65FF";
                 }
                 else if (status.theme==1){
                     backgroundColor = "#a3c485";

@@ -147,6 +147,7 @@ public class GameViewController implements ClientListener {
 
         initialGame();
 
+//        AudioPlayer.playStaticSound("src/main/resources/audio/grass.wav");
 
         // 为按钮添加事件过滤器
         addEventFilterToButton(LoadButton);
@@ -245,6 +246,7 @@ public class GameViewController implements ClientListener {
                 if (response == ButtonType.OK) {
                     gameManager.stopGame();
                     status.initialNumber();
+//                    AudioPlayer.stopStaticPlayer();
                     if (status.isOnlineGame()) {
                         try {
                             // Load mode-view.fxml

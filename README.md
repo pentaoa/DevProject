@@ -30,6 +30,16 @@ src
 └── devproject
 └── model
 ```
+## 屏幕截图
+![screenshot2.png](src/main/resources/Assets/screenshot2.png)
+
+![screenshot3.png](src/main/resources/Assets/screenshot3.png)
+
+![screenshot5.png](src/main/resources/Assets/screenshot5.png)
+
+![screenshot4.png](src/main/resources/Assets/screenshot4.png)
+
+[2024-06-05 21-49-06.mkv](src/main/resources/Assets/2024-06-05%2021-49-06.mkv)
 
 ## 功能
 
@@ -63,12 +73,30 @@ src
 ### 游戏相关
 
 #### 在线游戏
-自动存档功能：每移动一次存档一次。
+自动存档功能：10秒存档一次。
+
+有限时模式，障碍模式，欢乐模式和作弊模式（作弊模式可以无限撤回，正常模式只能撤回一次）
+
+有道具（撤回和消除）
+
+有小助手
 
 撤销功能：可以回溯至少5步。
 
+存档功能：注册用户可以存档，离线用户无法存档。（存档用户退出客户端后，还可以读档）
+
+有ai
+#### 游戏图形界面
+
+
+有多种游戏主题皮肤可以选择
+
+音乐可以开关，移动有音效
+
+移动有动画
+
 #### 离线游戏
-手动存档功能。
+手动存档功能。存档无法进入服务器。
 
 ### 版本管理
 使用 git 进行版本管理。

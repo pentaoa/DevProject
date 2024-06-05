@@ -98,7 +98,7 @@
 }
 .game-tile-2    {
     -fx-font-size: 25px;
-    -fx-text-fill: rgb(44, 39, 36);
+    -fx-text-fill: rgb(119, 110, 101);
     -fx-background-color: rgba(255, 250, 245, 0.3);
     -fx-background-radius: 3;
     -fx-border-radius: 3;

@@ -44,6 +44,7 @@ public class AudioPlayer {
         return staticPlayer;
     }
 
+
     public void stop() {
         this.isCanceled = true;
     }
