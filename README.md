@@ -1,6 +1,8 @@
 # 2048 by ura
 
-![Static Badge](https://img.shields.io/badge/CS109-ongoing-green) ![JAVA](https://img.shields.io/badge/JAVA-red) ![javaFx](https://img.shields.io/badge/JAVAFX-yellow)
+![Static Badge](https://img.shields.io/badge/CS109-ongoing-green) ![JAVA](https://img.shields.io/badge/JAVA-red) ![SUSTech](https://img.shields.io/badge/SUSTech-orange)
+
+![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white) ![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white) ![JavaFX](https://img.shields.io/badge/javafx-%23FF0000.svg?style=for-the-badge&logo=javafx&logoColor=white) ![WebSocket](https://img.shields.io/badge/WebSocket-000000?style=for-the-badge&logo=WebSocket&logoColor=white) ![Blender](https://img.shields.io/badge/blender-%23F5792A.svg?style=for-the-badge&logo=blender&logoColor=white)
 
 这是 SUSTech CS109 课程大作业的项目仓库，ura 是一个由两个人组成的小队。本游戏使用 maven 作为项目管理器构建，使用 javafx 作为图形库。
 
@@ -43,68 +45,46 @@ src
 
 ## 功能
 
-### 窗口
-
-创建 2 个窗口（stage）。
-
-#### 主窗口
-游戏界面，登录等等。主窗口需要保留系统样式，可以调整大小。
-
-#### 工具窗口
-音乐播放和暂停，社交功能等等。工具窗口去除系统样式，自动设置大小，保留移动窗口的控制器。
-
-### 服务器
-
-#### 加密
-
-#### 排行榜
-
-### 账号
-
-#### 加密
-账号密码使用 BASE_64 加密。
-
 ### 游戏模式
 
-首先，有三种最初始的模式，分别是经典模式，障碍模式和时间模式。三种模式分别计分，每种模式计：score 和 maxNumber。
+- 经典模式：原始的2048游戏模式，目标是创建一个2048的瓦片。
+- 障碍模式：在游戏板上添加障碍，增加游戏难度。
+- 时间模式：在限定的时间内尽可能得到高分。
 
-然后，考虑添加 6x6 模式，也有 3-3-3 合成的模式。分别计分。
+### 游戏操作
 
-### 游戏相关
+- 使用键盘上的箭头键来移动瓦片。当两个相同的瓦片碰到时，它们会合并成一个！
+- 撤销功能：可以回溯至少5步。
+- 存档功能：注册用户可以存档，离线用户无法存档。（存档用户退出客户端后，还可以读档）
 
-#### 在线游戏
-自动存档功能：10秒存档一次。
+### 在线功能
 
-有限时模式，障碍模式，欢乐模式和作弊模式（作弊模式可以无限撤回，正常模式只能撤回一次）
+- 排行榜：查看所有玩家的得分排名。
+- 多人游戏：通过WebSocket实现多人在线同步游戏。
 
-有道具（撤回和消除）
+### 账号管理
 
-有小助手
+- 用户注册和登录：用户可以创建自己的账号，账号密码使用BASE_64加密。
+- 用户信息管理：用户可以查看和修改自己的信息。
+- 用户可以在线存档，存档使用BASE_64加密。
 
-撤销功能：可以回溯至少5步。
+### 图形用户界面
 
-存档功能：注册用户可以存档，离线用户无法存档。（存档用户退出客户端后，还可以读档）
+- 游戏界面：使用JavaFX创建的图形用户界面，包括游戏板块和得分显示。
+- 主题皮肤：提供多种游戏主题皮肤供玩家选择。
+- 德芙劲敌：丝滑的动画！
 
-有ai
-#### 游戏图形界面
+### 音效和音乐
 
+- 游戏音效：移动瓦片和合并瓦片时的音效。
+- 背景音乐：在游戏过程中播放的背景音乐，可以在设置中开启或关闭。
 
-有多种游戏主题皮肤可以选择
+### AI助手
 
-音乐可以开关，移动有音效
-
-移动有动画
-
-#### 离线游戏
-手动存档功能。存档无法进入服务器。
+- AI助手：提供AI助手帮助玩家进行游戏，可以在设置中开启或关闭。AI使用蒙特卡洛树状搜索（但是效果可能不咋的）。
 
 ### 版本管理
 使用 git 进行版本管理。
-
-## 人员分工
-
-- Grada：框架搭建
-- FragileHao: 游戏逻辑
 
 ## 系统要求
 
